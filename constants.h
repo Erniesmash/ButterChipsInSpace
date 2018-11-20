@@ -25,8 +25,8 @@
 //                  Constants
 //-----------------------------------------------
 // window
-const char CLASS_NAME[] = "Spacewar";
-const char GAME_TITLE[] = "Spacewar";
+const char CLASS_NAME[] = "Butter Chips in Space";
+const char GAME_TITLE[] = "Butter Chips in Space";
 const bool FULLSCREEN = false;              // windowed or fullscreen
 const UINT GAME_WIDTH =  640;               // width of game in pixels
 const UINT GAME_HEIGHT = 480;               // height of game in pixels
@@ -44,39 +44,24 @@ const float MAX_FRAME_TIME = 1.0f/MIN_FRAME_RATE; // maximum time used in calcul
 const UCHAR ESC_KEY      = VK_ESCAPE;   // escape key
 const UCHAR ALT_KEY      = VK_MENU;     // Alt key
 const UCHAR ENTER_KEY    = VK_RETURN;   // Enter key
-const UCHAR SHIP_RIGHT_KEY = VK_RIGHT;
-const UCHAR SHIP_LEFT_KEY = VK_LEFT;
-const UCHAR SHIP_DOWN_KEY = VK_DOWN;
-const UCHAR SHIP_UP_KEY = VK_UP;
+const UCHAR ROCKET_RIGHT_KEY = VK_RIGHT;
+const UCHAR ROCKET_LEFT_KEY = VK_LEFT;
+const UCHAR ROCKET_DOWN_KEY = VK_DOWN;
+const UCHAR ROCKET_UP_KEY = VK_UP;
 
-// ship
-const int  SHIP_START_FRAME = 0;         // starting frame of ship animation
-const int  SHIP_END_FRAME = 3;           // last frame of ship animation
-const float SHIP_ANIMATION_DELAY = 0.2f; // time between frames of ship animation
-const int  SHIP_COLS = 2;                // ship texture has 2 columns
-const int  SHIP_WIDTH = 32;              // width of ship image
-const int  SHIP_HEIGHT = 32;             // height of ship image
+// rocket
+const int  ROCKET_START_FRAME = 0;         // starting frame of ship animation
+const int  ROCKET_END_FRAME = 3;           // last frame of ship animation
+const float ROCKET_ANIMATION_DELAY = 0.2f; // time between frames of ship animation
+const int  ROCKET_COLS = 1;                // ship texture has 2 columns
+const int  ROCKET_WIDTH = 32;              // width of ship image
+const int  ROCKET_HEIGHT = 32;             // height of ship image
 const float ROTATION_RATE = 180.0f;             // degrees per second
 const float SCALE_RATE = 0.2f;                  // % change per second
-const float SHIP_SPEED = 100.0f;                // pixels per second
-const float SHIP_SCALE = 1.5f;                  // starting ship scale
-
-// ship 2
-const int  SHIP2_START_FRAME = 0;         // starting frame of ship animation
-const int  SHIP2_END_FRAME = 3;           // last frame of ship animation
-const float SHIP2_ANIMATION_DELAY = 0.2f; // time between frames of ship animation
-const int  SHIP2_COLS = 2;                // ship texture has 2 columns
-const int  SHIP2_WIDTH = 32;              // width of ship image
-const int  SHIP2_HEIGHT = 32;             // height of ship image
-const float ROTATION_RATE2 = 180.0f;             // degrees per second
-const float SCALE_RATE2 = 0.2f;                  // % change per second
-const float SHIP2_SPEED = 100.0f;                // pixels per second
-const float SHIP2_SCALE = 1.5f;                  // starting ship scale
-//const float SHIP2_VELOCITY = 1.0f;
+const float ROCKET_SPEED = 100.0f;                // pixels per second
+const float ROCKET_SCALE = 1.5f;                  // starting ship scale
 
 // graphic images
-const char NEBULA_IMAGE[] = "pictures\\orion.jpg";  // photo source NASA/courtesy of nasaimages.org 
-const char PLANET_IMAGE[] = "pictures\\planet.png"; // picture of planet
-const char SHIP_IMAGE[] = "pictures\\ship.png";   // spaceship
-const char SHIP_IMAGE2[] = "pictures\\ship2.png";   // spaceship2
+const char ROCKET_IMAGE[] = "Images\\Spritesheet_64x29.png";
+const char FARBACK_IMAGE[] = "Images\\farback.jpg";
 #endif

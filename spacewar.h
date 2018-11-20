@@ -16,14 +16,12 @@ class Spacewar : public Game
 private:
     // variables
 	// game items
-	TextureManager nebulaTexture;   // nebula texture
-	TextureManager planetTexture;   // planet texture
-	TextureManager shipTexture;
-	TextureManager ship2Texture;
-	Image   planet;                 // planet image
-	Image   nebula;                 // nebula image
-	Image ship;
-	Image ship2;
+
+	TextureManager rocketTexture; // rocket texture
+	TextureManager farbackTexture; //farback background texture
+
+	Image rocket; // rocket image
+	Image farback; // background texture
 
 public:
     // Constructor
