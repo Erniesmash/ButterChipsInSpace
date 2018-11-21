@@ -56,37 +56,37 @@ void Spacewar::update()
 {
 	//Rocket Stuff
 	rocket.update(frameTime);
-	if (rocket.getX() > GAME_WIDTH)               // if off screen right
-	{
-		rocket.setX((float)-rocket.getWidth());     // position off screen left
-	}
 
 	if (input->isKeyDown(ROCKET_RIGHT_KEY))            // if move right
 	{
-		rocket.setX(rocket.getX() + frameTime * ROCKET_SPEED);
+		/*
 		if (rocket.getX() > GAME_WIDTH)               // if off screen right
 			rocket.setX((float)-rocket.getWidth());  // position off screen left
+		*/
+		if (rocket.getX() < GAME_WIDTH - rocket.getWidth())
+			rocket.setX(rocket.getX() + frameTime * ROCKET_SPEED);
 	}
 
 	if (input->isKeyDown(ROCKET_LEFT_KEY))             // if move left
 	{
-		rocket.setX(rocket.getX() - frameTime * ROCKET_SPEED);
+		/*
 		if (rocket.getX() < -rocket.getWidth())         // if off screen left
 			rocket.setX((float)GAME_WIDTH);      // position off screen right
+		*/
+		if (rocket.getX() > 0)
+			rocket.setX(rocket.getX() - frameTime * ROCKET_SPEED);
 	}
 
 	if (input->isKeyDown(ROCKET_UP_KEY))               // if move up
-	{
-		rocket.setY(rocket.getY() - frameTime * ROCKET_SPEED);
-		if (rocket.getY() < -rocket.getHeight())        // if off screen top
-			rocket.setY((float)GAME_HEIGHT);     // position off screen bottom
+	{	
+		if (rocket.getY() > 0 + rocket.getHeight()) // limit move up
+			rocket.setY(rocket.getY() - frameTime * ROCKET_SPEED);
 	}
 
 	if (input->isKeyDown(ROCKET_DOWN_KEY))             // if move down
 	{
-		rocket.setY(rocket.getY() + frameTime * ROCKET_SPEED);
-		if (rocket.getY() > GAME_HEIGHT)              // if off screen bottom
-			rocket.setY((float)-rocket.getHeight());    // position off screen top
+		if (rocket.getY() < GAME_HEIGHT - rocket.getHeight()) // limit move down
+			rocket.setY(rocket.getY() + frameTime * ROCKET_SPEED);		
 	}
 }
 

@@ -58,7 +58,7 @@ const int  ROCKET_WIDTH = 64;              // width of ship image
 const int  ROCKET_HEIGHT = 29;             // height of ship image
 const float ROTATION_RATE = 180.0f;             // degrees per second
 const float SCALE_RATE = 0.2f;                  // % change per second
-const float ROCKET_SPEED = 100.0f;                // pixels per second
+const float ROCKET_SPEED = 250.0f;                // pixels per second
 const float ROCKET_SCALE = 1.5f;                  // starting ship scale
 
 // graphic images
