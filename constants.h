@@ -62,16 +62,16 @@ const float ROCKET_SPEED = 250.0f;                // pixels per second
 const float ROCKET_SCALE = 1.5f;                  // starting ship scale
 
 // enemy ship
-const int  ROCKET_START_FRAME = 0;         // starting frame of ship animation
-const int  ROCKET_END_FRAME = 3;           // last frame of ship animation
+const int  ESHIP_START_FRAME = 0;         // starting frame of ship animation
+const int  ESHIP_END_FRAME = 6;           // last frame of ship animation
 const float ROCKET_ANIMATION_DELAY = 0.1f; // time between frames of ship animation
-const int  ROCKET_COLS = 1;                // ship texture has 1 column
-const int  ROCKET_WIDTH = 64;              // width of ship image
-const int  ROCKET_HEIGHT = 29;             // height of ship image
+const int  ESHIP_COLS = 1;                // ship texture has 1 column
+const int  ESHIP_WIDTH = 40;              // width of ship image
+const int  ESHIP_HEIGHT = 30;             // height of ship image
 const float ROTATION_RATE = 180.0f;             // degrees per second
 const float SCALE_RATE = 0.2f;                  // % change per second
-const float ROCKET_SPEED = 250.0f;                // pixels per second
-const float ROCKET_SCALE = 1.5f;                  // starting ship scale
+const float ESHIP_SPEED = 250.0f;                // pixels per second
+const float ESHIP_SCALE = 1.5f;                  // starting ship scale
 
 // graphic images
 const char ENEMY_IMAGE[] = "Images\\eSpritesheet_40x30";
