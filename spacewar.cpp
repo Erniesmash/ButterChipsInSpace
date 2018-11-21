@@ -39,14 +39,13 @@ void Spacewar::initialize(HWND hwnd)
 	if (!rocket.initialize(graphics, ROCKET_WIDTH, ROCKET_HEIGHT, ROCKET_COLS, &rocketTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship"));
 
-
-	// rocket settings
-	rocket.setX(GAME_WIDTH / 4);
-	rocket.setY(GAME_HEIGHT / 4);
+	// initial rocket settings
+	rocket.setX(GAME_WIDTH / 2.3);
+	rocket.setY(GAME_HEIGHT / 1.15);
 	rocket.setFrames(ROCKET_START_FRAME, ROCKET_END_FRAME);   // animation frames          
 	rocket.setCurrentFrame(ROCKET_START_FRAME);             // starting frame
 	rocket.setFrameDelay(ROCKET_ANIMATION_DELAY);
-	rocket.setDegrees(45.0f);                             // angle of ship
+	rocket.setDegrees(270.0f);                             // angle of ship
 	return;
 }
 
@@ -55,7 +54,40 @@ void Spacewar::initialize(HWND hwnd)
 //=============================================================================
 void Spacewar::update()
 {
-	
+	//Rocket Stuff
+	rocket.update(frameTime);
+	if (rocket.getX() > GAME_WIDTH)               // if off screen right
+	{
+		rocket.setX((float)-rocket.getWidth());     // position off screen left
+	}
+
+	if (input->isKeyDown(ROCKET_RIGHT_KEY))            // if move right
+	{
+		rocket.setX(rocket.getX() + frameTime * ROCKET_SPEED);
+		if (rocket.getX() > GAME_WIDTH)               // if off screen right
+			rocket.setX((float)-rocket.getWidth());  // position off screen left
+	}
+
+	if (input->isKeyDown(ROCKET_LEFT_KEY))             // if move left
+	{
+		rocket.setX(rocket.getX() - frameTime * ROCKET_SPEED);
+		if (rocket.getX() < -rocket.getWidth())         // if off screen left
+			rocket.setX((float)GAME_WIDTH);      // position off screen right
+	}
+
+	if (input->isKeyDown(ROCKET_UP_KEY))               // if move up
+	{
+		rocket.setY(rocket.getY() - frameTime * ROCKET_SPEED);
+		if (rocket.getY() < -rocket.getHeight())        // if off screen top
+			rocket.setY((float)GAME_HEIGHT);     // position off screen bottom
+	}
+
+	if (input->isKeyDown(ROCKET_DOWN_KEY))             // if move down
+	{
+		rocket.setY(rocket.getY() + frameTime * ROCKET_SPEED);
+		if (rocket.getY() > GAME_HEIGHT)              // if off screen bottom
+			rocket.setY((float)-rocket.getHeight());    // position off screen top
+	}
 }
 
 //=============================================================================

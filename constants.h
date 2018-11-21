@@ -52,10 +52,10 @@ const UCHAR ROCKET_UP_KEY = VK_UP;
 // rocket
 const int  ROCKET_START_FRAME = 0;         // starting frame of ship animation
 const int  ROCKET_END_FRAME = 3;           // last frame of ship animation
-const float ROCKET_ANIMATION_DELAY = 0.2f; // time between frames of ship animation
-const int  ROCKET_COLS = 1;                // ship texture has 2 columns
-const int  ROCKET_WIDTH = 32;              // width of ship image
-const int  ROCKET_HEIGHT = 32;             // height of ship image
+const float ROCKET_ANIMATION_DELAY = 0.1f; // time between frames of ship animation
+const int  ROCKET_COLS = 1;                // ship texture has 1 column
+const int  ROCKET_WIDTH = 64;              // width of ship image
+const int  ROCKET_HEIGHT = 29;             // height of ship image
 const float ROTATION_RATE = 180.0f;             // degrees per second
 const float SCALE_RATE = 0.2f;                  // % change per second
 const float ROCKET_SPEED = 100.0f;                // pixels per second
