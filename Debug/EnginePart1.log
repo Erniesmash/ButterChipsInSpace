@@ -2,4 +2,7 @@
   spacewar.cpp
 c:\users\ernest\documents\github\butterchipsinspace\spacewar.cpp(43): warning C4305: 'argument': truncation from 'double' to 'float'
 c:\users\ernest\documents\github\butterchipsinspace\spacewar.cpp(44): warning C4305: 'argument': truncation from 'double' to 'float'
+  ship.cpp
+  Generating Code...
+entity.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
   EnginePart1.vcxproj -> C:\Users\Ernest\Documents\GitHub\ButterChipsInSpace\Debug\Butter Chips in Space.exe

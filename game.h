@@ -1,6 +1,10 @@
+// Programming 2D Games
+// Copyright (c) 2011 by: 
+// Charles Kelly
+// Chapter 6 game.h v1.0
 
-#ifndef _GAME_H                 // prevent multiple definitions if this 
-#define _GAME_H                 // ..file is included in more than one place
+#ifndef _GAME_H                 // Prevent multiple definitions if this 
+#define _GAME_H                 // file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
@@ -60,6 +64,9 @@ public:
 
     // Handle lost graphics device
     virtual void handleLostGraphicsDevice();
+
+    // Set display mode (fullscreen, window or toggle)
+    void setDisplayMode(graphicsNS::DISPLAY_MODE mode = graphicsNS::TOGGLE);
 
     // Return pointer to Graphics.
     Graphics* getGraphics() {return graphics;}
