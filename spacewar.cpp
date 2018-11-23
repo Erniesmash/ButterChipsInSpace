@@ -28,18 +28,19 @@ Spacewar::~Spacewar()
 void Spacewar::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
-
+	/*
     // nebula texture
     if (!nebulaTexture.initialize(graphics,NEBULA_IMAGE))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula texture"));
-
-    // main game textures
-    if (!gameTextures.initialize(graphics,TEXTURES_IMAGE))
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game textures"));
-
+	
     // nebula image
     if (!nebula.initialize(graphics,0,0,0,&nebulaTexture))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula"));
+	*/
+
+	// main game textures
+	if (!gameTextures.initialize(graphics, TEXTURES_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game textures"));
 
     // planet
     if (!planet.initialize(this, planetNS::WIDTH, planetNS::HEIGHT, 2, &gameTextures))
@@ -64,6 +65,7 @@ void Spacewar::initialize(HWND hwnd)
 	rocketMain.setCurrentFrame(rocketNS::ROCKET_START_FRAME);
 	rocketMain.setX(GAME_WIDTH / 2.3);
 	rocketMain.setY(GAME_HEIGHT / 1.15);
+	//rocketMain.setVelocity(VECTOR2(1,1)); // VECTOR2(X, Y)
 
 	// ship1
 	if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
@@ -94,6 +96,31 @@ void Spacewar::update()
     ship1.update(frameTime);
     ship2.update(frameTime);
 	rocketMain.update(frameTime);
+	/*
+	if (input->isKeyDown(ROCKET_RIGHT_KEY))            // if move right
+	{
+		//if (rocketMain.getX() < GAME_WIDTH - rocketMain.getWidth())
+		rocketMain.setX(rocketMain.getX() + frameTime * rocketNS::SPEED);
+	}
+
+	if (input->isKeyDown(ROCKET_LEFT_KEY))             // if move left
+	{
+		//if (rocketMain.getX() > 0)
+		rocketMain.setX(rocketMain.getX() - frameTime * rocketNS::SPEED);
+	}
+
+	if (input->isKeyDown(ROCKET_UP_KEY))               // if move up
+	{
+		//if (rocketMain.getY() > 0 + rocketMain.getHeight()) // limit move up
+		rocketMain.setY(rocketMain.getY() - frameTime * rocketNS::SPEED);
+	}
+
+	if (input->isKeyDown(ROCKET_DOWN_KEY))             // if move down
+	{
+		//if (rocketMain.getY() < GAME_HEIGHT - rocketMain.getHeight()) // limit move down
+		rocketMain.setY(rocketMain.getY() + frameTime * rocketNS::SPEED);
+	}
+	*/
 }
 
 //=============================================================================
@@ -131,6 +158,22 @@ void Spacewar::collisions()
         ship2.bounce(collisionVector*-1, ship1);
         ship2.damage(SHIP);
     }
+	/*
+	if (rocketMain.collidesWith(planet, collisionVector))
+	{
+		rocketMain.bounce(collisionVector, planet);
+		rocketMain.damage(PLANET);
+	}
+	if (rocketMain.collidesWith(ship1, collisionVector))
+	{
+		// bounce off ship
+		rocketMain.bounce(collisionVector, ship1);
+		rocketMain.damage(SHIP);
+		// change the direction of the collisionVector for ship2
+		ship1.bounce(collisionVector*-1, rocketMain);
+		ship1.damage(SHIP);
+	}
+	*/
 }
 
 //=============================================================================
@@ -156,7 +199,7 @@ void Spacewar::render()
 //=============================================================================
 void Spacewar::releaseAll()
 {
-    nebulaTexture.onLostDevice();
+    //nebulaTexture.onLostDevice();
     gameTextures.onLostDevice();
 	farbackTexture.onLostDevice();
 	rocketTexture.onLostDevice();
@@ -171,7 +214,7 @@ void Spacewar::releaseAll()
 void Spacewar::resetAll()
 {
     gameTextures.onResetDevice();
-    nebulaTexture.onResetDevice();
+    //nebulaTexture.onResetDevice();
 	rocketTexture.onResetDevice();
 	farbackTexture.onResetDevice();
     Game::resetAll();

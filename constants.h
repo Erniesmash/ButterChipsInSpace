@@ -59,6 +59,12 @@ const UCHAR ESC_KEY      = VK_ESCAPE;       // escape key
 const UCHAR ALT_KEY      = VK_MENU;         // alt key
 const UCHAR ENTER_KEY    = VK_RETURN;       // enter key
 const UCHAR LEFT_SHIFT_KEY = VK_LSHIFT;	// left shift key
+const UCHAR ROCKET_RIGHT_KEY = 0x44;
+const UCHAR ROCKET_LEFT_KEY = 0x41;
+//const UCHAR ROCKET_DOWN_KEY = VK_DOWN;
+//const UCHAR ROCKET_UP_KEY = VK_UP;
+const UCHAR ROCKET_DOWN_KEY = 0x53;
+const UCHAR ROCKET_UP_KEY = 0x57;
 
 // weapon types
 enum WEAPON {TORPEDO, SHIP, PLANET};

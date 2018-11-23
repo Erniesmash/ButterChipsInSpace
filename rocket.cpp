@@ -62,7 +62,7 @@ void Rocket::draw()
 void Rocket::update(float frameTime)
 {
 	Entity::update(frameTime);
-	spriteData.angle += frameTime * rocketNS::ROTATION_RATE;  // rotate the ship
+	//spriteData.angle += frameTime * rocketNS::ROTATION_RATE;  // rotate the ship
 	spriteData.x += frameTime * velocity.x;         // move ship along X 
 	spriteData.y += frameTime * velocity.y;         // move ship along Y
 
@@ -96,6 +96,37 @@ void Rocket::update(float frameTime)
 			shield.setAnimationComplete(false);
 		}
 	}
+
+	if (input->isKeyDown(ROCKET_RIGHT_KEY))            // if move right
+	{
+		//if (rocketMain.getX() < GAME_WIDTH - rocketMain.getWidth())
+		spriteData.x = spriteData.x + frameTime * rocketNS::SPEED;
+	}
+	
+	if (input->isKeyDown(ROCKET_LEFT_KEY))             // if move left
+	{
+		//if (rocketMain.getX() > 0)
+		spriteData.x = spriteData.x - frameTime * rocketNS::SPEED;
+	}
+
+	if (input->isKeyDown(ROCKET_UP_KEY))               // if move up
+	{
+		//if (rocketMain.getY() > 0 + rocketMain.getHeight()) // limit move up
+		spriteData.y = spriteData.y - frameTime * rocketNS::SPEED;
+	}
+
+	if (input->isKeyDown(ROCKET_DOWN_KEY))             // if move down
+	{
+		//if (rocketMain.getY() < GAME_HEIGHT - rocketMain.getHeight()) // limit move down
+		spriteData.y = spriteData.y + frameTime * rocketNS::SPEED;
+	}
+
+	/*
+	if (input->isKeyDown(ENTER_KEY) && input->isKeyDown(ROCKET_LEFT_KEY))
+	{
+		spriteData.angle += frameTime * rocketNS::ROTATION_RATE;
+	}
+	*/
 }
 
 //=============================================================================
