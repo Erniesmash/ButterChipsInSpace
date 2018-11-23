@@ -45,19 +45,35 @@ void Spacewar::initialize(HWND hwnd)
     if (!planet.initialize(this, planetNS::WIDTH, planetNS::HEIGHT, 2, &gameTextures))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing planet"));
 
-    // ship
-    if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship1"));
+	// farback texture
+	if (!farbackTexture.initialize(graphics, FARBACK_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing farback texture"));
+
+	// farback image
+	if (!farback.initialize(graphics,0,0,0,&farbackTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing farback"));
+
+	// rocket texture
+	if (!rocketTexture.initialize(graphics, ROCKET_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing rocket texture"));
 
 	// rocket
 	if (!rocketMain.initialize(this, rocketNS::WIDTH, rocketNS::HEIGHT, rocketNS::TEXTURE_COLS, &rocketTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing rocket"));
+	rocketMain.setFrames(rocketNS::ROCKET_START_FRAME, rocketNS::ROCKET_END_FRAME);
+	rocketMain.setCurrentFrame(rocketNS::ROCKET_START_FRAME);
+	rocketMain.setX(GAME_WIDTH / 2.3);
+	rocketMain.setY(GAME_HEIGHT / 1.15);
 
+	// ship1
+	if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship1"));
     ship1.setFrames(shipNS::SHIP1_START_FRAME, shipNS::SHIP1_END_FRAME);
     ship1.setCurrentFrame(shipNS::SHIP1_START_FRAME);
     ship1.setX(GAME_WIDTH/4);
     ship1.setY(GAME_HEIGHT/4);
     ship1.setVelocity(VECTOR2(shipNS::SPEED,-shipNS::SPEED)); // VECTOR2(X, Y)
+
     // ship2
     if (!ship2.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship2"));
@@ -66,7 +82,6 @@ void Spacewar::initialize(HWND hwnd)
     ship2.setX(GAME_WIDTH - GAME_WIDTH/4);
     ship2.setY(GAME_HEIGHT/4);
     ship2.setVelocity(VECTOR2(-shipNS::SPEED,-shipNS::SPEED)); // VECTOR2(X, Y)
-
     return;
 }
 
@@ -78,6 +93,7 @@ void Spacewar::update()
     planet.update(frameTime);
     ship1.update(frameTime);
     ship2.update(frameTime);
+	rocketMain.update(frameTime);
 }
 
 //=============================================================================
@@ -124,10 +140,12 @@ void Spacewar::render()
 {
     graphics->spriteBegin();                // begin drawing sprites
 
-    nebula.draw();                          // add the orion nebula to the scene
+    //nebula.draw();                          // add the orion nebula to the scene
+	farback.draw();							// add the farback to the scene
     planet.draw();                          // add the planet to the scene
     ship1.draw();                           // add the spaceship to the scene
     ship2.draw();                           // add the spaceship to the scene
+	rocketMain.draw();						// add the rocket to the scene
 
     graphics->spriteEnd();                  // end drawing sprites
 }
@@ -140,6 +158,8 @@ void Spacewar::releaseAll()
 {
     nebulaTexture.onLostDevice();
     gameTextures.onLostDevice();
+	farbackTexture.onLostDevice();
+	rocketTexture.onLostDevice();
     Game::releaseAll();
     return;
 }
@@ -152,6 +172,8 @@ void Spacewar::resetAll()
 {
     gameTextures.onResetDevice();
     nebulaTexture.onResetDevice();
+	rocketTexture.onResetDevice();
+	farbackTexture.onResetDevice();
     Game::resetAll();
     return;
 }
