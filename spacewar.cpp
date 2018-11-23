@@ -53,6 +53,18 @@ void Spacewar::initialize(HWND hwnd)
 	if (!farback.initialize(graphics,0,0,0,&farbackTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing farback"));
 
+	// eship texture
+	if (!eshipTexture.initialize(graphics, ESHIP_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy ship texture"));
+
+	// eship image
+	if (!eShip.initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eshipTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy ship"));
+	eShip.setFrames(eShipNS::ESHIP1_START_FRAME, eShipNS::ESHIP1_END_FRAME);
+	eShip.setCurrentFrame(eShipNS::ESHIP1_START_FRAME);
+	eShip.setX(GAME_WIDTH/4);
+	eShip.setY(GAME_HEIGHT/4);
+
 	// rocket texture
 	if (!rocketTexture.initialize(graphics, ROCKET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing rocket texture"));
@@ -146,6 +158,7 @@ void Spacewar::render()
     ship1.draw();                           // add the spaceship to the scene
     ship2.draw();                           // add the spaceship to the scene
 	rocketMain.draw();						// add the rocket to the scene
+	eShip.draw();							// add enemy ship
 
     graphics->spriteEnd();                  // end drawing sprites
 }

@@ -13,7 +13,7 @@
 #include "planet.h"
 #include "ship.h"
 #include "rocket.h"
-
+#include "eship.h"
 //=============================================================================
 // This class is the core of the game
 //=============================================================================
@@ -25,11 +25,13 @@ private:
     TextureManager gameTextures;    // game texture
 	TextureManager rocketTexture;	// rocket texture
 	TextureManager farbackTexture;	// farback texture
+	TextureManager eshipTexture;	// enemy ship texture
     Ship    ship1, ship2;           // spaceships
 	Rocket	rocketMain;
     Planet  planet;         // the planet
     Image   nebula;         // backdrop image
 	Image	farback;		// farback image
+	EShip	eShip;			// enemy ship 
 
 public:
     // Constructor
