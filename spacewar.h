@@ -12,6 +12,7 @@
 #include "image.h"
 #include "planet.h"
 #include "ship.h"
+#include "rocket.h"
 
 //=============================================================================
 // This class is the core of the game
@@ -22,7 +23,9 @@ private:
     // game items
     TextureManager nebulaTexture;   // nebula texture
     TextureManager gameTextures;    // game texture
+	TextureManager rocketTexture;	// rocket texture
     Ship    ship1, ship2;           // spaceships
+	Rocket	rocketMain;
     Planet  planet;         // the planet
     Image   nebula;         // backdrop image
 

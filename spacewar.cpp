@@ -48,6 +48,11 @@ void Spacewar::initialize(HWND hwnd)
     // ship
     if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship1"));
+
+	// rocket
+	if (!rocketMain.initialize(this, rocketNS::WIDTH, rocketNS::HEIGHT, rocketNS::TEXTURE_COLS, &rocketTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing rocket"));
+
     ship1.setFrames(shipNS::SHIP1_START_FRAME, shipNS::SHIP1_END_FRAME);
     ship1.setCurrentFrame(shipNS::SHIP1_START_FRAME);
     ship1.setX(GAME_WIDTH/4);
