@@ -53,6 +53,10 @@ void Spacewar::initialize(HWND hwnd)
 	if (!rocketMain.initialize(this, rocketNS::WIDTH, rocketNS::HEIGHT, rocketNS::TEXTURE_COLS, &rocketTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing rocket"));
 
+	// enemy ship 
+	if (!eShip.initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eshipTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy ship"));
+
     ship1.setFrames(shipNS::SHIP1_START_FRAME, shipNS::SHIP1_END_FRAME);
     ship1.setCurrentFrame(shipNS::SHIP1_START_FRAME);
     ship1.setX(GAME_WIDTH/4);

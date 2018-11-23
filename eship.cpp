@@ -13,9 +13,9 @@ EShip::EShip() : Entity()
 	spriteData.rect.right = eShipNS::WIDTH;
 	velocity.x = 0;                             // velocity X
 	velocity.y = 0;                             // velocity Y
-	frameDelay = eShipNS::SHIP_ANIMATION_DELAY;
-	startFrame = eShipNS::SHIP1_START_FRAME;     // first frame of EShip animation
-	endFrame = eShipNS::SHIP1_END_FRAME;     // last frame of EShip animation
+	frameDelay = eShipNS::ESHIP_ANIMATION_DELAY;
+	startFrame = eShipNS::ESHIP1_START_FRAME;     // first frame of EShip animation
+	endFrame = eShipNS::ESHIP1_END_FRAME;     // last frame of EShip animation
 	currentFrame = startFrame;
 	radius = eShipNS::WIDTH / 2.0;
 	shieldOn = false;
