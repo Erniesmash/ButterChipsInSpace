@@ -48,11 +48,45 @@ void Bullet::draw()
 void Bullet::update(float frameTime) 
 {
 	Entity::update(frameTime);
-	spriteData.x = spriteData.x + frameTime * bulletNS::SPEED;
-	if (input->isKeyDown(ROCKET_SPACE_KEY))
+	// Bounce off walls
+	if (spriteData.x > GAME_WIDTH - bulletNS::WIDTH)    // if hit right screen edge
 	{
-		Bullet *bullet = new Bullet();
-		Bullet::draw();
+		spriteData.x = GAME_WIDTH - bulletNS::WIDTH;    // position at right screen edge
+		velocity.x = -velocity.x;
+	}
+	else if (spriteData.x < 0)                    // else if hit left screen edge
+	{
+		spriteData.x = 0;                           // position at left screen edge
+		velocity.x = -velocity.x;
+	}
+	if (spriteData.y > GAME_HEIGHT - bulletNS::HEIGHT)  // if hit bottom screen edge
+	{
+		spriteData.y = GAME_HEIGHT - bulletNS::HEIGHT;  // position at bottom screen edge
+		velocity.y = -velocity.y;
+	}
+	else if (spriteData.y < 0)                    // else if hit top screen edge
+	{
+		spriteData.y = 0;                           // position at top screen edge
+		velocity.y = -velocity.y;
+	}
+	//spriteData.x = spriteData.x + frameTime * bulletNS::SPEED;
+	//Bullet *bullet = new Bullet();
+	//Bullet::draw();
+	if (input->isKeyDown(ROCKET_ARROW_UP))
+	{
+		spriteData.y = spriteData.y - frameTime * bulletNS::SPEED;
+	}
+	if (input->isKeyDown(ROCKET_ARROW_DOWN))
+	{
+		spriteData.y = spriteData.y + frameTime * bulletNS::SPEED;
+	}
+	if (input->isKeyDown(ROCKET_ARROW_LEFT))
+	{
+		spriteData.x = spriteData.x - frameTime * bulletNS::SPEED;
+	}
+	if (input->isKeyDown(ROCKET_ARROW_RIGHT))
+	{
+		spriteData.x = spriteData.x + frameTime * bulletNS::SPEED;
 	}
 }
 

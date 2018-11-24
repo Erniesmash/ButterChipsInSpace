@@ -76,6 +76,7 @@ void Spacewar::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet"));
 	bullet.setFrames(bulletNS::BULLET_START_FRAME, bulletNS::BULLET_END_FRAME);
 	bullet.setCurrentFrame(bulletNS::BULLET_START_FRAME);
+	bullet.setVelocity(VECTOR2(0, 0)); // VECTOR2(X, Y)
 
 	// ship1
 	if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
@@ -174,6 +175,31 @@ void Spacewar::collisions()
         ship2.bounce(collisionVector*-1, ship1);
         ship2.damage(SHIP);
     }
+
+	if (bullet.collidesWith(planet, collisionVector))
+	{
+		// bounce off planet
+		bullet.bounce(collisionVector, planet);
+		bullet.damage(PLANET);
+	}
+	if (bullet.collidesWith(ship1, collisionVector))
+	{
+		// bounce off ship
+		bullet.bounce(collisionVector, ship1);
+		//bullet.damage(SHIP);
+		// change the direction of the collisionVector for ship1
+		//ship1.bounce(collisionVector*-1, bullet);
+		ship1.damage(SHIP);
+	}
+	if (bullet.collidesWith(ship2, collisionVector))
+	{
+		// bounce off ship
+		bullet.bounce(collisionVector, ship2);
+		//bullet.damage(SHIP);
+		// change the direction of the collisionVector for ship1
+		//ship1.bounce(collisionVector*-1, bullet);
+		ship2.damage(SHIP);
+	}
 	/*
 	if (rocketMain.collidesWith(planet, collisionVector))
 	{

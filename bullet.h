@@ -7,16 +7,14 @@
 #include "entity.h"
 #include "constants.h"
 
-const int ARRAY_SIZE = 10;
-
 namespace bulletNS
 {
-	const int WIDTH = 64;                   // image width
+	const int WIDTH = 16;                   // image width
 	const int HEIGHT = 16;                  // image height
 	const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
-	const int Y = GAME_HEIGHT / 2 - HEIGHT / 2;
+	const int Y = GAME_HEIGHT / 5 - HEIGHT / 5;
 	const float ROTATION_RATE = (float)PI / 2; // radians per second
-	const float SPEED = 100;                // 100 pixels per second
+	const float SPEED = 200;                // 100 pixels per second
 	const float MASS = 300.0f;              // mass
 	const int   TEXTURE_COLS = 1;           // texture has 8 columns
 	const int   BULLET_START_FRAME = 0;      // bullet starts at frame 0
@@ -28,7 +26,6 @@ namespace bulletNS
 class Bullet : public Entity
 {
 private:
-	Bullet *arrayOfBullet[ARRAY_SIZE];
 
 public:
 	// constructor

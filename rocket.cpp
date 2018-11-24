@@ -121,6 +121,7 @@ void Rocket::update(float frameTime)
 		spriteData.y = spriteData.y + frameTime * rocketNS::SPEED;
 	}
 
+	/*
 	if (input->isKeyDown(ROCKET_ARROW_RIGHT))
 	{
 		spriteData.angle += frameTime * rocketNS::ROTATION_RATE;
@@ -130,6 +131,7 @@ void Rocket::update(float frameTime)
 	{
 		spriteData.angle -= frameTime * rocketNS::ROTATION_RATE;
 	}
+	*/
 }
 
 //=============================================================================
