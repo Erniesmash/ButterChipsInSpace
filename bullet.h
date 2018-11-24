@@ -26,8 +26,6 @@ namespace bulletNS
 class Bullet : public Entity
 {
 private:
-	VECTOR2 Entity::velocity;
-	VECTOR2 Entity::center;
 
 public:
 	// constructor
