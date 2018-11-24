@@ -51,6 +51,7 @@ const char TEXTURES_IMAGE[] = "pictures\\textures.png";  // game textures
 const char ESHIP_IMAGE[] = "pictures\\eSpritesheet_40x30.png";
 const char ROCKET_IMAGE[] = "pictures\\Spritesheet_64x29.png";
 const char FARBACK_IMAGE[] = "pictures\\farback.jpg";
+const char BULLET_IMAGE[] = "pictures\\hatch_sheet.png";
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
@@ -61,10 +62,11 @@ const UCHAR ENTER_KEY    = VK_RETURN;       // enter key
 const UCHAR LEFT_SHIFT_KEY = VK_LSHIFT;	// left shift key
 const UCHAR ROCKET_RIGHT_KEY = 0x44;
 const UCHAR ROCKET_LEFT_KEY = 0x41;
-//const UCHAR ROCKET_DOWN_KEY = VK_DOWN;
-//const UCHAR ROCKET_UP_KEY = VK_UP;
 const UCHAR ROCKET_DOWN_KEY = 0x53;
 const UCHAR ROCKET_UP_KEY = 0x57;
+const UCHAR ROCKET_ARROW_LEFT = VK_LEFT;
+const UCHAR ROCKET_ARROW_RIGHT = VK_RIGHT;
+const UCHAR ROCKET_SPACE_KEY = VK_SPACE;
 
 // weapon types
 enum WEAPON {TORPEDO, SHIP, PLANET};

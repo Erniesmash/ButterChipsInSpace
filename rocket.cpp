@@ -63,8 +63,8 @@ void Rocket::update(float frameTime)
 {
 	Entity::update(frameTime);
 	//spriteData.angle += frameTime * rocketNS::ROTATION_RATE;  // rotate the ship
-	spriteData.x += frameTime * velocity.x;         // move ship along X 
-	spriteData.y += frameTime * velocity.y;         // move ship along Y
+	//spriteData.x += frameTime * velocity.x;         // move ship along X 
+	//spriteData.y += frameTime * velocity.y;         // move ship along Y
 
 	// Bounce off walls
 	if (spriteData.x > GAME_WIDTH - rocketNS::WIDTH)    // if hit right screen edge
@@ -121,12 +121,15 @@ void Rocket::update(float frameTime)
 		spriteData.y = spriteData.y + frameTime * rocketNS::SPEED;
 	}
 
-	/*
-	if (input->isKeyDown(ENTER_KEY) && input->isKeyDown(ROCKET_LEFT_KEY))
+	if (input->isKeyDown(ROCKET_ARROW_RIGHT))
 	{
 		spriteData.angle += frameTime * rocketNS::ROTATION_RATE;
 	}
-	*/
+
+	if (input->isKeyDown(ROCKET_ARROW_LEFT))
+	{
+		spriteData.angle -= frameTime * rocketNS::ROTATION_RATE;
+	}
 }
 
 //=============================================================================

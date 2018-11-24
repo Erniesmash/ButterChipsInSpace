@@ -66,6 +66,16 @@ void Spacewar::initialize(HWND hwnd)
 	rocketMain.setX(GAME_WIDTH / 2.3);
 	rocketMain.setY(GAME_HEIGHT / 1.15);
 	//rocketMain.setVelocity(VECTOR2(1,1)); // VECTOR2(X, Y)
+	
+	// bullet texture
+	if (!bulletTexture.initialize(graphics, BULLET_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
+
+	// bullet
+	if (!bullet.initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet"));
+	bullet.setFrames(bulletNS::BULLET_START_FRAME, bulletNS::BULLET_END_FRAME);
+	bullet.setCurrentFrame(bulletNS::BULLET_START_FRAME);
 
 	// ship1
 	if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
@@ -96,7 +106,8 @@ void Spacewar::update()
     ship1.update(frameTime);
     ship2.update(frameTime);
 	rocketMain.update(frameTime);
-	/*
+	bullet.update(frameTime);
+	/* Moved to rocket.cpp update method
 	if (input->isKeyDown(ROCKET_RIGHT_KEY))            // if move right
 	{
 		//if (rocketMain.getX() < GAME_WIDTH - rocketMain.getWidth())
@@ -121,6 +132,11 @@ void Spacewar::update()
 		rocketMain.setY(rocketMain.getY() + frameTime * rocketNS::SPEED);
 	}
 	*/
+
+	if (input->isKeyDown(ROCKET_SPACE_KEY))
+	{
+
+	}
 }
 
 //=============================================================================
@@ -189,6 +205,7 @@ void Spacewar::render()
     ship1.draw();                           // add the spaceship to the scene
     ship2.draw();                           // add the spaceship to the scene
 	rocketMain.draw();						// add the rocket to the scene
+	bullet.draw();
 
     graphics->spriteEnd();                  // end drawing sprites
 }
@@ -203,6 +220,7 @@ void Spacewar::releaseAll()
     gameTextures.onLostDevice();
 	farbackTexture.onLostDevice();
 	rocketTexture.onLostDevice();
+	bulletTexture.onLostDevice();
     Game::releaseAll();
     return;
 }
@@ -217,6 +235,7 @@ void Spacewar::resetAll()
     //nebulaTexture.onResetDevice();
 	rocketTexture.onResetDevice();
 	farbackTexture.onResetDevice();
+	bulletTexture.onResetDevice();
     Game::resetAll();
     return;
 }
