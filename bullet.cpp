@@ -5,7 +5,7 @@
 //=============================================================================
 Bullet::Bullet() : Entity() 
 {
-	spriteData.width = bulletNS::WIDTH;           // size of rocket
+	spriteData.width = bulletNS::WIDTH;           // size of bullet
 	spriteData.height = bulletNS::HEIGHT;
 	spriteData.x = bulletNS::X;                   // location on screen
 	spriteData.y = bulletNS::Y;
@@ -19,7 +19,7 @@ Bullet::Bullet() : Entity()
 	currentFrame = startFrame;
 	radius = bulletNS::WIDTH / 2.0;
 	mass = bulletNS::MASS;
-	collisionType = entityNS::CIRCLE;
+	collisionType = entityNS::CIRCLE;		
 }
 
 //=============================================================================
@@ -49,6 +49,11 @@ void Bullet::update(float frameTime)
 {
 	Entity::update(frameTime);
 	spriteData.x = spriteData.x + frameTime * bulletNS::SPEED;
+	if (input->isKeyDown(ROCKET_SPACE_KEY))
+	{
+		Bullet *bullet = new Bullet();
+		Bullet::draw();
+	}
 }
 
 

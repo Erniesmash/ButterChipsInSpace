@@ -7,6 +7,8 @@
 #include "entity.h"
 #include "constants.h"
 
+const int ARRAY_SIZE = 10;
+
 namespace bulletNS
 {
 	const int WIDTH = 64;                   // image width
@@ -26,6 +28,7 @@ namespace bulletNS
 class Bullet : public Entity
 {
 private:
+	Bullet *arrayOfBullet[ARRAY_SIZE];
 
 public:
 	// constructor
@@ -38,5 +41,4 @@ public:
 	void update(float frameTime);
 	void damage(WEAPON);
 };
-
 #endif

@@ -135,7 +135,7 @@ void Spacewar::update()
 
 	if (input->isKeyDown(ROCKET_SPACE_KEY))
 	{
-
+		//Bullet *bullet = new Bullet;
 	}
 }
 
