@@ -26,6 +26,8 @@ namespace bulletNS
 class Bullet : public Entity
 {
 private:
+	float MapX;
+	float MapY;
 
 public:
 	// constructor
@@ -37,5 +39,23 @@ public:
 		TextureManager *textureM);
 	void update(float frameTime);
 	void damage(WEAPON);
+	void setVStart(VECTOR2 VStart);
+
+	void setMapX(float MapXSet) 
+	{
+		MapX = MapXSet;
+	}
+	void setMapY(float MapYSet)
+	{
+		MapY = MapYSet;
+	}
+	float getMapX()
+	{
+		return MapX;
+	}
+	float getMapY()
+	{
+		return MapY;
+	}
 };
 #endif

@@ -132,6 +132,11 @@ void Rocket::update(float frameTime)
 		spriteData.angle -= frameTime * rocketNS::ROTATION_RATE;
 	}
 	*/
+	if (input->isKeyDown(ROCKET_SPACE_KEY))
+	{
+		shootBullet();
+		drawBullet();
+	}
 }
 
 //=============================================================================
@@ -140,5 +145,50 @@ void Rocket::update(float frameTime)
 void Rocket::damage(WEAPON weapon)
 {
 	shieldOn = true;
+}
+
+void Rocket::shootBullet()
+{
+	Bullet *a = new Bullet(); //Create new bullet a
+
+	VECTOR2 start(spriteData.x, spriteData.y); //Determine start position of bullet and set it based on rocket position
+	a->setMapX(start.x + rocketNS::WIDTH / 4);
+	a->setMapY(start.y + rocketNS::HEIGHT / 2);
+
+	/*
+	player.x -= a->getWidth() / 2 * a->getScale();
+	player.x -= bulletNS::WIDTH / 4;
+	player.y -= a->getHeight() / 2 * a->getScale();
+	player.y -= bulletNS::HEIGHT / 2;
+	*/
+
+	a->setVStart(start); //Set velocity?
+	//a->setvtarget(player); //For chase?
+	bulletList.push_back(a); //Append to list bulletList
+}
+
+void Rocket::drawBullet()
+{
+	/*
+	for (std::vector<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); )
+	{
+		if ((*it)->getdel() == true) //if bullets have collided with player, del of bullet set to true
+		{
+			SAFE_DELETE(*it);
+			it = bulletlist.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+	*/
+
+	for each(Bullet* p in bulletList)
+	{
+		p->setY(p->getMapY());
+		p->setX(p->getMapX());
+		p->draw();
+	}
 }
 

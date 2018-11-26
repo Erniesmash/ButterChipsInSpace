@@ -71,12 +71,13 @@ void Spacewar::initialize(HWND hwnd)
 	if (!bulletTexture.initialize(graphics, BULLET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
 
+	
 	// bullet
 	if (!bullet.initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet"));
 	bullet.setFrames(bulletNS::BULLET_START_FRAME, bulletNS::BULLET_END_FRAME);
 	bullet.setCurrentFrame(bulletNS::BULLET_START_FRAME);
-	bullet.setVelocity(VECTOR2(0, 0)); // VECTOR2(X, Y)
+	
 
 	// ship1
 	if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
@@ -108,6 +109,20 @@ void Spacewar::update()
     ship2.update(frameTime);
 	rocketMain.update(frameTime);
 	bullet.update(frameTime);
+
+	/*
+	VECTOR2 bulletVector = bullet.getCenter();
+	VECTOR2 rocketVector = rocketMain.getCenter();
+	//const VECTOR2* bulletVector = bullet.getCenter();
+	//const VECTOR2* rocketVector = rocketMain.getCenter();
+
+	VECTOR2 chase = rocketVector - bulletVector;
+	Graphics::Vector2Normalize(&chase);
+	bullet.setX(chase.x * frameTime);
+	bullet.setY(chase.y * frameTime);
+	*/
+
+
 	/* Moved to rocket.cpp update method
 	if (input->isKeyDown(ROCKET_RIGHT_KEY))            // if move right
 	{
@@ -133,10 +148,11 @@ void Spacewar::update()
 		rocketMain.setY(rocketMain.getY() + frameTime * rocketNS::SPEED);
 	}
 	*/
-
 	if (input->isKeyDown(ROCKET_SPACE_KEY))
 	{
-		//Bullet *bullet = new Bullet;
+		rocketMain.shootBullet();
+		rocketMain.drawBullet();
+		
 	}
 }
 
@@ -176,6 +192,7 @@ void Spacewar::collisions()
         ship2.damage(SHIP);
     }
 
+	/*
 	if (bullet.collidesWith(planet, collisionVector))
 	{
 		// bounce off planet
@@ -200,7 +217,6 @@ void Spacewar::collisions()
 		//ship1.bounce(collisionVector*-1, bullet);
 		ship2.damage(SHIP);
 	}
-	/*
 	if (rocketMain.collidesWith(planet, collisionVector))
 	{
 		rocketMain.bounce(collisionVector, planet);
@@ -231,7 +247,6 @@ void Spacewar::render()
     ship1.draw();                           // add the spaceship to the scene
     ship2.draw();                           // add the spaceship to the scene
 	rocketMain.draw();						// add the rocket to the scene
-	bullet.draw();
 
     graphics->spriteEnd();                  // end drawing sprites
 }

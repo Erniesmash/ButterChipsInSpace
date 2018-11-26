@@ -156,7 +156,7 @@ public:
     // Return Dot product of vectors v1 and v2.
     static float    Vector2Dot(const VECTOR2 *v1, const VECTOR2 *v2) {return D3DXVec2Dot(v1, v2);}
 
-    // Normalize vector v.
+    // Normalize vector v to get unit vector
     static void     Vector2Normalize(VECTOR2 *v) {D3DXVec2Normalize(v, v);}
 
     // Transform vector v with matrix m.

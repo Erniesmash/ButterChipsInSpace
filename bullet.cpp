@@ -47,6 +47,7 @@ void Bullet::draw()
 //=============================================================================
 void Bullet::update(float frameTime) 
 {
+	//set sprite data positions to unit vector x frametime
 	Entity::update(frameTime);
 	// Bounce off walls
 	if (spriteData.x > GAME_WIDTH - bulletNS::WIDTH)    // if hit right screen edge
@@ -95,3 +96,8 @@ void Bullet::update(float frameTime)
 // damage
 //=============================================================================
 void Bullet::damage(WEAPON weapon){}
+
+void Bullet::setVStart(VECTOR2 VStart)
+{
+	setVelocity(VStart);
+}

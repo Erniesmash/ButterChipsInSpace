@@ -9,6 +9,8 @@
 
 #include "entity.h"
 #include "constants.h"
+#include <vector>
+#include "bullet.h"
 
 namespace rocketNS
 {
@@ -34,6 +36,9 @@ class Rocket : public Entity
 private:
 	bool    shieldOn;
 	Image   shield;
+
+	std::vector<Bullet*> bulletList;
+
 public:
 	// constructor
 	Rocket();
@@ -44,5 +49,8 @@ public:
 		TextureManager *textureM);
 	void update(float frameTime);
 	void damage(WEAPON);
+
+	void shootBullet();
+	void drawBullet();
 };
 #endif
