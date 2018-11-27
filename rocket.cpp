@@ -131,12 +131,27 @@ void Rocket::update(float frameTime)
 	{
 		spriteData.angle -= frameTime * rocketNS::ROTATION_RATE;
 	}
-	*/
+	*/	
+	/*
 	if (input->isKeyDown(ROCKET_SPACE_KEY))
 	{
-		shootBullet();
 		drawBullet();
+		shootBullet();
 	}
+	*/
+	/*
+	VECTOR2 start(spriteData.x, spriteData.y); //Determine start position of bullet and set it based on rocket position
+	for each(Bullet *p in bulletList)
+	{
+		if (p->getX() == start.x + rocketNS::WIDTH / 4) { spriteData.angle -= frameTime * rocketNS::ROTATION_RATE; }
+	}
+	*/
+	/*
+	if (bulletList.empty() == 0)
+	{
+		spriteData.angle -= frameTime * rocketNS::ROTATION_RATE;
+	}
+	*/
 }
 
 //=============================================================================
@@ -147,26 +162,40 @@ void Rocket::damage(WEAPON weapon)
 	shieldOn = true;
 }
 
+/*
 void Rocket::shootBullet()
 {
-	Bullet *a = new Bullet(); //Create new bullet a                                                    
+	Bullet *a = new Bullet(); //Create new bullet                                                    
 
 	VECTOR2 start(spriteData.x, spriteData.y); //Determine start position of bullet and set it based on rocket position
-	a->setMapX(start.x + rocketNS::WIDTH / 4);
-	a->setMapY(start.y + rocketNS::HEIGHT / 2);
-
+	//a->setMapX(start.x + rocketNS::WIDTH / 4);
+	//a->setMapY(start.y + rocketNS::HEIGHT / 2);
+	a->setMapX(GAME_WIDTH / 2);
+	a->setMapY(GAME_HEIGHT/4);
+	/*
+	// bullet texture
+	TextureManager bulletTexture;	// bullet texture
+	if (!bulletTexture.initialize(graphics, BULLET_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
+	if (!a->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet"));
+	*/
 	/*
 	player.x -= a->getWidth() / 2 * a->getScale();
 	player.x -= bulletNS::WIDTH / 4;
 	player.y -= a->getHeight() / 2 * a->getScale();
 	player.y -= bulletNS::HEIGHT / 2;
 	*/
-
+	/*
 	a->setVStart(start); //Set velocity?
 	//a->setvtarget(player); //For chase?
 	bulletList.push_back(a); //Append to list bulletList
+	*/
+/*
 }
+*/
 
+/*
 void Rocket::drawBullet()
 {
 	/*
@@ -183,12 +212,14 @@ void Rocket::drawBullet()
 		}
 	}
 	*/
-
-	for each(Bullet* p in bulletList)
+	/*
+	for each(Bullet *p in bulletList)
 	{
-		p->setY(p->getMapY());
-		p->setX(p->getMapX());
+		graphics->spriteBegin();
 		p->draw();
+		graphics->spriteEnd();
 	}
+	*/
+/*
 }
-
+*/

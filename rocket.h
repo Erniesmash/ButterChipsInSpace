@@ -12,6 +12,7 @@
 #include <vector>
 #include "bullet.h"
 
+
 namespace rocketNS
 {
 	const int WIDTH = 64;                   // image width
@@ -36,13 +37,12 @@ class Rocket : public Entity
 private:
 	bool    shieldOn;
 	Image   shield;
-
 	std::vector<Bullet*> bulletList;
+	
 
 public:
 	// constructor
 	Rocket();
-
 	// inherited member functions
 	virtual void draw();
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,

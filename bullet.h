@@ -26,9 +26,6 @@ namespace bulletNS
 class Bullet : public Entity
 {
 private:
-	float MapX;
-	float MapY;
-	VECTOR2 StartVelocity;
 
 public:
 	// constructor
@@ -40,30 +37,30 @@ public:
 		TextureManager *textureM);
 	void update(float frameTime);
 	void damage(WEAPON);
-
+	void fire(Entity *ship);
 	void setVStart(VECTOR2 VStart)
 	{
-		StartVelocity = VStart;
+		velocity = VECTOR2(10,10);
 	}
-
+	
 	void setMapX(float MapXSet) 
 	{
-		MapX = MapXSet;
+		spriteData.x = GAME_WIDTH/4;
 	}
 
 	void setMapY(float MapYSet)
 	{
-		MapY = MapYSet;
+		spriteData.y = GAME_HEIGHT/4;
 	}
 
 	float getMapX()
 	{
-		return MapX;
+		return spriteData.x;
 	}
 
 	float getMapY()
 	{
-		return MapY;
+		return spriteData.y;
 	}
 };
 #endif

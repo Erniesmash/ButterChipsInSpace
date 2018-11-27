@@ -39,31 +39,6 @@ Spacewar::~Spacewar()
 void Spacewar::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
-	/*
-	// initialize DirectX fonts
-	// 15 pixel high Arial
-	if (dxFontSmall->initialize(graphics, 15, true, false, "Arial") == false)
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
-
-	// 62 pixel high Arial
-	if (dxFontMedium->initialize(graphics, 62, true, false, "Arial") == false)
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
-
-	// 124 pixel high Arial
-	if (dxFontLarge->initialize(graphics, 124, true, false, "Arial") == false)
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
-	*/
-
-	/*
-    // nebula texture
-    if (!nebulaTexture.initialize(graphics,NEBULA_IMAGE))
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula texture"));
-	
-    // nebula image
-    if (!nebula.initialize(graphics,0,0,0,&nebulaTexture))
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula"));
-	*/
-
 	// main game textures
 	if (!gameTextures.initialize(graphics, TEXTURES_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game textures"));
@@ -91,14 +66,13 @@ void Spacewar::initialize(HWND hwnd)
 	rocketMain.setCurrentFrame(rocketNS::ROCKET_START_FRAME);
 	rocketMain.setX(GAME_WIDTH / 2.3);
 	rocketMain.setY(GAME_HEIGHT / 1.15);
-	//rocketMain.setVelocity(VECTOR2(1,1)); // VECTOR2(X, Y)
 	
 	// bullet texture
 	if (!bulletTexture.initialize(graphics, BULLET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
 
 	// bullet
-	if (!bulletTemp.initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture))
+	if (!bullet.initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet"));	
 
 	// ship1
@@ -130,8 +104,15 @@ void Spacewar::update()
     ship1.update(frameTime);
     ship2.update(frameTime);
 	rocketMain.update(frameTime);
-	bulletTemp.update(frameTime);
-
+	bullet.update(frameTime);
+	/*
+	for each(Bullet *p in rocketMain.bulletList)
+	{
+		//p->draw();
+		//p->update(frameTime);
+	}
+	*/
+	//bulletTemp.update(frameTime);
 	/*
 	VECTOR2 bulletVector = bullet.getCenter();
 	VECTOR2 rocketVector = rocketMain.getCenter();
@@ -143,38 +124,11 @@ void Spacewar::update()
 	bullet.setX(chase.x * frameTime);
 	bullet.setY(chase.y * frameTime);
 	*/
-
-
-	/* Moved to rocket.cpp update method
-	if (input->isKeyDown(ROCKET_RIGHT_KEY))            // if move right
-	{
-		//if (rocketMain.getX() < GAME_WIDTH - rocketMain.getWidth())
-		rocketMain.setX(rocketMain.getX() + frameTime * rocketNS::SPEED);
-	}
-
-	if (input->isKeyDown(ROCKET_LEFT_KEY))             // if move left
-	{
-		//if (rocketMain.getX() > 0)
-		rocketMain.setX(rocketMain.getX() - frameTime * rocketNS::SPEED);
-	}
-
-	if (input->isKeyDown(ROCKET_UP_KEY))               // if move up
-	{
-		//if (rocketMain.getY() > 0 + rocketMain.getHeight()) // limit move up
-		rocketMain.setY(rocketMain.getY() - frameTime * rocketNS::SPEED);
-	}
-
-	if (input->isKeyDown(ROCKET_DOWN_KEY))             // if move down
-	{
-		//if (rocketMain.getY() < GAME_HEIGHT - rocketMain.getHeight()) // limit move down
-		rocketMain.setY(rocketMain.getY() + frameTime * rocketNS::SPEED);
-	}
 	if (input->isKeyDown(ROCKET_SPACE_KEY))
 	{
-		rocketMain.shootBullet();
-		rocketMain.drawBullet();
+		bullet.fire(&rocketMain);
 	}
-	*/
+	
 }
 
 //=============================================================================
@@ -263,19 +217,12 @@ void Spacewar::render()
     graphics->spriteBegin();                // begin drawing sprites
 
     //nebula.draw();                          // add the orion nebula to the scene
-	farback.draw();							// add the farback to the scene
-    planet.draw();                          // add the planet to the scene
-    ship1.draw();                           // add the spaceship to the scene
-    ship2.draw();                           // add the spaceship to the scene
+	//farback.draw();							// add the farback to the scene
+    //planet.draw();                          // add the planet to the scene
+    //ship1.draw();                           // add the spaceship to the scene
+    //ship2.draw();                           // add the spaceship to the scene
 	rocketMain.draw();						// add the rocket to the scene
-	/*
-	dxFontSmall->setFontColor(graphicsNS::BLACK);
-	dxFontMedium->setFontColor(graphicsNS::BLACK);
-	dxFontLarge->setFontColor(graphicsNS::BLACK);
-	dxFontLarge->print("C", 20, 100);
-	dxFontMedium->print("C", 114, 148);
-	dxFontSmall->print("C", 164, 184);
-	*/
+	bullet.draw();
     graphics->spriteEnd();                  // end drawing sprites
 }
 
@@ -285,16 +232,10 @@ void Spacewar::render()
 //=============================================================================
 void Spacewar::releaseAll()
 {
-    //nebulaTexture.onLostDevice();
     gameTextures.onLostDevice();
 	farbackTexture.onLostDevice();
 	rocketTexture.onLostDevice();
 	bulletTexture.onLostDevice();
-	/*
-	dxFontSmall->onLostDevice();
-	dxFontMedium->onLostDevice();
-	dxFontLarge->onLostDevice();
-	*/
 
     Game::releaseAll();
     return;
@@ -307,15 +248,9 @@ void Spacewar::releaseAll()
 void Spacewar::resetAll()
 {
     gameTextures.onResetDevice();
-    //nebulaTexture.onResetDevice();
 	rocketTexture.onResetDevice();
 	farbackTexture.onResetDevice();
 	bulletTexture.onResetDevice();
-	/*
-	dxFontSmall->onResetDevice();
-	dxFontMedium->onResetDevice();
-	dxFontLarge->onResetDevice();
-	*/
 
     Game::resetAll();
     return;
