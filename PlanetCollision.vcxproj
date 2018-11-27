@@ -99,6 +99,7 @@
     <ClCompile Include="rocket.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="spacewar.cpp" />
+    <ClCompile Include="TextDX.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
@@ -116,6 +117,7 @@
     <ClInclude Include="rocket.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="spacewar.h" />
+    <ClInclude Include="TextDX.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

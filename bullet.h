@@ -11,8 +11,8 @@ namespace bulletNS
 {
 	const int WIDTH = 16;                   // image width
 	const int HEIGHT = 16;                  // image height
-	const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
-	const int Y = GAME_HEIGHT / 5 - HEIGHT / 5;
+	//const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
+	//const int Y = GAME_HEIGHT / 5 - HEIGHT / 5;
 	const float ROTATION_RATE = (float)PI / 2; // radians per second
 	const float SPEED = 200;                // 100 pixels per second
 	const float MASS = 300.0f;              // mass
@@ -28,6 +28,7 @@ class Bullet : public Entity
 private:
 	float MapX;
 	float MapY;
+	VECTOR2 StartVelocity;
 
 public:
 	// constructor
@@ -39,20 +40,27 @@ public:
 		TextureManager *textureM);
 	void update(float frameTime);
 	void damage(WEAPON);
-	void setVStart(VECTOR2 VStart);
+
+	void setVStart(VECTOR2 VStart)
+	{
+		StartVelocity = VStart;
+	}
 
 	void setMapX(float MapXSet) 
 	{
 		MapX = MapXSet;
 	}
+
 	void setMapY(float MapYSet)
 	{
 		MapY = MapYSet;
 	}
+
 	float getMapX()
 	{
 		return MapX;
 	}
+
 	float getMapY()
 	{
 		return MapY;

@@ -16,6 +16,8 @@ Game::Game()
     // additional initialization is handled in later call to input->initialize()
     paused = false;             // game is not paused
     graphics = NULL;
+	fps = 100;
+	fpsOn = true;              // default to fps display off
     initialized = false;
 }
 
@@ -114,6 +116,13 @@ void Game::initialize(HWND hw)
     QueryPerformanceCounter(&timeStart);        // get starting time
 
     initialized = true;
+	/*
+	// initialize DirectX font
+	if (dxFont.initialize(graphics, gameNS::POINT_SIZE, false, false, gameNS::FONT) == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Failed to initialize DirectX font."));
+
+	dxFont.setFontColor(gameNS::FONT_COLOR);
+	*/
 }
 
 //=============================================================================
@@ -121,10 +130,24 @@ void Game::initialize(HWND hw)
 //=============================================================================
 void Game::renderGame()
 {
+	const int BUF_SIZE = 20;
+	static char buffer[BUF_SIZE];
+
     //start rendering
     if (SUCCEEDED(graphics->beginScene()))
     {
         render();           // call render() in derived object
+		graphics->spriteBegin();    // begin drawing sprites
+		/*
+		if (fpsOn)           // if fps display requested
+		{
+			// convert fps to Cstring
+			_snprintf_s(buffer, BUF_SIZE, "fps %d ", (int)fps);
+			dxFont.print(buffer, GAME_WIDTH - 200, GAME_HEIGHT - 50);
+		}
+		*/
+		graphics->spriteEnd();      // end drawing sprites  
+
 
         //stop rendering
         graphics->endScene();

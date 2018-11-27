@@ -149,7 +149,7 @@ void Rocket::damage(WEAPON weapon)
 
 void Rocket::shootBullet()
 {
-	Bullet *a = new Bullet(); //Create new bullet a
+	Bullet *a = new Bullet(); //Create new bullet a                                                    
 
 	VECTOR2 start(spriteData.x, spriteData.y); //Determine start position of bullet and set it based on rocket position
 	a->setMapX(start.x + rocketNS::WIDTH / 4);

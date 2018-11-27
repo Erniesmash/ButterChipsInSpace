@@ -14,6 +14,7 @@
 #include "ship.h"
 #include "rocket.h"
 #include "bullet.h"
+#include "textDX.h"
 
 //=============================================================================
 // This class is the core of the game
@@ -29,10 +30,15 @@ private:
 	TextureManager bulletTexture;	// bullet texture
     Ship    ship1, ship2;           // spaceships
 	Rocket	rocketMain;
-	Bullet	bullet;			// bullets
+	Bullet bulletTemp;			// bullets
     Planet  planet;         // the planet
     Image   nebula;         // backdrop image
 	Image	farback;		// farback image
+	/*
+	TextDX  *dxFontSmall;       // DirectX fonts
+	TextDX  *dxFontMedium;
+	TextDX  *dxFontLarge;
+	*/
 
 public:
     // Constructor

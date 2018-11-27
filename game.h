@@ -13,6 +13,16 @@
 #include "input.h"
 #include "constants.h"
 #include "gameError.h"
+//#include "TextDX.h"
+
+namespace gameNS
+{
+	/*
+	const char FONT[] = "Courier New";  // font
+	const int POINT_SIZE = 20;          // point size
+	const COLOR_ARGB FONT_COLOR = SETCOLOR_ARGB(255, 255, 255, 255); // white
+	*/
+}
 
 class Game
 {
@@ -30,6 +40,8 @@ protected:
     DWORD   sleepTime;          // number of milli-seconds to sleep between frames
     bool    paused;             // true if game is paused
     bool    initialized;
+	//TextDX  dxFont;                 // DirectX font for fps
+	bool    fpsOn;                  // true to display fps
 
 public:
     // Constructor

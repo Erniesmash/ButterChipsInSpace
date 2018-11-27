@@ -11,7 +11,13 @@
 // Constructor
 //=============================================================================
 Spacewar::Spacewar()
-{}
+{
+	/*
+	dxFontSmall = new TextDX();     // DirectX fonts
+	dxFontMedium = new TextDX();
+	dxFontLarge = new TextDX();
+	*/
+}
 
 //=============================================================================
 // Destructor
@@ -19,6 +25,11 @@ Spacewar::Spacewar()
 Spacewar::~Spacewar()
 {
     releaseAll();           // call onLostDevice() for every graphics item
+	/*
+	SAFE_DELETE(dxFontSmall);
+	SAFE_DELETE(dxFontMedium);
+	SAFE_DELETE(dxFontLarge);
+	*/
 }
 
 //=============================================================================
@@ -28,6 +39,21 @@ Spacewar::~Spacewar()
 void Spacewar::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
+	/*
+	// initialize DirectX fonts
+	// 15 pixel high Arial
+	if (dxFontSmall->initialize(graphics, 15, true, false, "Arial") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
+
+	// 62 pixel high Arial
+	if (dxFontMedium->initialize(graphics, 62, true, false, "Arial") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
+
+	// 124 pixel high Arial
+	if (dxFontLarge->initialize(graphics, 124, true, false, "Arial") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
+	*/
+
 	/*
     // nebula texture
     if (!nebulaTexture.initialize(graphics,NEBULA_IMAGE))
@@ -71,13 +97,9 @@ void Spacewar::initialize(HWND hwnd)
 	if (!bulletTexture.initialize(graphics, BULLET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
 
-	
 	// bullet
-	if (!bullet.initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet"));
-	bullet.setFrames(bulletNS::BULLET_START_FRAME, bulletNS::BULLET_END_FRAME);
-	bullet.setCurrentFrame(bulletNS::BULLET_START_FRAME);
-	
+	if (!bulletTemp.initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet"));	
 
 	// ship1
 	if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
@@ -108,7 +130,7 @@ void Spacewar::update()
     ship1.update(frameTime);
     ship2.update(frameTime);
 	rocketMain.update(frameTime);
-	bullet.update(frameTime);
+	bulletTemp.update(frameTime);
 
 	/*
 	VECTOR2 bulletVector = bullet.getCenter();
@@ -147,13 +169,12 @@ void Spacewar::update()
 		//if (rocketMain.getY() < GAME_HEIGHT - rocketMain.getHeight()) // limit move down
 		rocketMain.setY(rocketMain.getY() + frameTime * rocketNS::SPEED);
 	}
-	*/
 	if (input->isKeyDown(ROCKET_SPACE_KEY))
 	{
 		rocketMain.shootBullet();
 		rocketMain.drawBullet();
-		
 	}
+	*/
 }
 
 //=============================================================================
@@ -247,7 +268,14 @@ void Spacewar::render()
     ship1.draw();                           // add the spaceship to the scene
     ship2.draw();                           // add the spaceship to the scene
 	rocketMain.draw();						// add the rocket to the scene
-
+	/*
+	dxFontSmall->setFontColor(graphicsNS::BLACK);
+	dxFontMedium->setFontColor(graphicsNS::BLACK);
+	dxFontLarge->setFontColor(graphicsNS::BLACK);
+	dxFontLarge->print("C", 20, 100);
+	dxFontMedium->print("C", 114, 148);
+	dxFontSmall->print("C", 164, 184);
+	*/
     graphics->spriteEnd();                  // end drawing sprites
 }
 
@@ -262,6 +290,12 @@ void Spacewar::releaseAll()
 	farbackTexture.onLostDevice();
 	rocketTexture.onLostDevice();
 	bulletTexture.onLostDevice();
+	/*
+	dxFontSmall->onLostDevice();
+	dxFontMedium->onLostDevice();
+	dxFontLarge->onLostDevice();
+	*/
+
     Game::releaseAll();
     return;
 }
@@ -277,6 +311,12 @@ void Spacewar::resetAll()
 	rocketTexture.onResetDevice();
 	farbackTexture.onResetDevice();
 	bulletTexture.onResetDevice();
+	/*
+	dxFontSmall->onResetDevice();
+	dxFontMedium->onResetDevice();
+	dxFontLarge->onResetDevice();
+	*/
+
     Game::resetAll();
     return;
 }
