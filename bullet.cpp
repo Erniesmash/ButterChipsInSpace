@@ -6,6 +6,7 @@
 Bullet::Bullet() : Entity() 
 {
 	isFired = false; // default to bullet not fired
+	waitShotTimer = 0.0f;
 	spriteData.width = bulletNS::WIDTH;           // size of bullet
 	spriteData.height = bulletNS::HEIGHT;
 	spriteData.x = GAME_WIDTH / 4;                   // location on screen
@@ -51,12 +52,10 @@ void Bullet::draw()
 //=============================================================================
 void Bullet::update(float frameTime) 
 {
-	//set sprite data positions to unit vector x frametime
+	waitShotTimer -= frameTime;
 	Entity::update(frameTime);
-	spriteData.x += frameTime * velocity.x;     // move along X 
-	spriteData.y += frameTime * velocity.y;     // move along Y
+	spriteData.x = spriteData.x + frameTime * bulletNS::SPEED;
 }
-
 
 //=============================================================================
 // damage
@@ -65,9 +64,13 @@ void Bullet::damage(WEAPON weapon){}
 
 void Bullet::shoot(Entity *ship)
 {	
-	isFired = true;
-	velocity.x = bulletNS::SPEED;
-	velocity.y = bulletNS::SPEED;
-	spriteData.x = ship->getCenterX() - spriteData.width / 2;
-	spriteData.y = ship->getCenterY() - spriteData.height / 2;
+	if (waitShotTimer <= 0.0f)
+	{
+		waitShotTimer = bulletNS::WAIT_SHOOT; //Resets the shotTimer using namespace value
+		isFired = true;
+		spriteData.x = ship->getCenterX() - spriteData.width / 2;
+		spriteData.y = ship->getCenterY() - spriteData.height / 2;
+	}
 }
+
+

@@ -9,12 +9,11 @@
 
 namespace bulletNS
 {
+	const float WAIT_SHOOT = 2.0f;
 	const int WIDTH = 16;                   // image width
 	const int HEIGHT = 16;                  // image height
-	//const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
-	//const int Y = GAME_HEIGHT / 5 - HEIGHT / 5;
 	const float ROTATION_RATE = (float)PI / 2; // radians per second
-	const float SPEED = 200;                // 100 pixels per second
+	const float SPEED = 600;
 	const float MASS = 300.0f;              // mass
 	const int   TEXTURE_COLS = 1;           // texture has 8 columns
 	const int   BULLET_START_FRAME = 0;      // bullet starts at frame 0
@@ -27,6 +26,7 @@ class Bullet : public Entity
 {
 private:
 	bool isFired;
+	float waitShotTimer;
 public:
 	// constructor
 	Bullet();
@@ -38,29 +38,5 @@ public:
 	void update(float frameTime);
 	void damage(WEAPON);
 	void shoot(Entity *ship);
-	void setVStart(VECTOR2 VStart)
-	{
-		velocity = VECTOR2(10,10);
-	}
-	
-	void setMapX(float MapXSet) 
-	{
-		spriteData.x = GAME_WIDTH/4;
-	}
-
-	void setMapY(float MapYSet)
-	{
-		spriteData.y = GAME_HEIGHT/4;
-	}
-
-	float getMapX()
-	{
-		return spriteData.x;
-	}
-
-	float getMapY()
-	{
-		return spriteData.y;
-	}
 };
 #endif
