@@ -26,7 +26,7 @@ namespace bulletNS
 class Bullet : public Entity
 {
 private:
-
+	bool isFired;
 public:
 	// constructor
 	Bullet();
@@ -37,7 +37,7 @@ public:
 		TextureManager *textureM);
 	void update(float frameTime);
 	void damage(WEAPON);
-	void fire(Entity *ship);
+	void shoot(Entity *ship);
 	void setVStart(VECTOR2 VStart)
 	{
 		velocity = VECTOR2(10,10);

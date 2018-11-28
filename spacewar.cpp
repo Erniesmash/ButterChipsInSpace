@@ -70,11 +70,11 @@ void Spacewar::initialize(HWND hwnd)
 	// bullet texture
 	if (!bulletTexture.initialize(graphics, BULLET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
-
+	
 	// bullet
 	if (!bullet.initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet"));	
-
+	
 	// ship1
 	if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship1"));
@@ -126,9 +126,8 @@ void Spacewar::update()
 	*/
 	if (input->isKeyDown(ROCKET_SPACE_KEY))
 	{
-		bullet.fire(&rocketMain);
+		bullet.shoot(&rocketMain);
 	}
-	
 }
 
 //=============================================================================
@@ -215,9 +214,7 @@ void Spacewar::collisions()
 void Spacewar::render()
 {
     graphics->spriteBegin();                // begin drawing sprites
-
-    //nebula.draw();                          // add the orion nebula to the scene
-	//farback.draw();							// add the farback to the scene
+	farback.draw();							// add the farback to the scene
     //planet.draw();                          // add the planet to the scene
     //ship1.draw();                           // add the spaceship to the scene
     //ship2.draw();                           // add the spaceship to the scene

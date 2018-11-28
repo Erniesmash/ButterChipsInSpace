@@ -5,6 +5,7 @@
 //=============================================================================
 Bullet::Bullet() : Entity() 
 {
+	isFired = false; // default to bullet not fired
 	spriteData.width = bulletNS::WIDTH;           // size of bullet
 	spriteData.height = bulletNS::HEIGHT;
 	spriteData.x = GAME_WIDTH / 4;                   // location on screen
@@ -37,7 +38,10 @@ bool Bullet::initialize(Game *gamePtr, int width, int height, int ncols,
 //=============================================================================
 void Bullet::draw()
 {
-	Image::draw();              // draw bullet
+	if (isFired == true)
+	{
+		Image::draw();	
+	}	
 }
 
 //=============================================================================
@@ -59,8 +63,9 @@ void Bullet::update(float frameTime)
 //=============================================================================
 void Bullet::damage(WEAPON weapon){}
 
-void Bullet::fire(Entity *ship)
+void Bullet::shoot(Entity *ship)
 {	
+	isFired = true;
 	velocity.x = bulletNS::SPEED;
 	velocity.y = bulletNS::SPEED;
 	spriteData.x = ship->getCenterX() - spriteData.width / 2;
