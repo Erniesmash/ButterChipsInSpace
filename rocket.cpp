@@ -97,45 +97,59 @@ void Rocket::update(float frameTime)
 		}
 	}
 
-	if (input->isKeyDown(ROCKET_D_KEY))            // if move right
+	if (input->isKeyDown(ROCKET_RIGHT_KEY))            // if move right
 	{
 		//if (rocketMain.getX() < GAME_WIDTH - rocketMain.getWidth())
 		spriteData.x = spriteData.x + frameTime * rocketNS::SPEED;
 	}
 	
-	if (input->isKeyDown(ROCKET_A_KEY))             // if move left
+	if (input->isKeyDown(ROCKET_LEFT_KEY))             // if move left
 	{
 		//if (rocketMain.getX() > 0)
 		spriteData.x = spriteData.x - frameTime * rocketNS::SPEED;
 	}
 
-	if (input->isKeyDown(ROCKET_W_KEY))               // if move up
+	if (input->isKeyDown(ROCKET_UP_KEY))               // if move up
 	{
 		//if (rocketMain.getY() > 0 + rocketMain.getHeight()) // limit move up
 		spriteData.y = spriteData.y - frameTime * rocketNS::SPEED;
 	}
 
-	if (input->isKeyDown(ROCKET_S_KEY))             // if move down
+	if (input->isKeyDown(ROCKET_DOWN_KEY))             // if move down
 	{
 		//if (rocketMain.getY() < GAME_HEIGHT - rocketMain.getHeight()) // limit move down
 		spriteData.y = spriteData.y + frameTime * rocketNS::SPEED;
 	}
 
-	if (input->isKeyDown(ROCKET_E_KEY))
+	/*
+	if (input->isKeyDown(ROCKET_ARROW_RIGHT))
 	{
 		spriteData.angle += frameTime * rocketNS::ROTATION_RATE;
 	}
 
-	if (input->isKeyDown(ROCKET_Q_KEY))
+	if (input->isKeyDown(ROCKET_ARROW_LEFT))
 	{
 		spriteData.angle -= frameTime * rocketNS::ROTATION_RATE;
 	}
-	
+	*/	
+	/*
+	if (input->isKeyDown(ROCKET_SPACE_KEY))
+	{
+		drawBullet();
+		shootBullet();
+	}
+	*/
 	/*
 	VECTOR2 start(spriteData.x, spriteData.y); //Determine start position of bullet and set it based on rocket position
 	for each(Bullet *p in bulletList)
 	{
 		if (p->getX() == start.x + rocketNS::WIDTH / 4) { spriteData.angle -= frameTime * rocketNS::ROTATION_RATE; }
+	}
+	*/
+	/*
+	if (bulletList.empty() == 0)
+	{
+		spriteData.angle -= frameTime * rocketNS::ROTATION_RATE;
 	}
 	*/
 }

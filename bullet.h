@@ -9,7 +9,7 @@
 
 namespace bulletNS
 {
-	const float WAIT_SHOOT = 1.0f;
+	const float WAIT_SHOOT = 2.0f;
 	const int WIDTH = 16;                   // image width
 	const int HEIGHT = 16;                  // image height
 	const float ROTATION_RATE = (float)PI / 2; // radians per second
@@ -25,6 +25,7 @@ namespace bulletNS
 class Bullet : public Entity
 {
 private:
+	bool isFired;
 	float waitShotTimer;
 public:
 	// constructor
@@ -37,6 +38,5 @@ public:
 	void update(float frameTime);
 	void damage(WEAPON);
 	void shoot(Entity *ship);
-	bool isFired;
 };
 #endif
