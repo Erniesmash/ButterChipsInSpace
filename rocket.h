@@ -49,8 +49,5 @@ public:
 		TextureManager *textureM);
 	void update(float frameTime);
 	void damage(WEAPON);
-
-	void shootBullet();
-	void drawBullet();
 };
 #endif
