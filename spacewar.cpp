@@ -73,7 +73,9 @@ void Spacewar::initialize(HWND hwnd)
 	
 	// bullet
 	if (!bullet.initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet"));	
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet"));
+	bullet.setX(0);
+	bullet.setY(0);
 	
 	// ship1
 	if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
@@ -127,6 +129,11 @@ void Spacewar::update()
 	if (input->isKeyDown(ROCKET_SPACE_KEY))
 	{
 		bullet.shoot(&rocketMain);
+		bullet.setActive(true);
+	}
+	if (planet.getHealth() <= 0)
+	{
+		planet.setActive(false);                         // add the planet to the scene
 	}
 }
 
@@ -166,12 +173,15 @@ void Spacewar::collisions()
         ship2.damage(SHIP);
     }
 
-	/*
+	
 	if (bullet.collidesWith(planet, collisionVector))
 	{
 		// bounce off planet
 		bullet.bounce(collisionVector, planet);
 		bullet.damage(PLANET);
+		bullet.isFired = false;
+		planet.setHealth(planet.getHealth() - 100);
+		bullet.setActive(false);
 	}
 	if (bullet.collidesWith(ship1, collisionVector))
 	{
@@ -205,7 +215,6 @@ void Spacewar::collisions()
 		ship1.bounce(collisionVector*-1, rocketMain);
 		ship1.damage(SHIP);
 	}
-	*/
 }
 
 //=============================================================================
@@ -215,10 +224,15 @@ void Spacewar::render()
 {
     graphics->spriteBegin();                // begin drawing sprites
 	farback.draw();							// add the farback to the scene
-    //planet.draw();                          // add the planet to the scene
+	if (planet.getHealth() > 0)
+	{
+		planet.draw();                          // add the planet to the scene	
+	}
+	
     //ship1.draw();                           // add the spaceship to the scene
     //ship2.draw();                           // add the spaceship to the scene
 	rocketMain.draw();						// add the rocket to the scene
+	
 	bullet.draw();
     graphics->spriteEnd();                  // end drawing sprites
 }

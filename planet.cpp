@@ -17,4 +17,5 @@ Planet::Planet() : Entity()
     startFrame      = planetNS::START_FRAME;    // first frame of ship animation
     endFrame        = planetNS::END_FRAME;      // last frame of ship animation
     setCurrentFrame(startFrame);
+	health = 200;
 }
