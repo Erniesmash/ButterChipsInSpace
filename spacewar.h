@@ -28,6 +28,7 @@ private:
     Image   nebula;         // backdrop image
 	Image	farback;		// farback image
 	std::vector<Bullet*> bulletList;
+	float waitTimer = 0;
 
 public:
     // Constructor

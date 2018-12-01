@@ -104,18 +104,20 @@ void Spacewar::initialize(HWND hwnd)
 //=============================================================================
 void Spacewar::update()
 {
-	if (input->wasKeyPressed(ROCKET_SPACE_KEY) == true)
+	waitTimer -= frameTime;
+	if (waitTimer <= 0.0f)
 	{
-		//if (std::size(bulletList) <= 5)
-		//{
+		if (input->wasKeyPressed(ROCKET_SPACE_KEY) == true)
+		{
+			waitTimer = 0.4f;
 			Bullet *b = new Bullet();
 			b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
 			bulletList.push_back(b);
-			b->shoot(&rocketMain);	
+			b->shoot(&rocketMain);
 			input->clearKeyPress(ROCKET_SPACE_KEY);
-		//}		
+		}
 	}
-
+	
 	/*
 	for (int i = 0; i < bulletList.size(); i++)
 		SAFE_DELETE(bulletList[i]);
