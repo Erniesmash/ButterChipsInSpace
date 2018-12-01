@@ -27,7 +27,7 @@ private:
     Planet  planet;         // the planet
     Image   nebula;         // backdrop image
 	Image	farback;		// farback image
-	Bullet bullet;			// the bullet
+	std::vector<Bullet*> bulletList;
 
 public:
     // Constructor

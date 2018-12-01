@@ -70,13 +70,15 @@ void Spacewar::initialize(HWND hwnd)
 	// bullet texture
 	if (!bulletTexture.initialize(graphics, BULLET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
-	
+	/*
 	// bullet
 	if (!bullet.initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet"));
 	bullet.setX(0);
 	bullet.setY(0);
-	
+	*/
+
+
 	// ship1
 	if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship1"));
@@ -102,18 +104,32 @@ void Spacewar::initialize(HWND hwnd)
 //=============================================================================
 void Spacewar::update()
 {
+	if (input->wasKeyPressed(ROCKET_SPACE_KEY) == true)
+	{
+		//if (std::size(bulletList) <= 5)
+		//{
+			Bullet *b = new Bullet();
+			b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
+			bulletList.push_back(b);
+			b->shoot(&rocketMain);	
+			input->clearKeyPress(ROCKET_SPACE_KEY);
+		//}		
+	}
+
+	/*
+	for (int i = 0; i < bulletList.size(); i++)
+		SAFE_DELETE(bulletList[i]);
+	*/
+	
     planet.update(frameTime);
     ship1.update(frameTime);
     ship2.update(frameTime);
 	rocketMain.update(frameTime);
-	bullet.update(frameTime);
-	/*
-	for each(Bullet *p in rocketMain.bulletList)
+	for each(Bullet*  bull in bulletList)
 	{
-		//p->draw();
-		//p->update(frameTime);
+		bull->update(frameTime);
 	}
-	*/
+
 	//bulletTemp.update(frameTime);
 	/*
 	VECTOR2 bulletVector = bullet.getCenter();
@@ -126,11 +142,6 @@ void Spacewar::update()
 	bullet.setX(chase.x * frameTime);
 	bullet.setY(chase.y * frameTime);
 	*/
-	if (input->isKeyDown(ROCKET_SPACE_KEY))
-	{
-		bullet.shoot(&rocketMain);
-		bullet.setActive(true);
-	}
 	if (planet.getHealth() <= 0)
 	{
 		planet.setActive(false);                         // add the planet to the scene
@@ -173,16 +184,18 @@ void Spacewar::collisions()
         ship2.damage(SHIP);
     }
 
-	
-	if (bullet.collidesWith(planet, collisionVector))
+	for each(Bullet*  bull in bulletList)
 	{
-		// bounce off planet
-		bullet.bounce(collisionVector, planet);
-		bullet.damage(PLANET);
-		bullet.isFired = false;
-		planet.setHealth(planet.getHealth() - 100);
-		bullet.setActive(false);
-	}
+		if (bull->collidesWith(planet, collisionVector))
+		{
+			// bounce off planet
+			bull->bounce(collisionVector, planet);
+			bull->damage(PLANET);
+			bull->isFired = false;
+			planet.setHealth(planet.getHealth() - 100);
+			bull->setActive(false);
+		}
+	/*
 	if (bullet.collidesWith(ship1, collisionVector))
 	{
 		// bounce off ship
@@ -200,8 +213,11 @@ void Spacewar::collisions()
 		// change the direction of the collisionVector for ship1
 		//ship1.bounce(collisionVector*-1, bullet);
 		ship2.damage(SHIP);
+	}	
+	*/
 	}
-	/*
+	
+	
 	if (rocketMain.collidesWith(planet, collisionVector))
 	{
 		rocketMain.bounce(collisionVector, planet);
@@ -216,7 +232,7 @@ void Spacewar::collisions()
 		ship1.bounce(collisionVector*-1, rocketMain);
 		ship1.damage(SHIP);
 	}
-	*/
+	
 }
 
 //=============================================================================
@@ -234,8 +250,13 @@ void Spacewar::render()
     //ship1.draw();                           // add the spaceship to the scene
     //ship2.draw();                           // add the spaceship to the scene
 	rocketMain.draw();						// add the rocket to the scene
+
+	for each(Bullet*  bull in bulletList)
+	{
+		bull->draw();
+	}
 	
-	bullet.draw();
+	//bullet.draw();
     graphics->spriteEnd();                  // end drawing sprites
 }
 

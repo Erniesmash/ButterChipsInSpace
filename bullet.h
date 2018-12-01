@@ -13,7 +13,7 @@ namespace bulletNS
 	const int WIDTH = 16;                   // image width
 	const int HEIGHT = 16;                  // image height
 	const float ROTATION_RATE = (float)PI / 2; // radians per second
-	const float SPEED = 600;
+	const float SPEED = 400;
 	const float MASS = 300.0f;              // mass
 	const int   TEXTURE_COLS = 1;           // texture has 8 columns
 	const int   BULLET_START_FRAME = 0;      // bullet starts at frame 0
@@ -25,7 +25,6 @@ namespace bulletNS
 class Bullet : public Entity
 {
 private:
-	float waitShotTimer;
 public:
 	// constructor
 	Bullet();
@@ -36,7 +35,8 @@ public:
 		TextureManager *textureM);
 	void update(float frameTime);
 	void damage(WEAPON);
-	void shoot(Entity *ship);
+	void shoot(Entity *whereFrom);
 	bool isFired;
+	float waitShotTimer;
 };
 #endif

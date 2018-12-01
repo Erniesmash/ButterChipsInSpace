@@ -54,7 +54,10 @@ void Bullet::update(float frameTime)
 {
 	waitShotTimer -= frameTime;
 	Entity::update(frameTime);
-	spriteData.x = spriteData.x + frameTime * bulletNS::SPEED;
+	//spriteData.x = spriteData.x + frameTime * bulletNS::SPEED;
+
+	spriteData.x = spriteData.x + frameTime * velocity.x;     
+	spriteData.y = spriteData.y + frameTime * velocity.y;    
 }
 
 //=============================================================================
@@ -62,14 +65,16 @@ void Bullet::update(float frameTime)
 //=============================================================================
 void Bullet::damage(WEAPON weapon){}
 
-void Bullet::shoot(Entity *ship)
+void Bullet::shoot(Entity *whereFrom)
 {	
 	if (waitShotTimer <= 0.0f)
 	{
 		waitShotTimer = bulletNS::WAIT_SHOOT; //Resets the shotTimer using namespace value
 		isFired = true;
-		spriteData.x = ship->getCenterX() - spriteData.width / 2;
-		spriteData.y = ship->getCenterY() - spriteData.height / 2;
+		velocity.x = cos(whereFrom->getRadians()) * bulletNS::SPEED;
+		velocity.y = sin(whereFrom->getRadians()) * bulletNS::SPEED;
+		spriteData.x = whereFrom->getCenterX() - spriteData.width / 2;
+		spriteData.y = whereFrom->getCenterY() - spriteData.height / 2;
 	}
 }
 
