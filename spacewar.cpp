@@ -201,6 +201,7 @@ void Spacewar::collisions()
 		//ship1.bounce(collisionVector*-1, bullet);
 		ship2.damage(SHIP);
 	}
+	/*
 	if (rocketMain.collidesWith(planet, collisionVector))
 	{
 		rocketMain.bounce(collisionVector, planet);
@@ -215,6 +216,7 @@ void Spacewar::collisions()
 		ship1.bounce(collisionVector*-1, rocketMain);
 		ship1.damage(SHIP);
 	}
+	*/
 }
 
 //=============================================================================
