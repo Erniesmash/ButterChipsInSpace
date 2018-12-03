@@ -6,7 +6,6 @@
 Bullet::Bullet() : Entity() 
 {
 	isFired = false; // default to bullet not fired
-	//waitShotTimer = 0.0f;
 	spriteData.width = bulletNS::WIDTH;           // size of bullet
 	spriteData.height = bulletNS::HEIGHT;
 	spriteData.x = GAME_WIDTH / 4;                   // location on screen
@@ -52,10 +51,7 @@ void Bullet::draw()
 //=============================================================================
 void Bullet::update(float frameTime) 
 {
-	//waitShotTimer -= frameTime;
 	Entity::update(frameTime);
-	//spriteData.x = spriteData.x + frameTime * bulletNS::SPEED;
-
 	spriteData.x = spriteData.x + frameTime * velocity.x;     
 	spriteData.y = spriteData.y + frameTime * velocity.y;    
 }
@@ -67,15 +63,11 @@ void Bullet::damage(WEAPON weapon){}
 
 void Bullet::shoot(Entity *whereFrom)
 {	
-	//if (waitShotTimer <= 0.0f)
-	//{
-		//waitShotTimer = bulletNS::WAIT_SHOOT; //Resets the shotTimer using namespace value
-		isFired = true;
-		velocity.x = cos(whereFrom->getRadians()) * bulletNS::SPEED; //basic trigo toa coa soh
-		velocity.y = sin(whereFrom->getRadians()) * bulletNS::SPEED;
-		spriteData.x = whereFrom->getCenterX() - spriteData.width / 2; //starting position
-		spriteData.y = whereFrom->getCenterY() - spriteData.height / 2;
-	//}
+	isFired = true;
+	velocity.x = cos(whereFrom->getRadians()) * bulletNS::SPEED; //basic trigo toa coa soh
+	velocity.y = sin(whereFrom->getRadians()) * bulletNS::SPEED;
+	spriteData.x = whereFrom->getCenterX() - spriteData.width / 2; //starting position
+	spriteData.y = whereFrom->getCenterY() - spriteData.height / 2;
 }
 
 

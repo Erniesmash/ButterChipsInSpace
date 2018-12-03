@@ -16,14 +16,13 @@ Rocket::Rocket() : Entity()
 	spriteData.y = rocketNS::Y;
 	spriteData.rect.bottom = rocketNS::HEIGHT;    // rectangle to select parts of an image
 	spriteData.rect.right = rocketNS::WIDTH;
-	velocity.x = 1;                             // velocity X
-	velocity.y = 1;                             // velocity Y
+	velocity.x = 1.0;                             // velocity X
+	velocity.y = 1.0;                             // velocity Y
 	frameDelay = rocketNS::ROCKET_ANIMATION_DELAY;
 	startFrame = rocketNS::ROCKET_START_FRAME;     // first frame of ship animation
 	endFrame = rocketNS::ROCKET_END_FRAME;     // last frame of ship animation
 	currentFrame = startFrame;
 	radius = rocketNS::WIDTH / 2.0;
-	shieldOn = false;
 	mass = rocketNS::MASS;
 	collisionType = entityNS::CIRCLE;
 }
@@ -35,11 +34,6 @@ Rocket::Rocket() : Entity()
 bool Rocket::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
-	shield.initialize(gamePtr->getGraphics(), width, height, ncols, textureM);
-	shield.setFrames(rocketNS::SHIELD_START_FRAME, rocketNS::SHIELD_END_FRAME);
-	shield.setCurrentFrame(rocketNS::SHIELD_START_FRAME);
-	shield.setFrameDelay(rocketNS::SHIELD_ANIMATION_DELAY);
-	shield.setLoop(false);                  // do not loop animation
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
@@ -49,9 +43,6 @@ bool Rocket::initialize(Game *gamePtr, int width, int height, int ncols,
 void Rocket::draw()
 {
 	Image::draw();              // draw ship
-	if (shieldOn)
-		// draw shield using colorFilter 50% alpha
-		shield.draw(spriteData, graphicsNS::ALPHA50 & colorFilter);
 }
 
 //=============================================================================
@@ -99,25 +90,21 @@ void Rocket::update(float frameTime)
 
 	if (input->isKeyDown(ROCKET_D_KEY))            // if move right
 	{
-		//if (rocketMain.getX() < GAME_WIDTH - rocketMain.getWidth())
 		spriteData.x = spriteData.x + frameTime * rocketNS::SPEED;
 	}
 	
 	if (input->isKeyDown(ROCKET_A_KEY))             // if move left
 	{
-		//if (rocketMain.getX() > 0)
 		spriteData.x = spriteData.x - frameTime * rocketNS::SPEED;
 	}
 
 	if (input->isKeyDown(ROCKET_W_KEY))               // if move up
 	{
-		//if (rocketMain.getY() > 0 + rocketMain.getHeight()) // limit move up
 		spriteData.y = spriteData.y - frameTime * rocketNS::SPEED;
 	}
 
 	if (input->isKeyDown(ROCKET_S_KEY))             // if move down
 	{
-		//if (rocketMain.getY() < GAME_HEIGHT - rocketMain.getHeight()) // limit move down
 		spriteData.y = spriteData.y + frameTime * rocketNS::SPEED;
 	}
 
@@ -130,20 +117,4 @@ void Rocket::update(float frameTime)
 	{
 		spriteData.angle -= frameTime * rocketNS::ROTATION_RATE;
 	}
-	
-	/*
-	VECTOR2 start(spriteData.x, spriteData.y); //Determine start position of bullet and set it based on rocket position
-	for each(Bullet *p in bulletList)
-	{
-		if (p->getX() == start.x + rocketNS::WIDTH / 4) { spriteData.angle -= frameTime * rocketNS::ROTATION_RATE; }
-	}
-	*/
-}
-
-//=============================================================================
-// damage
-//=============================================================================
-void Rocket::damage(WEAPON weapon)
-{
-	shieldOn = true;
 }

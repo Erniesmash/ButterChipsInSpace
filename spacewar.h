@@ -20,19 +20,15 @@ class Spacewar : public Game
 {
 private:
     // game items
-    TextureManager nebulaTexture;   // nebula texture
     TextureManager gameTextures;    // game texture
 	TextureManager rocketTexture;	// rocket texture
 	TextureManager farbackTexture;	// farback texture
-
 	TextureManager bulletTexture;	// bullet texture
 	TextureManager eShipTexture;	// enemy ship texture
 	TextureManager ebulletTexture;	// enemy bullet texure
 
-    Ship    ship1, ship2;           // spaceships
 	Rocket	rocketMain;
     Planet  planet;         // the planet
-    Image   nebula;         // backdrop image
 	Image	farback;		// farback image
 
 	EShip	eShip;			// enemy ship
@@ -40,6 +36,7 @@ private:
 	std::vector<Bullet*> bulletList;
 	vector<EShip*> eshipList;		// list of enemy ships
 	vector<EBullet*> ebulletList;	// list of bullets
+
 	float waitTimer = 0;
 
 public:
