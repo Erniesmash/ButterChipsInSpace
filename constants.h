@@ -51,7 +51,7 @@ const char TEXTURES_IMAGE[] = "pictures\\textures.png";  // game textures
 const char ESHIP_IMAGE[] = "pictures\\eSpritesheet_40x30.png";
 const char ROCKET_IMAGE[] = "pictures\\Spritesheet_64x29.png";
 const char FARBACK_IMAGE[] = "pictures\\farback.jpg";
-const char BULLET_IMAGE[] = "pictures\\hatch_sheet.png";
+const char BULLET_IMAGE[] = "pictures\\ehatch_sheet.png";
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used

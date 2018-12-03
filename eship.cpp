@@ -1,4 +1,5 @@
 #include "eship.h"
+#include "ebullet.h"
 
 //=============================================================================
 // default constructor
@@ -13,13 +14,14 @@ EShip::EShip() : Entity()
 	spriteData.rect.right = eShipNS::WIDTH;
 	velocity.x = 0;                             // velocity X
 	velocity.y = 0;                             // velocity Y
-	frameDelay = eShipNS::SHIP_ANIMATION_DELAY;
-	startFrame = eShipNS::SHIP1_START_FRAME;     // first frame of EShip animation
-	endFrame = eShipNS::SHIP1_END_FRAME;     // last frame of EShip animation
+	frameDelay = eShipNS::ESHIP_ANIMATION_DELAY;
+	startFrame = eShipNS::ESHIP1_START_FRAME;     // first frame of EShip animation
+	endFrame = eShipNS::ESHIP1_END_FRAME;     // last frame of EShip animation
 	currentFrame = startFrame;
 	radius = eShipNS::WIDTH / 2.0;
 	shieldOn = false;
 	mass = eShipNS::MASS;
+	shotTimer = eShipNS::ESHIP_SHOT_TIMER;
 	collisionType = entityNS::CIRCLE;
 }
 
@@ -43,10 +45,9 @@ bool EShip::initialize(Game *gamePtr, int width, int height, int ncols,
 //=============================================================================
 void EShip::draw()
 {
-	Image::draw();              // draw EShip
-	if (shieldOn)
-		// draw shield using colorFilter 50% alpha
-		shield.draw(spriteData, graphicsNS::ALPHA50 & colorFilter);
+	
+	Image::draw();
+            // draw EShip
 }
 
 //=============================================================================
@@ -56,6 +57,7 @@ void EShip::draw()
 //=============================================================================
 void EShip::update(float frameTime)
 {
+	shotTimer -= frameTime;
 	Entity::update(frameTime);
 	spriteData.angle += frameTime * eShipNS::ROTATION_RATE;  // rotate the EShip
 	spriteData.x += frameTime * velocity.x;         // move EShip along X 
@@ -91,6 +93,7 @@ void EShip::update(float frameTime)
 			shield.setAnimationComplete(false);
 		}
 	}
+
 }
 
 //=============================================================================
@@ -98,5 +101,31 @@ void EShip::update(float frameTime)
 //=============================================================================
 void EShip::damage(WEAPON weapon)
 {
-	shieldOn = true;
 }
+
+void EShip::shootBullet(Entity *from) 
+{
+	EBullet *a = new EBullet();
+	
+}
+
+void EShip::drawBullet() 
+{
+	for each (EBullet* p in bulletList) 
+	{
+		p->draw();
+	}
+}
+
+/*void EShip::shoot()
+{
+	if (waitShotTimer <= 0.0f)
+	{
+		waitShotTimer = bulletNS::WAIT_SHOOT; //Resets the shotTimer using namespace value
+		isFired = true;
+		velocity.x = cos(whereFrom->getRadians()) * bulletNS::SPEED;
+		velocity.y = sin(whereFrom->getRadians()) * bulletNS::SPEED;
+		spriteData.x = whereFrom->getCenterX() - spriteData.width / 2;
+		spriteData.y = whereFrom->getCenterY() - spriteData.height / 2;
+	}
+}*/

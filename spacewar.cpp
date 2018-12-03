@@ -6,6 +6,9 @@
 // This class is the core of the game
 
 #include "spaceWar.h"
+#include <vector>
+using namespace std;
+float time = 0.0f;
 
 //=============================================================================
 // Constructor
@@ -78,6 +81,25 @@ void Spacewar::initialize(HWND hwnd)
 	bullet.setY(0);
 	*/
 
+	// enemy ship texture
+	if (!eShipTexture.initialize(graphics, ESHIP_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy ship texture"));
+
+	// enemy ship
+	if (!eShip.initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy ship"));
+	eShip.setFrames(eShipNS::ESHIP1_START_FRAME, eShipNS::ESHIP1_END_FRAME);
+	eShip.setCurrentFrame(eShipNS::ESHIP1_START_FRAME);
+
+	// enemy bullet texture
+	if (!ebulletTexture.initialize(graphics, BULLET_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error intializing enemy bullet texture"));
+
+	// enemy bullet
+	if (!ebullet.initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebulletTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy bullet"));
+	ebullet.setX(GAME_WIDTH / 4);
+	ebullet.setX(GAME_HEIGHT / 4);
 
 	// ship1
 	if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTextures))
@@ -105,6 +127,7 @@ void Spacewar::initialize(HWND hwnd)
 void Spacewar::update()
 {
 	waitTimer -= frameTime;
+	time -= frameTime;
 	if (waitTimer <= 0.0f)
 	{
 		if (input->wasKeyPressed(ROCKET_SPACE_KEY) == true)
@@ -118,6 +141,32 @@ void Spacewar::update()
 		}
 	}
 	
+	if (time <= 0.0f) {
+		EShip *e = new EShip();
+		e->initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture);
+		e->setX(GAME_WIDTH - eShipNS::WIDTH);
+		e->setY(rand() & GAME_HEIGHT);
+		eshipList.push_back(e);
+		time = 2.0f;
+	}
+
+	for each (EShip* e in eshipList)
+	{
+		e->update(frameTime);
+		if (e->shotTimer <= 0.0f)
+		{
+			EBullet* b = new EBullet;
+			b->initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebulletTexture);
+			ebulletList.push_back(b);
+			b->getDir(e);
+			e->shotTimer = 1.0f;
+		}
+	}
+	for each (EBullet* b in ebulletList)
+	{
+		b->update(frameTime);
+	}
+	ebullet.update(frameTime);
 	/*
 	for (int i = 0; i < bulletList.size(); i++)
 		SAFE_DELETE(bulletList[i]);
@@ -257,7 +306,16 @@ void Spacewar::render()
 	{
 		bull->draw();
 	}
-	
+	ebullet.draw();
+	for each(EShip*  enemy in eshipList)	// all eship draw functions go here
+	{
+		enemy->draw();						// draw every enemy ship in the list
+
+	}
+	for each (EBullet* b in ebulletList)
+	{
+		b->draw();
+	}
 	//bullet.draw();
     graphics->spriteEnd();                  // end drawing sprites
 }
@@ -272,7 +330,7 @@ void Spacewar::releaseAll()
 	farbackTexture.onLostDevice();
 	rocketTexture.onLostDevice();
 	bulletTexture.onLostDevice();
-
+	eShipTexture.onLostDevice();
     Game::releaseAll();
     return;
 }
@@ -287,7 +345,7 @@ void Spacewar::resetAll()
 	rocketTexture.onResetDevice();
 	farbackTexture.onResetDevice();
 	bulletTexture.onResetDevice();
-
+	eShipTexture.onResetDevice();
     Game::resetAll();
     return;
 }
