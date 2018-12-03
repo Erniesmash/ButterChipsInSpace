@@ -98,7 +98,6 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="planet.cpp" />
     <ClCompile Include="rocket.cpp" />
-    <ClCompile Include="ship.cpp" />
     <ClCompile Include="spacewar.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="winmain.cpp" />
@@ -116,7 +115,6 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="planet.h" />
     <ClInclude Include="rocket.h" />
-    <ClInclude Include="ship.h" />
     <ClInclude Include="spacewar.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>

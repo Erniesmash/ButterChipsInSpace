@@ -21,22 +21,17 @@ namespace rocketNS
 	const int Y = GAME_HEIGHT / 2 - HEIGHT / 2;
 	const float ROTATION_RATE = (float)1.5 * PI; // radians per second
 	const float SPEED = 200;                // 100 pixels per second
-	const float MASS = 300.0f;              // mass
+	const float MASS = 400.0f;              // mass
 	const int   TEXTURE_COLS = 1;           // texture has 8 columns
 	const int   ROCKET_START_FRAME = 0;      // rocket starts at frame 0
 	const int   ROCKET_END_FRAME = 3;        // rocket animation frames 0,1,2,3
 	const float ROCKET_ANIMATION_DELAY = 0.2f;    // time between frames
-	const int   SHIELD_START_FRAME = 24;    // shield start frame
-	const int   SHIELD_END_FRAME = 27;      // shield end frame
-	const float SHIELD_ANIMATION_DELAY = 0.1f; // time between frames
 }
 
 // inherits from Entity class
 class Rocket : public Entity
 {
 private:
-	bool    shieldOn;
-	Image   shield;
 	
 public:
 	// constructor

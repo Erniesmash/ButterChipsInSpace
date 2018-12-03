@@ -8,8 +8,8 @@ Bullet::Bullet() : Entity()
 	isFired = false; // default to bullet not fired
 	spriteData.width = bulletNS::WIDTH;           // size of bullet
 	spriteData.height = bulletNS::HEIGHT;
-	spriteData.x = GAME_WIDTH / 4;                   // location on screen
-	spriteData.y = GAME_HEIGHT /2;
+	//spriteData.x = GAME_WIDTH / 4;                   // location on screen
+	//spriteData.y = GAME_HEIGHT /2;
 	spriteData.rect.bottom = bulletNS::HEIGHT;    // rectangle to select parts of an image
 	spriteData.rect.right = bulletNS::WIDTH;
 	velocity.x = 10;
@@ -20,7 +20,7 @@ Bullet::Bullet() : Entity()
 	currentFrame = startFrame;
 	radius = bulletNS::WIDTH / 2.0;
 	mass = bulletNS::MASS;
-	collisionType = entityNS::CIRCLE;	
+	collisionType = entityNS::BOX;	
 }
 
 //=============================================================================
@@ -55,11 +55,6 @@ void Bullet::update(float frameTime)
 	spriteData.x = spriteData.x + frameTime * velocity.x;     
 	spriteData.y = spriteData.y + frameTime * velocity.y;    
 }
-
-//=============================================================================
-// damage
-//=============================================================================
-void Bullet::damage(WEAPON weapon){}
 
 void Bullet::shoot(Entity *whereFrom)
 {	

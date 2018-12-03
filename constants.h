@@ -46,7 +46,6 @@ const float MASS_PLANET = 1.0e14f;
 const float MASS_SHIP = 5.0f;
 
 // graphic images
-const char NEBULA_IMAGE[] =   "pictures\\orion.jpg";     // photo source NASA/courtesy of nasaimages.org 
 const char TEXTURES_IMAGE[] = "pictures\\textures.png";  // game textures
 const char ESHIP_IMAGE[] = "pictures\\eSpritesheet_40x30.png";
 const char ROCKET_IMAGE[] = "pictures\\Spritesheet_64x29.png";
@@ -72,8 +71,5 @@ const UCHAR ROCKET_ARROW_RIGHT = VK_RIGHT;
 const UCHAR ROCKET_ARROW_UP = VK_UP;
 const UCHAR ROCKET_ARROW_DOWN = VK_DOWN;
 const UCHAR ROCKET_SPACE_KEY = VK_SPACE;
-
-// weapon types
-enum WEAPON {TORPEDO, SHIP, PLANET};
 
 #endif

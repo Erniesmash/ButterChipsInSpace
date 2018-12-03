@@ -16,14 +16,13 @@ EBullet::EBullet() : Entity()
 	spriteData.y = ebulletNS::Y;
 	spriteData.rect.bottom = ebulletNS::HEIGHT;    // rectangle to select parts of an image
 	spriteData.rect.right = ebulletNS::WIDTH;
-	velocity.x = 0;                             // velocity X
-	velocity.y = 0;                             // velocity Y
+	velocity.x = 1;                             // velocity X
+	velocity.y = 1;                             // velocity Y
 	frameDelay = ebulletNS::EBULLET_ANIMATION_DELAY;
 	startFrame = ebulletNS::EBULLET_START_FRAME;     // first frame of ship animation
 	endFrame = ebulletNS::EBULLET_END_FRAME;     // last frame of ship animation
 	currentFrame = startFrame;
 	radius = ebulletNS::WIDTH / 2.0;
-	shieldOn = false;
 	mass = ebulletNS::MASS;
 	collisionType = entityNS::CIRCLE;
 }
@@ -35,11 +34,6 @@ EBullet::EBullet() : Entity()
 bool EBullet::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
-	shield.initialize(gamePtr->getGraphics(), width, height, ncols, textureM);
-	shield.setFrames(ebulletNS::SHIELD_START_FRAME, ebulletNS::SHIELD_END_FRAME);
-	shield.setCurrentFrame(ebulletNS::SHIELD_START_FRAME);
-	shield.setFrameDelay(ebulletNS::SHIELD_ANIMATION_DELAY);
-	shield.setLoop(false);                  // do not loop animation
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
@@ -62,35 +56,6 @@ void EBullet::update(float frameTime)
 	//spriteData.angle += frameTime * ebulletNS::ROTATION_RATE;  // rotate the ship
 	spriteData.x += frameTime * velocity.x;         // move ship along X 
 	spriteData.y += frameTime * velocity.y;         // move ship along Y
-
-													// Bounce off walls
-	/*if (spriteData.x > GAME_WIDTH - ebulletNS::WIDTH)    // if hit right screen edge
-	{
-		SAFE_DELETE(this);
-	}
-	else if (spriteData.x < 0)                    // else if hit left screen edge
-	{
-		spriteData.x = 0;                           // position at left screen edge
-		velocity.x = -velocity.x;                   // reverse X direction
-	}
-	if (spriteData.y > GAME_HEIGHT - ebulletNS::HEIGHT)  // if hit bottom screen edge
-	{
-		spriteData.y = GAME_HEIGHT - ebulletNS::HEIGHT;  // position at bottom screen edge
-		velocity.y = -velocity.y;                   // reverse Y direction
-	}
-	else if (spriteData.y < 0)                    // else if hit top screen edge
-	{
-		spriteData.y = 0;                           // position at top screen edge
-		velocity.y = -velocity.y;                   // reverse Y direction
-	}*/
-}
-
-//=============================================================================
-// damage
-//=============================================================================
-void EBullet::damage(WEAPON weapon)
-{
-	shieldOn = true;
 }
 
 void EBullet::getDir(Entity *a)

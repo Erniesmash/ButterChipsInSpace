@@ -97,13 +97,6 @@ void EShip::update(float frameTime)
 
 }
 
-//=============================================================================
-// damage
-//=============================================================================
-void EShip::damage(WEAPON weapon)
-{
-}
-
 void EShip::shootBullet(Entity *from) 
 {
 	EBullet *a = new EBullet();

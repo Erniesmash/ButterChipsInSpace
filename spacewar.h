@@ -5,8 +5,6 @@
 #include "game.h"
 #include "textureManager.h"
 #include "image.h"
-#include "planet.h"
-#include "ship.h"
 #include "rocket.h"
 #include "bullet.h"
 #include "eship.h"
@@ -28,7 +26,6 @@ private:
 	TextureManager ebulletTexture;	// enemy bullet texure
 
 	Rocket	rocketMain;
-    Planet  planet;         // the planet
 	Image	farback;		// farback image
 
 	EShip	eShip;			// enemy ship

@@ -78,15 +78,6 @@ void Rocket::update(float frameTime)
 		spriteData.y = 0;                           // position at top screen edge
 		velocity.y = -velocity.y;                   // reverse Y direction
 	}
-	if (shieldOn)
-	{
-		shield.update(frameTime);
-		if (shield.getAnimationComplete())
-		{
-			shieldOn = false;
-			shield.setAnimationComplete(false);
-		}
-	}
 
 	if (input->isKeyDown(ROCKET_D_KEY))            // if move right
 	{

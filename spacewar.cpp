@@ -48,10 +48,6 @@ void Spacewar::initialize(HWND hwnd)
 	if (!gameTextures.initialize(graphics, TEXTURES_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game textures"));
 
-    // planet
-    if (!planet.initialize(this, planetNS::WIDTH, planetNS::HEIGHT, 2, &gameTextures))
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing planet"));
-
 	// farback texture
 	if (!farbackTexture.initialize(graphics, FARBACK_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing farback texture"));
@@ -105,7 +101,7 @@ void Spacewar::update()
 	{
 		if (input->wasKeyPressed(ROCKET_SPACE_KEY) == true)
 		{
-			waitTimer = 0.3f;
+			waitTimer = 0.2f;
 			Bullet *b = new Bullet();
 			b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
 			bulletList.push_back(b);
@@ -140,11 +136,6 @@ void Spacewar::update()
 		}
 	}
 
-	if (planet.getHealth() <= 0)
-	{
-		planet.setActive(false);
-	}
-
 	//Potential Bullet Aiming Code
 	/*
 	VECTOR2 bulletVector = bullet.getCenter();
@@ -173,7 +164,6 @@ void Spacewar::update()
 //=============================================================================
 // Update frameTime for Animation 
 //=============================================================================
-    planet.update(frameTime);
 	rocketMain.update(frameTime);
 
 	for each(Bullet*  bull in bulletList)
@@ -202,15 +192,6 @@ void Spacewar::collisions()
  
 	for each(Bullet*  bull in bulletList)
 	{
-		if (bull->collidesWith(planet, collisionVector))
-		{
-			// bounce off planet
-			bull->bounce(collisionVector, planet);
-			bull->isFired = false;
-			planet.setHealth(planet.getHealth() - 100);
-			bull->setActive(false);
-		}
-
 		for each (EShip* eshat in eshipList)
 		{
 			if (bull->collidesWith(*eshat, collisionVector))
@@ -223,10 +204,14 @@ void Spacewar::collisions()
 			}
 		}
 	}
-	
-	if (rocketMain.collidesWith(planet, collisionVector))
+
+	for each (EBullet* b in ebulletList)
 	{
-		rocketMain.bounce(collisionVector, planet);
+		if (rocketMain.collidesWith(*b, collisionVector))
+		{
+			rocketMain.bounce(collisionVector, *b);
+			b->setActive(false);
+		}
 	}
 }
 
@@ -238,11 +223,6 @@ void Spacewar::render()
     graphics->spriteBegin();                // begin drawing sprites
 
 	farback.draw();							// add the farback to the scene
-
-	if (planet.getHealth() > 0)
-	{
-		planet.draw();                          // add the planet to the scene	
-	}
 
 	rocketMain.draw();						// add the rocket to the scene
 
@@ -261,10 +241,13 @@ void Spacewar::render()
 	
 	for each (EBullet* b in ebulletList)
 	{
-		if (b != NULL)
-			if (status == true)
-				status = true;
-			b->draw();	
+		if (b->getActive() == true)
+		{
+			if (b != NULL)
+				if (status == true)
+					status = true;
+				b->draw();
+		}		
 	}
 
     graphics->spriteEnd();                  // end drawing sprites

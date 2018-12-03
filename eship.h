@@ -44,7 +44,6 @@ public:
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
 		TextureManager *textureM);
 	void update(float frameTime);
-	void damage(WEAPON);
 	void shootBullet(Entity *from);
 	void drawBullet();
 	float shotTimer;
