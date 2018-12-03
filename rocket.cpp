@@ -16,8 +16,8 @@ Rocket::Rocket() : Entity()
 	spriteData.y = rocketNS::Y;
 	spriteData.rect.bottom = rocketNS::HEIGHT;    // rectangle to select parts of an image
 	spriteData.rect.right = rocketNS::WIDTH;
-	velocity.x = 0;                             // velocity X
-	velocity.y = 0;                             // velocity Y
+	velocity.x = 1;                             // velocity X
+	velocity.y = 1;                             // velocity Y
 	frameDelay = rocketNS::ROCKET_ANIMATION_DELAY;
 	startFrame = rocketNS::ROCKET_START_FRAME;     // first frame of ship animation
 	endFrame = rocketNS::ROCKET_END_FRAME;     // last frame of ship animation
@@ -147,65 +147,3 @@ void Rocket::damage(WEAPON weapon)
 {
 	shieldOn = true;
 }
-
-/*
-void Rocket::shootBullet()
-{
-	Bullet *a = new Bullet(); //Create new bullet                                                    
-
-	VECTOR2 start(spriteData.x, spriteData.y); //Determine start position of bullet and set it based on rocket position
-	//a->setMapX(start.x + rocketNS::WIDTH / 4);
-	//a->setMapY(start.y + rocketNS::HEIGHT / 2);
-	a->setMapX(GAME_WIDTH / 2);
-	a->setMapY(GAME_HEIGHT/4);
-	/*
-	// bullet texture
-	TextureManager bulletTexture;	// bullet texture
-	if (!bulletTexture.initialize(graphics, BULLET_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
-	if (!a->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet"));
-	*/
-	/*
-	player.x -= a->getWidth() / 2 * a->getScale();
-	player.x -= bulletNS::WIDTH / 4;
-	player.y -= a->getHeight() / 2 * a->getScale();
-	player.y -= bulletNS::HEIGHT / 2;
-	*/
-	/*
-	a->setVStart(start); //Set velocity?
-	//a->setvtarget(player); //For chase?
-	bulletList.push_back(a); //Append to list bulletList
-	*/
-/*
-}
-*/
-
-/*
-void Rocket::drawBullet()
-{
-	/*
-	for (std::vector<Bullet*>::iterator it = bulletList.begin(); it != bulletList.end(); )
-	{
-		if ((*it)->getdel() == true) //if bullets have collided with player, del of bullet set to true
-		{
-			SAFE_DELETE(*it);
-			it = bulletlist.erase(it);
-		}
-		else
-		{
-			++it;
-		}
-	}
-	*/
-	/*
-	for each(Bullet *p in bulletList)
-	{
-		graphics->spriteBegin();
-		p->draw();
-		graphics->spriteEnd();
-	}
-	*/
-/*
-}
-*/

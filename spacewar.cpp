@@ -9,6 +9,7 @@
 #include <vector>
 using namespace std;
 float time = 0.0f;
+bool status = false;
 
 //=============================================================================
 // Constructor
@@ -92,7 +93,7 @@ void Spacewar::initialize(HWND hwnd)
 	eShip.setCurrentFrame(eShipNS::ESHIP1_START_FRAME);
 
 	// enemy bullet texture
-	if (!ebulletTexture.initialize(graphics, BULLET_IMAGE))
+	if (!ebulletTexture.initialize(graphics, EBULLET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error intializing enemy bullet texture"));
 
 	// enemy bullet
@@ -142,12 +143,16 @@ void Spacewar::update()
 	}
 	
 	if (time <= 0.0f) {
-		EShip *e = new EShip();
-		e->initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture);
-		e->setX(GAME_WIDTH - eShipNS::WIDTH);
-		e->setY(rand() & GAME_HEIGHT);
-		eshipList.push_back(e);
-		time = 2.0f;
+		if (eshipList.size() < 6)
+		{
+			EShip *e = new EShip();
+			e->initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture);
+			e->setX(GAME_WIDTH - eShipNS::WIDTH);
+			e->setY(rand() & GAME_HEIGHT);
+			eshipList.push_back(e);
+			time = 2.0f;
+		}
+		
 	}
 
 	for each (EShip* e in eshipList)
@@ -167,11 +172,18 @@ void Spacewar::update()
 		b->update(frameTime);
 	}
 	ebullet.update(frameTime);
-	/*
-	for (int i = 0; i < bulletList.size(); i++)
-		SAFE_DELETE(bulletList[i]);
-	*/
 	
+	/*
+	for each (EBullet* b in ebulletList)
+	{
+		if (b->getX() < 0)
+		{
+			SAFE_DELETE(b);
+			ebulletList.erase();
+			status = true;
+		}
+	}
+	*/
     planet.update(frameTime);
     ship1.update(frameTime);
     ship2.update(frameTime);
@@ -195,7 +207,7 @@ void Spacewar::update()
 	*/
 	if (planet.getHealth() <= 0)
 	{
-		planet.setActive(false);                         // add the planet to the scene
+		planet.setActive(false);        
 	}
 }
 
@@ -241,11 +253,23 @@ void Spacewar::collisions()
 		{
 			// bounce off planet
 			bull->bounce(collisionVector, planet);
-			bull->damage(PLANET);
 			bull->isFired = false;
 			planet.setHealth(planet.getHealth() - 100);
 			bull->setActive(false);
 		}
+
+		for each (EShip* eshat in eshipList)
+		{
+			if (bull->collidesWith(*eshat, collisionVector))
+			{
+				// bounce off planet
+				bull->bounce(collisionVector, *eshat);
+				bull->isFired = false;
+				eshat->setHealth(eshat->getHealth() - 100);
+				bull->setActive(false);
+			}
+		}
+		
 	/*
 	if (bullet.collidesWith(ship1, collisionVector))
 	{
@@ -274,6 +298,7 @@ void Spacewar::collisions()
 		rocketMain.bounce(collisionVector, planet);
 		rocketMain.damage(PLANET);
 	}
+
 	if (rocketMain.collidesWith(ship1, collisionVector))
 	{
 		// bounce off ship
@@ -282,8 +307,7 @@ void Spacewar::collisions()
 		// change the direction of the collisionVector for ship2
 		ship1.bounce(collisionVector*-1, rocketMain);
 		ship1.damage(SHIP);
-	}
-	
+	}	
 }
 
 //=============================================================================
@@ -306,15 +330,20 @@ void Spacewar::render()
 	{
 		bull->draw();
 	}
-	ebullet.draw();
 	for each(EShip*  enemy in eshipList)	// all eship draw functions go here
 	{
-		enemy->draw();						// draw every enemy ship in the list
-
+		if (enemy->getHealth() > 0)
+			enemy->draw();						// draw every enemy ship in the list
+		else
+			enemy->setActive(false);
 	}
+	
 	for each (EBullet* b in ebulletList)
 	{
-		b->draw();
+		if (b != NULL)
+			if (status == true)
+				status = true;
+			b->draw();	
 	}
 	//bullet.draw();
     graphics->spriteEnd();                  // end drawing sprites

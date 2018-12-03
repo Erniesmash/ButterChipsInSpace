@@ -23,6 +23,7 @@ EShip::EShip() : Entity()
 	mass = eShipNS::MASS;
 	shotTimer = eShipNS::ESHIP_SHOT_TIMER;
 	collisionType = entityNS::CIRCLE;
+	health = 200;
 }
 
 //=============================================================================
