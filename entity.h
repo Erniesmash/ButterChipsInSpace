@@ -179,5 +179,4 @@ class Entity : public Image
     // Adds the gravitational force to the velocity vector of this entity
     void gravityForce(Entity *other, float frameTime);
 };
-
 #endif

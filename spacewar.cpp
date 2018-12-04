@@ -113,6 +113,7 @@ void Spacewar::initialize(HWND hwnd)
 //=============================================================================
 void Spacewar::update()
 {
+	//checkEShip();
 	waitTimer -= frameTime;
 
 	time -= frameTime;
@@ -166,46 +167,27 @@ void Spacewar::update()
 			eshipList.push_back(e);
 			time = 2.0f;
 		}
-		
-	}
 
+	}
+	checkEShip();
 	for each (EShip* e in eshipList)
 	{
 		e->update(frameTime);
+		e->chase(&rocketMain);
 		if (e->shotTimer <= 0.0f)
 		{
 			EBullet* b = new EBullet;
 			b->initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebulletTexture);
-			ebulletList.push_back(b);
-			b->getDir(e);
+			e->ebulletList.push_back(b);
+			b->getDir(&rocketMain, e);
 			e->shotTimer = 1.0f;
 		}
-	}
-
-	//Potential Bullet Aiming Code
-	/*
-	VECTOR2 bulletVector = bullet.getCenter();
-	VECTOR2 rocketVector = rocketMain.getCenter();
-	//const VECTOR2* bulletVector = bullet.getCenter();
-	//const VECTOR2* rocketVector = rocketMain.getCenter();
-
-	VECTOR2 chase = rocketVector - bulletVector;
-	Graphics::Vector2Normalize(&chase);
-	bullet.setX(chase.x * frameTime);
-	bullet.setY(chase.y * frameTime);
-	*/
-	
-	/*
-	for each (EBullet* b in ebulletList)
-	{
-		if (b->getX() < 0)
+		for each (EBullet* b in e->ebulletList)
 		{
-			SAFE_DELETE(b);
-			ebulletList.erase();
-			status = true;
+			b->update(frameTime);
 		}
-	}
-	*/
+	}	
+	
 
 //=============================================================================
 // Update frameTime for Animation 
@@ -215,11 +197,6 @@ void Spacewar::update()
 	for each(Bullet*  bull in bulletList)
 	{
 		bull->update(frameTime);
-	}
-
-	for each (EBullet* b in ebulletList)
-	{
-		b->update(frameTime);
 	}
 
 	homingMissle.update(frameTime);
@@ -249,6 +226,7 @@ void Spacewar::collisions()
 				bull->isFired = false;
 				eshat->setHealth(eshat->getHealth() - 100);
 				bull->setActive(false);
+				eshat->checkCollided = true;
 			}
 		}
 	}
@@ -267,6 +245,20 @@ void Spacewar::collisions()
 		rocketMain.bounce(collisionVector, homingMissle);
 		homingMissle.setActive(false);
 		rocketMain.sethomingMissleActivated(true);
+	}
+
+	for each (EShip* e in eshipList)
+	{
+		if (e->collidesWith(rocketMain, collisionVector))
+		{
+			e->setVelocity(-(e->getVelocity()));
+			e->checkCollided = true;
+		}
+
+		if (e->collidesWith(*e, collisionVector))
+		{
+			e->bounce(collisionVector, *e);
+		}
 	}
 }
 
@@ -299,17 +291,16 @@ void Spacewar::render()
 			enemy->draw();						// draw every enemy ship in the list
 		else
 			enemy->setActive(false);
-	}
-	
-	for each (EBullet* b in ebulletList)
-	{
-		if (b->getActive() == true)
+
+		for each (EBullet* b in enemy->ebulletList)
 		{
 			if (b != NULL)
+			{
 				if (status == true)
 					status = true;
 				b->draw();
-		}		
+			}
+		}
 	}
 
     graphics->spriteEnd();                  // end drawing sprites
@@ -346,3 +337,40 @@ void Spacewar::resetAll()
     Game::resetAll();
     return;
 }
+
+void Spacewar::checkEShip()
+{
+	for (vector<EShip*>::iterator it = eshipList.begin();
+		it != eshipList.end();)
+	{
+		if ((*it)->checkCollided)
+		{
+			SAFE_DELETE(*it);
+			it = eshipList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+}
+
+/*
+void Spacewar::checkBullet()
+{
+	for (vector<Bullet*>::iterator it = bulletList.begin();
+		it != bulletList.end();)
+	{
+		if ((*it)->checkCollided)
+		{
+			SAFE_DELETE(*it);
+			it = bulletList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+
+	}
+}
+*/

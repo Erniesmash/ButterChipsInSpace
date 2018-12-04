@@ -34,5 +34,6 @@ public:
 	void shoot(Entity *whereFrom, float frameTime);
 	void shootHoming(Entity *whereFrom, Entity *whereTo, float frameTime);
 	bool isFired;
+	bool checkCollided;
 };
 #endif

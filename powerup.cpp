@@ -11,7 +11,7 @@ Powerup::Powerup() : Entity()
 	spriteData.y = powerupNS::Y;
 	spriteData.rect.bottom = powerupNS::HEIGHT;    // rectangle to select parts of an image
 	spriteData.rect.right = powerupNS::WIDTH;
-	spriteData.scale = 0.2;
+	spriteData.scale = 1;
 	velocity.x = 0;                             // velocity X
 	velocity.y = 0;                             // velocity Y
 	frameDelay = powerupNS::POWERUP_ANIMATION_DELAY;

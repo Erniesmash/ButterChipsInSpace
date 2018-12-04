@@ -19,11 +19,11 @@ EShip::EShip() : Entity()
 	endFrame = eShipNS::ESHIP1_END_FRAME;     // last frame of EShip animation
 	currentFrame = startFrame;
 	radius = eShipNS::WIDTH / 2.0;
-	shieldOn = false;
 	mass = eShipNS::MASS;
 	shotTimer = eShipNS::ESHIP_SHOT_TIMER;
 	collisionType = entityNS::CIRCLE;
 	health = 200;
+	checkCollided = false;
 }
 
 //=============================================================================
@@ -33,11 +33,6 @@ EShip::EShip() : Entity()
 bool EShip::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
-	shield.initialize(gamePtr->getGraphics(), width, height, ncols, textureM);
-	shield.setFrames(eShipNS::SHIELD_START_FRAME, eShipNS::SHIELD_END_FRAME);
-	shield.setCurrentFrame(eShipNS::SHIELD_START_FRAME);
-	shield.setFrameDelay(eShipNS::SHIELD_ANIMATION_DELAY);
-	shield.setLoop(false);                  // do not loop animation
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
@@ -46,7 +41,6 @@ bool EShip::initialize(Game *gamePtr, int width, int height, int ncols,
 //=============================================================================
 void EShip::draw()
 {
-	
 	Image::draw();
             // draw EShip
 }
@@ -85,30 +79,13 @@ void EShip::update(float frameTime)
 		spriteData.y = 0;                           // position at top screen edge
 		velocity.y = -velocity.y;                   // reverse Y direction
 	}
-	if (shieldOn)
-	{
-		shield.update(frameTime);
-		if (shield.getAnimationComplete())
-		{
-			shieldOn = false;
-			shield.setAnimationComplete(false);
-		}
-	}
-
 }
 
-void EShip::shootBullet(Entity *from) 
+void EShip::chase(Entity *target)
 {
-	EBullet *a = new EBullet();
-	
-}
-
-void EShip::drawBullet() 
-{
-	for each (EBullet* p in bulletList) 
-	{
-		p->draw();
-	}
+	VECTOR2 travel(target->getCenterX() - getCenterX(), target->getCenterY() - getCenterY());
+	Graphics::Vector2Normalize(&travel);
+	velocity = travel * eShipNS::SPEED;
 }
 
 /*void EShip::shoot()

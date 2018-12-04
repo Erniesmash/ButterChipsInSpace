@@ -19,6 +19,7 @@ Bullet::Bullet() : Entity()
 	radius = bulletNS::WIDTH / 2.0;
 	mass = bulletNS::MASS;
 	collisionType = entityNS::BOX;	
+	checkCollided = false;
 }
 
 //=============================================================================

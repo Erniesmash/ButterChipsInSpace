@@ -40,6 +40,6 @@ public:
 	virtual VECTOR2 getvtarget() { return endpt; }
 	virtual void setvstart(VECTOR2 start) { start = startpt; }
 	virtual void setvtarget(VECTOR2 target) { target = endpt; }
-	void getDir(Entity *a);
+	void getDir(Entity *to, Entity *from);
 };
 #endif

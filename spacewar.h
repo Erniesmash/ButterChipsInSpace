@@ -57,6 +57,8 @@ public:
     void render();      // "
     void releaseAll();
     void resetAll();
+	void checkEShip();
+	//void checkBullet()
 };
 
 #endif

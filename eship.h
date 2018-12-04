@@ -23,19 +23,12 @@ namespace eShipNS
 	const int   ESHIP1_END_FRAME = 5;        // ship1 animation frames 0,1,2,3
 	const float ESHIP_ANIMATION_DELAY = 0.2f;    // time between frames
 	const float ESHIP_SHOT_TIMER = 1.0f;
-	const int   SHIELD_START_FRAME = 24;    // shield start frame
-	const int   SHIELD_END_FRAME = 27;      // shield end frame
-	const float SHIELD_ANIMATION_DELAY = 0.1f; // time between frames
-	
 }
 
 // inherits from Entity class
 class EShip : public Entity
 {
 private:
-	bool    shieldOn;
-	Image   shield;
-	vector<EBullet*> bulletList;
 public:
 	// constructor
 	EShip();
@@ -44,9 +37,9 @@ public:
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
 		TextureManager *textureM);
 	void update(float frameTime);
-	void shootBullet(Entity *from);
-	void drawBullet();
 	float shotTimer;
-
+	vector<EBullet*> ebulletList;
+	bool checkCollided;
+	void chase(Entity *target);
 };
 #endif

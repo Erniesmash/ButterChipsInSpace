@@ -58,11 +58,12 @@ void EBullet::update(float frameTime)
 	spriteData.y += frameTime * velocity.y;         // move ship along Y
 }
 
-void EBullet::getDir(Entity *a)
+void EBullet::getDir(Entity *to, Entity *from)
 {
-	velocity.x = -(cos(a->getRadians()) * ebulletNS::SPEED);
-	velocity.y = -(sin(a->getRadians()) * ebulletNS::SPEED);
-	spriteData.x = a->getCenterX() - spriteData.width / 2;
-	spriteData.y = a->getCenterY() - spriteData.height / 2;
+	spriteData.x = from->getCenterX() - spriteData.width / 2;
+	spriteData.y = from->getCenterY() - spriteData.height / 2;
+	VECTOR2 travel(to->getCenterX() - getCenterX(), to->getCenterY() - getCenterY());
+	Graphics::Vector2Normalize(&travel);
+	velocity = travel * ebulletNS::SPEED;
 }
 
