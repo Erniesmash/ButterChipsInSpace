@@ -1,4 +1,5 @@
 #include "rocket.h"
+#include "speedboost.h"
 
 //=============================================================================
 // default constructor
@@ -21,6 +22,9 @@ Rocket::Rocket() : Entity()
 	mass = rocketNS::MASS;
 	collisionType = entityNS::CIRCLE;
 	homingMissleActivated = false;
+	sbActive = false;
+	sbTimer = rocketNS::SB_TIMER;
+	spd = rocketNS::SPEED;
 }
 
 //=============================================================================
@@ -52,6 +56,22 @@ void Rocket::update(float frameTime)
 	//spriteData.angle += frameTime * rocketNS::ROTATION_RATE;  // rotate the ship
 	//spriteData.x += frameTime * velocity.x;         // move ship along X 
 	//spriteData.y += frameTime * velocity.y;         // move ship along Y
+	if (sbActive)
+	{
+		sbTimer -= frameTime;
+		spd = speedboostNS::BOOST;
+	}
+	else if (sbActive == false)
+	{
+		sbTimer = 15.0f;
+		spd = rocketNS::SPEED;
+	}
+	
+	if (sbTimer <= 0)
+	{
+		sbActive = false;
+	}
+
 
 	// Bounce off walls
 	if (spriteData.x > GAME_WIDTH - rocketNS::WIDTH)    // if hit right screen edge
@@ -77,22 +97,22 @@ void Rocket::update(float frameTime)
 
 	if (input->isKeyDown(ROCKET_D_KEY))            // if move right
 	{
-		spriteData.x = spriteData.x + frameTime * rocketNS::SPEED;
+		spriteData.x = spriteData.x + frameTime * spd;
 	}
 	
 	if (input->isKeyDown(ROCKET_A_KEY))             // if move left
 	{
-		spriteData.x = spriteData.x - frameTime * rocketNS::SPEED;
+		spriteData.x = spriteData.x - frameTime * spd;
 	}
 
 	if (input->isKeyDown(ROCKET_W_KEY))               // if move up
 	{
-		spriteData.y = spriteData.y - frameTime * rocketNS::SPEED;
+		spriteData.y = spriteData.y - frameTime * spd;
 	}
 
 	if (input->isKeyDown(ROCKET_S_KEY))             // if move down
 	{
-		spriteData.y = spriteData.y + frameTime * rocketNS::SPEED;
+		spriteData.y = spriteData.y + frameTime * spd;
 	}
 
 	if (input->isKeyDown(ROCKET_E_KEY))

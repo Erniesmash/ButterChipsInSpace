@@ -4,6 +4,7 @@
 // Chapter 6 ship.cpp v1.0
 
 #include "ebullet.h"
+#include "eship.h"
 
 //=============================================================================
 // default constructor
@@ -25,6 +26,7 @@ EBullet::EBullet() : Entity()
 	radius = ebulletNS::WIDTH / 2.0;
 	mass = ebulletNS::MASS;
 	collisionType = entityNS::CIRCLE;
+	collided = false;
 }
 
 //=============================================================================
@@ -56,6 +58,25 @@ void EBullet::update(float frameTime)
 	//spriteData.angle += frameTime * ebulletNS::ROTATION_RATE;  // rotate the ship
 	spriteData.x += frameTime * velocity.x;         // move ship along X 
 	spriteData.y += frameTime * velocity.y;         // move ship along Y
+
+
+	// destroy at walls
+	if (spriteData.x > GAME_WIDTH - ebulletNS::WIDTH)    // if hit right screen edge
+	{
+		collided = true;
+	}
+	else if (spriteData.x < 0)                    // else if hit left screen edge
+	{
+		collided = true;
+	}
+	if (spriteData.y > GAME_HEIGHT - ebulletNS::HEIGHT)  // if hit bottom screen edge
+	{
+		collided = true;
+	}
+	else if (spriteData.y < 0)                    // else if hit top screen edge
+	{
+		collided = true;
+	}
 }
 
 void EBullet::getDir(Entity *to, Entity *from)

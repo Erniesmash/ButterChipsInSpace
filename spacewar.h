@@ -11,6 +11,7 @@
 #include "ebullet.h"
 #include <vector>
 #include "powerup.h"
+#include "speedboost.h"
 
 //=============================================================================
 // This class is the core of the game
@@ -27,7 +28,9 @@ private:
 	TextureManager ebulletTexture;	// enemy bullet texure
 	TextureManager starfieldTexture;
 	TextureManager powerupTexture;
+	TextureManager sbTexture;
 
+	SpeedBoost sb;
 	Powerup homingMissle;
 	Rocket	rocketMain;
 	Image	farback;
@@ -38,8 +41,9 @@ private:
 
 	std::vector<Bullet*> bulletList;
 	vector<EShip*> eshipList;		// list of enemy ships
-	vector<EBullet*> ebulletList;	// list of bullets
-
+	vector<EBullet*> ebulletList;
+	vector<SpeedBoost*> sbList;
+	float sbSpawnTime = 0.0f;
 	float waitTimer = 0;
 
 public:
@@ -58,6 +62,8 @@ public:
     void releaseAll();
     void resetAll();
 	void checkEShip();
+	void checkSB();
+	void checkEB();
 	//void checkBullet()
 };
 

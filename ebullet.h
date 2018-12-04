@@ -41,5 +41,6 @@ public:
 	virtual void setvstart(VECTOR2 start) { start = startpt; }
 	virtual void setvtarget(VECTOR2 target) { target = endpt; }
 	void getDir(Entity *to, Entity *from);
+	bool collided;
 };
 #endif

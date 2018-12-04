@@ -100,6 +100,7 @@
     <ClCompile Include="powerup.cpp" />
     <ClCompile Include="rocket.cpp" />
     <ClCompile Include="spacewar.cpp" />
+    <ClCompile Include="speedboost.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
@@ -118,6 +119,7 @@
     <ClInclude Include="powerup.h" />
     <ClInclude Include="rocket.h" />
     <ClInclude Include="spacewar.h" />
+    <ClInclude Include="speedboost.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

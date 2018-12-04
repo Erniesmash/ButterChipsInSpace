@@ -21,6 +21,7 @@ namespace rocketNS
 	const int   ROCKET_START_FRAME = 0;      // rocket starts at frame 0
 	const int   ROCKET_END_FRAME = 3;        // rocket animation frames 0,1,2,3
 	const float ROCKET_ANIMATION_DELAY = 0.2f;    // time between frames
+	const float SB_TIMER = 15.0f;
 }
 
 // inherits from Entity class
@@ -38,5 +39,8 @@ public:
 	void update(float frameTime);
 	virtual bool gethomingMissleActivated() const { return homingMissleActivated; }
 	virtual void sethomingMissleActivated(bool a) { homingMissleActivated = a; }
+	bool sbActive;
+	float sbTimer;
+	float spd;
 };
 #endif

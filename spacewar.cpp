@@ -53,6 +53,10 @@ void Spacewar::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing homingmissle"));
 	homingMissle.setVelocity(VECTOR2(-powerupNS::SPEED, -powerupNS::SPEED)); // VECTOR2(X, Y)
 
+	// speed boost
+	if (!sbTexture.initialize(graphics, SPEEDBOOST_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing powerup texture"));
+
 //=============================================================================
 // Misc Background Stuff
 //=============================================================================
@@ -115,7 +119,7 @@ void Spacewar::update()
 {
 	//checkEShip();
 	waitTimer -= frameTime;
-
+	sbSpawnTime -= frameTime;
 	time -= frameTime;
 
 	if (rocketMain.gethomingMissleActivated() == false)
@@ -163,13 +167,26 @@ void Spacewar::update()
 			EShip *e = new EShip();
 			e->initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture);
 			e->setX(GAME_WIDTH - eShipNS::WIDTH);
-			e->setY(rand() & GAME_HEIGHT);
+			e->setY(rand() % (GAME_HEIGHT - eShipNS::HEIGHT));
 			eshipList.push_back(e);
 			time = 2.0f;
 		}
 
 	}
-	checkEShip();
+
+	if (sbSpawnTime <= 0.0f)
+	{
+		if (sbList.size() <= 2)
+		{
+			SpeedBoost *sb = new SpeedBoost();
+			sb->initialize(this, speedboostNS::WIDTH, speedboostNS::HEIGHT, speedboostNS::TEXTURE_COLS, &sbTexture);
+			sb->setX(rand() % (GAME_WIDTH - speedboostNS::WIDTH));
+			sb->setY(rand() % (GAME_HEIGHT - speedboostNS::HEIGHT));
+			sbList.push_back(sb);
+			sbSpawnTime = 60.0f;
+		}
+	}
+
 	for each (EShip* e in eshipList)
 	{
 		e->update(frameTime);
@@ -188,6 +205,10 @@ void Spacewar::update()
 		}
 	}	
 	
+	// delete vector items
+	checkEShip();
+	checkSB();
+	checkEB();
 
 //=============================================================================
 // Update frameTime for Animation 
@@ -247,6 +268,15 @@ void Spacewar::collisions()
 		rocketMain.sethomingMissleActivated(true);
 	}
 
+	for each (SpeedBoost* sb in sbList)
+	{
+		if (sb->collidesWith(rocketMain, collisionVector))
+		{
+			sb->collided = true;
+			rocketMain.sbActive = true;
+		}
+	}
+
 	for each (EShip* e in eshipList)
 	{
 		if (e->collidesWith(rocketMain, collisionVector))
@@ -303,6 +333,14 @@ void Spacewar::render()
 		}
 	}
 
+	for each(SpeedBoost* sb in sbList)
+	{
+		if (sb != NULL)
+		{
+			sb->draw();
+		}
+	}
+
     graphics->spriteEnd();                  // end drawing sprites
 }
 
@@ -355,6 +393,42 @@ void Spacewar::checkEShip()
 	}
 }
 
+void Spacewar::checkSB()
+{
+	for (vector<SpeedBoost*>::iterator it = sbList.begin();
+		it != sbList.end();)
+	{
+		if ((*it)->collided)
+		{
+			SAFE_DELETE(*it);
+			it = sbList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+}
+
+void Spacewar::checkEB()
+{
+	for each (EShip* e in eshipList)
+	{
+		for (vector<EBullet*>::iterator it = e->ebulletList.begin();
+			it != e->ebulletList.end();)
+		{
+			if ((*it)->collided)
+			{
+				SAFE_DELETE(*it);
+				it = e->ebulletList.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+	}
+}
 /*
 void Spacewar::checkBullet()
 {
