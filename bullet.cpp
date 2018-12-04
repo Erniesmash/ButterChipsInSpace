@@ -8,8 +8,6 @@ Bullet::Bullet() : Entity()
 	isFired = false; // default to bullet not fired
 	spriteData.width = bulletNS::WIDTH;           // size of bullet
 	spriteData.height = bulletNS::HEIGHT;
-	//spriteData.x = GAME_WIDTH / 4;                   // location on screen
-	//spriteData.y = GAME_HEIGHT /2;
 	spriteData.rect.bottom = bulletNS::HEIGHT;    // rectangle to select parts of an image
 	spriteData.rect.right = bulletNS::WIDTH;
 	velocity.x = 10;
@@ -51,18 +49,19 @@ void Bullet::draw()
 //=============================================================================
 void Bullet::update(float frameTime) 
 {
-	Entity::update(frameTime);
-	spriteData.x = spriteData.x + frameTime * velocity.x;     
-	spriteData.y = spriteData.y + frameTime * velocity.y;    
+	Entity::update(frameTime); 
+
 }
 
-void Bullet::shoot(Entity *whereFrom)
+void Bullet::shoot(Entity *whereFrom, float frameTime)
 {	
 	isFired = true;
 	velocity.x = cos(whereFrom->getRadians()) * bulletNS::SPEED; //basic trigo toa coa soh
 	velocity.y = sin(whereFrom->getRadians()) * bulletNS::SPEED;
 	spriteData.x = whereFrom->getCenterX() - spriteData.width / 2; //starting position
 	spriteData.y = whereFrom->getCenterY() - spriteData.height / 2;
+	spriteData.x = spriteData.x + frameTime * velocity.x;
+	spriteData.y = spriteData.y + frameTime * velocity.y;
 }
 
 

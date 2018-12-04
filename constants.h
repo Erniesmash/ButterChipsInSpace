@@ -46,12 +46,14 @@ const float MASS_PLANET = 1.0e14f;
 const float MASS_SHIP = 5.0f;
 
 // graphic images
-const char TEXTURES_IMAGE[] = "pictures\\textures.png";  // game textures
+const char TEXTURES_IMAGE[] = "pictures\\textures.png";
 const char ESHIP_IMAGE[] = "pictures\\eSpritesheet_40x30.png";
 const char ROCKET_IMAGE[] = "pictures\\Spritesheet_64x29.png";
 const char FARBACK_IMAGE[] = "pictures\\farback.jpg";
 const char BULLET_IMAGE[] = "pictures\\hatch_sheet.png";
 const char EBULLET_IMAGE[] = "pictures\\ehatch_sheet.png";
+const char POWERUP_IMAGE[] = "pictures\\balls.png";
+const char STARFIELD_IMAGE[] = "pictures\\starfield.png";
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
@@ -66,10 +68,10 @@ const UCHAR ROCKET_S_KEY = 0x53;
 const UCHAR ROCKET_W_KEY = 0x57;
 const UCHAR ROCKET_E_KEY = 0x45;
 const UCHAR ROCKET_Q_KEY = 0x51;
-const UCHAR ROCKET_ARROW_LEFT = VK_LEFT;
-const UCHAR ROCKET_ARROW_RIGHT = VK_RIGHT;
-const UCHAR ROCKET_ARROW_UP = VK_UP;
-const UCHAR ROCKET_ARROW_DOWN = VK_DOWN;
+const UCHAR ARROW_LEFT = VK_LEFT;
+const UCHAR ARROW_RIGHT = VK_RIGHT;
+const UCHAR ARROW_UP = VK_UP;
+const UCHAR ARROW_DOWN = VK_DOWN;
 const UCHAR ROCKET_SPACE_KEY = VK_SPACE;
 
 #endif

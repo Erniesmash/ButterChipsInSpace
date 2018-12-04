@@ -1,8 +1,3 @@
-// Programming 2D Games
-// Copyright (c) 2011 by: 
-// Charles Kelly
-// Chapter 6 ship.h v1.0
-
 #ifndef _ROCKET_H                 // Prevent multiple definitions if this 
 #define _ROCKET_H                 // file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
@@ -19,8 +14,8 @@ namespace rocketNS
 	const int HEIGHT = 29;                  // image height
 	const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
 	const int Y = GAME_HEIGHT / 2 - HEIGHT / 2;
-	const float ROTATION_RATE = (float)1.5 * PI; // radians per second
-	const float SPEED = 200;                // 100 pixels per second
+	const float ROTATION_RATE = (float)1.3 * PI; // radians per second
+	const float SPEED = 300;                // 100 pixels per second
 	const float MASS = 400.0f;              // mass
 	const int   TEXTURE_COLS = 1;           // texture has 8 columns
 	const int   ROCKET_START_FRAME = 0;      // rocket starts at frame 0
@@ -32,7 +27,8 @@ namespace rocketNS
 class Rocket : public Entity
 {
 private:
-	
+	bool homingMissleActivated;
+
 public:
 	// constructor
 	Rocket();
@@ -40,5 +36,7 @@ public:
 	virtual void draw();
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols, TextureManager *textureM);
 	void update(float frameTime);
+	virtual bool gethomingMissleActivated() const { return homingMissleActivated; }
+	virtual void sethomingMissleActivated(bool a) { homingMissleActivated = a; }
 };
 #endif

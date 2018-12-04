@@ -42,6 +42,18 @@ void Spacewar::initialize(HWND hwnd)
 	rocketMain.setY(GAME_HEIGHT / 1.15);
 
 //=============================================================================
+// Powerups
+//=============================================================================
+	// powerup texture
+	if (!powerupTexture.initialize(graphics, POWERUP_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing powerup texture"));
+
+	// homingmissle
+	if (!homingMissle.initialize(this, powerupNS::WIDTH, powerupNS::HEIGHT, powerupNS::TEXTURE_COLS, &powerupTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing homingmissle"));
+	homingMissle.setVelocity(VECTOR2(-powerupNS::SPEED, -powerupNS::SPEED)); // VECTOR2(X, Y)
+
+//=============================================================================
 // Misc Background Stuff
 //=============================================================================
 	// main game textures
@@ -55,6 +67,14 @@ void Spacewar::initialize(HWND hwnd)
 	// farback image
 	if (!farback.initialize(graphics,0,0,0,&farbackTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing farback"));
+
+	// starfield texture
+	if (!starfieldTexture.initialize(graphics, STARFIELD_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing starfield texture"));
+
+	// starfield image
+	if (!starfield.initialize(graphics, 0, 0, 0, &starfieldTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing starfield"));
 
 //=============================================================================
 // Bullet Stuff
@@ -97,19 +117,38 @@ void Spacewar::update()
 
 	time -= frameTime;
 
-	if (waitTimer <= 0.0f)
+	if (rocketMain.gethomingMissleActivated() == false)
 	{
-		if (input->wasKeyPressed(ROCKET_SPACE_KEY) == true)
+		if (waitTimer <= 0.0f)
 		{
-			waitTimer = 0.2f;
-			Bullet *b = new Bullet();
-			b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
-			bulletList.push_back(b);
-			b->shoot(&rocketMain);
-			input->clearKeyPress(ROCKET_SPACE_KEY);
+			if (input->wasKeyPressed(ROCKET_SPACE_KEY) == true)
+			{
+				waitTimer = 0.2f;
+				Bullet *b = new Bullet();
+				b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
+				bulletList.push_back(b);
+				b->shoot(&rocketMain, frameTime);
+				input->clearKeyPress(ROCKET_SPACE_KEY);
+			}
 		}
 	}
-	
+
+	if (rocketMain.gethomingMissleActivated() == true)
+	{
+		if (waitTimer <= 0.0f)
+		{
+			if (input->wasKeyPressed(ROCKET_SPACE_KEY) == true)
+			{
+				waitTimer = 0.2f;
+				Bullet *b = new Bullet();
+				b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
+				bulletList.push_back(b);
+				b->shoot(&rocketMain, frameTime);
+				input->clearKeyPress(ROCKET_SPACE_KEY);
+			}
+		}
+	}
+
 	if (time <= 0.0f) {
 		if (eshipList.size() < 6)
 		{
@@ -175,6 +214,8 @@ void Spacewar::update()
 	{
 		b->update(frameTime);
 	}
+
+	homingMissle.update(frameTime);
 }
 
 //=============================================================================
@@ -213,6 +254,13 @@ void Spacewar::collisions()
 			b->setActive(false);
 		}
 	}
+
+	if (rocketMain.collidesWith(homingMissle, collisionVector))
+	{
+		rocketMain.bounce(collisionVector, homingMissle);
+		homingMissle.setActive(false);
+		rocketMain.sethomingMissleActivated(true);
+	}
 }
 
 //=============================================================================
@@ -224,6 +272,13 @@ void Spacewar::render()
 
 	farback.draw();							// add the farback to the scene
 
+	starfield.draw();
+
+	if (homingMissle.getActive() == true)
+	{
+		homingMissle.draw();
+	}
+	
 	rocketMain.draw();						// add the rocket to the scene
 
 	for each(Bullet*  bull in bulletList)
@@ -261,6 +316,7 @@ void Spacewar::releaseAll()
 {
     gameTextures.onLostDevice();
 	farbackTexture.onLostDevice();
+	starfieldTexture.onLostDevice();
 	rocketTexture.onLostDevice();
 	bulletTexture.onLostDevice();
 	eShipTexture.onLostDevice();
@@ -277,6 +333,7 @@ void Spacewar::resetAll()
     gameTextures.onResetDevice();
 	rocketTexture.onResetDevice();
 	farbackTexture.onResetDevice();
+	starfieldTexture.onResetDevice();
 	bulletTexture.onResetDevice();
 	eShipTexture.onResetDevice();
     Game::resetAll();

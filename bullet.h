@@ -32,7 +32,7 @@ public:
 	virtual void draw();
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols, TextureManager *textureM);
 	void update(float frameTime);
-	void shoot(Entity *whereFrom);
+	void shoot(Entity *whereFrom, float frameTime);
 	bool isFired;
 };
 #endif

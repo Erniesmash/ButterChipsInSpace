@@ -10,6 +10,7 @@
 #include "eship.h"
 #include "ebullet.h"
 #include <vector>
+#include "powerup.h"
 
 //=============================================================================
 // This class is the core of the game
@@ -24,12 +25,17 @@ private:
 	TextureManager bulletTexture;	// bullet texture
 	TextureManager eShipTexture;	// enemy ship texture
 	TextureManager ebulletTexture;	// enemy bullet texure
+	TextureManager starfieldTexture;
+	TextureManager powerupTexture;
 
+	Powerup homingMissle;
 	Rocket	rocketMain;
-	Image	farback;		// farback image
+	Image	farback;
+	Image	starfield;
 
 	EShip	eShip;			// enemy ship
 	EBullet	ebullet;			// enemy bullet
+
 	std::vector<Bullet*> bulletList;
 	vector<EShip*> eshipList;		// list of enemy ships
 	vector<EBullet*> ebulletList;	// list of bullets

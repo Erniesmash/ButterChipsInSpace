@@ -1,8 +1,3 @@
-// Programming 2D Games
-// Copyright (c) 2011 by: 
-// Charles Kelly
-// Chapter 6 ship.cpp v1.0
-
 #include "rocket.h"
 
 //=============================================================================
@@ -25,6 +20,7 @@ Rocket::Rocket() : Entity()
 	radius = rocketNS::WIDTH / 2.0;
 	mass = rocketNS::MASS;
 	collisionType = entityNS::CIRCLE;
+	homingMissleActivated = false;
 }
 
 //=============================================================================
