@@ -11,12 +11,13 @@ namespace bulletNS
 {
 	const int WIDTH = 16;                   // image width
 	const int HEIGHT = 16;                  // image height
-	const float SPEED = 700;
+	const float SPEED = 300;
 	const float MASS = 300.0f;              // mass
 	const int   TEXTURE_COLS = 1;           // texture has 8 columns
 	const int   BULLET_START_FRAME = 0;      // bullet starts at frame 0
 	const int   BULLET_END_FRAME = 3;        // bullet animation frames 0,1,2,3
 	const float BULLET_ANIMATION_DELAY = 0.1f;    // time between frames
+	const float QUICKSPEED = 1500;
 }
 
 // inherits from Entity class
@@ -35,5 +36,6 @@ public:
 	void shootHoming(Entity *whereFrom, Entity *whereTo, float frameTime);
 	bool isFired;
 	bool checkCollided;
+	bool increaseSpeed;
 };
 #endif

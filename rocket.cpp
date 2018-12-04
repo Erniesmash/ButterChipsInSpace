@@ -21,6 +21,7 @@ Rocket::Rocket() : Entity()
 	mass = rocketNS::MASS;
 	collisionType = entityNS::CIRCLE;
 	homingMissleActivated = false;
+	health = 1000;
 }
 
 //=============================================================================
