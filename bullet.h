@@ -9,7 +9,6 @@
 
 namespace bulletNS
 {
-	//const float WAIT_SHOOT = 1.0f;
 	const int WIDTH = 16;                   // image width
 	const int HEIGHT = 16;                  // image height
 	const float SPEED = 700;
@@ -33,6 +32,7 @@ public:
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols, TextureManager *textureM);
 	void update(float frameTime);
 	void shoot(Entity *whereFrom, float frameTime);
+	void shootHoming(Entity *whereFrom, Entity *whereTo, float frameTime);
 	bool isFired;
 };
 #endif

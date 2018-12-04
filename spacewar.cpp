@@ -143,6 +143,13 @@ void Spacewar::update()
 				Bullet *b = new Bullet();
 				b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
 				bulletList.push_back(b);
+				/*
+				for each (EShip* e in eshipList)
+				{
+					b->shootHoming(&rocketMain, e, frameTime);
+				}
+				*/
+				b->setScale(10);
 				b->shoot(&rocketMain, frameTime);
 				input->clearKeyPress(ROCKET_SPACE_KEY);
 			}

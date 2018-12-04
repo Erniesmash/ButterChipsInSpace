@@ -50,7 +50,8 @@ void Bullet::draw()
 void Bullet::update(float frameTime) 
 {
 	Entity::update(frameTime); 
-
+	spriteData.x = spriteData.x + frameTime * velocity.x;
+	spriteData.y = spriteData.y + frameTime * velocity.y;
 }
 
 void Bullet::shoot(Entity *whereFrom, float frameTime)
@@ -60,8 +61,16 @@ void Bullet::shoot(Entity *whereFrom, float frameTime)
 	velocity.y = sin(whereFrom->getRadians()) * bulletNS::SPEED;
 	spriteData.x = whereFrom->getCenterX() - spriteData.width / 2; //starting position
 	spriteData.y = whereFrom->getCenterY() - spriteData.height / 2;
-	spriteData.x = spriteData.x + frameTime * velocity.x;
-	spriteData.y = spriteData.y + frameTime * velocity.y;
+}
+
+void Bullet::shootHoming(Entity *whereFrom, Entity *whereTo, float frameTime)
+{
+	isFired = true;
+	VECTOR2 fromHere(whereFrom->getCenterX() - spriteData.width / 2, whereFrom->getCenterY() - spriteData.height / 2);
+	VECTOR2 goingTo(whereTo->getCenterX() - getCenterX(), whereTo->getCenterY() - getCenterY());
+	VECTOR2 minus(goingTo - fromHere);
+	Graphics::Vector2Normalize(&minus);
+	velocity = minus * bulletNS::SPEED;
 }
 
 
