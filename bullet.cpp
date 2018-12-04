@@ -67,11 +67,13 @@ void Bullet::shoot(Entity *whereFrom, float frameTime)
 void Bullet::shootHoming(Entity *whereFrom, Entity *whereTo, float frameTime)
 {
 	isFired = true;
+	/*
 	VECTOR2 fromHere(whereFrom->getCenterX() - spriteData.width / 2, whereFrom->getCenterY() - spriteData.height / 2);
 	VECTOR2 goingTo(whereTo->getCenterX() - getCenterX(), whereTo->getCenterY() - getCenterY());
-	VECTOR2 minus(goingTo - fromHere);
-	Graphics::Vector2Normalize(&minus);
-	velocity = minus * bulletNS::SPEED;
+	VECTOR2 arrowVector(goingTo - fromHere);
+	Graphics::Vector2Normalize(&arrowVector);
+	velocity = arrowVector * bulletNS::SPEED;
+	*/
 }
 
 
