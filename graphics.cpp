@@ -1,7 +1,9 @@
-// Programming 2D Games
-// Copyright (c) 2011,2012 by:
-// Charles Kelly
-// Chapter 6 graphics.cpp v1.1
+//  Module:             Gameplay Programming
+//  Assignment1:        Butter Chips in Space
+//  Student Name:       Tan Cheng Hian
+//  Student Number:     S10179071A
+//  Student Name:       Ernest Cheo
+//  Student Number:     S10177445D
 
 #include "graphics.h"
 

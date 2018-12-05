@@ -1,7 +1,9 @@
-// Programming 2D Games
-// Copyright (c) 2011 by:
-// Charles Kelly
-// Space War winmain.cpp v1.0
+//  Module:             Gameplay Programming
+//  Assignment1:        Butter Chips in Space
+//  Student Name:       Tan Cheng Hian
+//  Student Number:     S10179071A
+//  Student Name:       Ernest Cheo
+//  Student Number:     S10177445D
 
 #define _CRTDBG_MAP_ALLOC       // for detecting memory leaks
 #define WIN32_LEAN_AND_MEAN

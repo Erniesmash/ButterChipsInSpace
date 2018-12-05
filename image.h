@@ -1,7 +1,9 @@
-// Programming 2D Games
-// Copyright (c) 2011 by: 
-// Charles Kelly
-// image.h v1.2
+//  Module:             Gameplay Programming
+//  Assignment1:        Butter Chips in Space
+//  Student Name:       Tan Cheng Hian
+//  Student Number:     S10179071A
+//  Student Name:       Ernest Cheo
+//  Student Number:     S10177445D
 
 #ifndef _IMAGE_H                // Prevent multiple definitions if this 
 #define _IMAGE_H                // file is included in more than one place

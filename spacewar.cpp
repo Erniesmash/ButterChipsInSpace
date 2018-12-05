@@ -1,3 +1,10 @@
+//  Module:             Gameplay Programming
+//  Assignment1:        Butter Chips in Space
+//  Student Name:       Tan Cheng Hian
+//  Student Number:     S10179071A
+//  Student Name:       Ernest Cheo
+//  Student Number:     S10177445D
+
 #include "spaceWar.h"
 #include <vector>
 using namespace std;
