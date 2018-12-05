@@ -215,6 +215,17 @@ void Spacewar::update()
 	checkSB();
 	checkEB();
 	checkEx();
+
+	if (rocketMain.getHealth() <= 0)
+	{
+		rocketMain.setActive(false);
+		for (vector<Bullet*>::iterator it = bulletList.begin();
+			it != bulletList.end();)
+		{
+			SAFE_DELETE(*it);
+			it = bulletList.erase(it);
+		}
+	}
 	
 	for (vector<Powerup*>::iterator it = bulletSpeedPowerupList.begin();
 		it != bulletSpeedPowerupList.end();)
@@ -312,6 +323,7 @@ void Spacewar::collisions()
 		{
 			if (rocketMain.collidesWith(*b, collisionVector))
 			{
+				rocketMain.setHealth(rocketMain.getHealth() - 100);
 				rocketMain.bounce(collisionVector, *b);
 				b->collided = true;
 			}
@@ -343,7 +355,10 @@ void Spacewar::render()
 			ex->draw();
 		}
 	}
-	rocketMain.draw();						// add the rocket to the scene
+	if (rocketMain.getHealth() > 0)
+	{
+		rocketMain.draw();						// add the rocket to the scene
+	}
 
 	for each(Bullet*  bull in bulletList)
 	{
@@ -424,6 +439,13 @@ void Spacewar::checkEShip()
 			SAFE_DELETE(*it);
 			it = eshipList.erase(it);
 		}
+
+		else if (rocketMain.getActive() == false)
+		{
+			SAFE_DELETE(*it);
+			it = eshipList.erase(it);
+		}
+
 		else
 		{
 			++it;
