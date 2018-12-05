@@ -25,6 +25,7 @@ Rocket::Rocket() : Entity()
 	sbActive = false;
 	sbTimer = rocketNS::SB_TIMER;
 	spd = rocketNS::SPEED;
+	health = 1000;
 }
 
 //=============================================================================

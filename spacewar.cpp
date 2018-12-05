@@ -126,9 +126,9 @@ void Spacewar::update()
 	{
 		if (waitTimer <= 0.0f)
 		{
-			if (input->wasKeyPressed(ROCKET_SPACE_KEY) == true)
+			if (input->isKeyDown(ROCKET_SPACE_KEY) == true)
 			{
-				waitTimer = 0.2f;
+				waitTimer = 0.8f;
 				Bullet *b = new Bullet();
 				b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
 				bulletList.push_back(b);
@@ -142,20 +142,20 @@ void Spacewar::update()
 	{
 		if (waitTimer <= 0.0f)
 		{
-			if (input->wasKeyPressed(ROCKET_SPACE_KEY) == true)
+			if (input->isKeyDown(ROCKET_SPACE_KEY) == true)
 			{
-				waitTimer = 0.2f;
+				waitTimer = 0.05f;
 				Bullet *b = new Bullet();
 				b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
 				bulletList.push_back(b);
-				/*
-				for each (EShip* e in eshipList)
+
+				for each (Bullet* b in bulletList)
 				{
-					b->shootHoming(&rocketMain, e, frameTime);
+					b->increaseSpeed = true;
 				}
-				*/
-				b->setScale(10);
 				b->shoot(&rocketMain, frameTime);
+				//b->setScale(10);
+				//b->shoot(&rocketMain, frameTime);
 				input->clearKeyPress(ROCKET_SPACE_KEY);
 			}
 		}
@@ -444,7 +444,6 @@ void Spacewar::checkBullet()
 		{
 			++it;
 		}
-
 	}
 }
 */

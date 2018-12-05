@@ -10,8 +10,8 @@ Bullet::Bullet() : Entity()
 	spriteData.height = bulletNS::HEIGHT;
 	spriteData.rect.bottom = bulletNS::HEIGHT;    // rectangle to select parts of an image
 	spriteData.rect.right = bulletNS::WIDTH;
-	velocity.x = 10;
-	velocity.y = 10;
+	velocity.x = 0;
+	velocity.y = 0;
 	frameDelay = bulletNS::BULLET_ANIMATION_DELAY;
 	startFrame = bulletNS::BULLET_START_FRAME;     // first frame of ship animation
 	endFrame = bulletNS::BULLET_END_FRAME;     // last frame of ship animation
@@ -20,6 +20,7 @@ Bullet::Bullet() : Entity()
 	mass = bulletNS::MASS;
 	collisionType = entityNS::BOX;	
 	checkCollided = false;
+	increaseSpeed = false;
 }
 
 //=============================================================================
@@ -58,8 +59,17 @@ void Bullet::update(float frameTime)
 void Bullet::shoot(Entity *whereFrom, float frameTime)
 {	
 	isFired = true;
-	velocity.x = cos(whereFrom->getRadians()) * bulletNS::SPEED; //basic trigo toa coa soh
-	velocity.y = sin(whereFrom->getRadians()) * bulletNS::SPEED;
+	if (increaseSpeed == true)
+	{
+		velocity.x = cos(whereFrom->getRadians()) * bulletNS::QUICKSPEED; //basic trigo toa coa soh
+		velocity.y = sin(whereFrom->getRadians()) * bulletNS::QUICKSPEED;
+	}
+
+	if (increaseSpeed == false)
+	{
+		velocity.x = cos(whereFrom->getRadians()) * bulletNS::SPEED; //basic trigo toa coa soh
+		velocity.y = sin(whereFrom->getRadians()) * bulletNS::SPEED;
+	}
 	spriteData.x = whereFrom->getCenterX() - spriteData.width / 2; //starting position
 	spriteData.y = whereFrom->getCenterY() - spriteData.height / 2;
 }
@@ -67,11 +77,13 @@ void Bullet::shoot(Entity *whereFrom, float frameTime)
 void Bullet::shootHoming(Entity *whereFrom, Entity *whereTo, float frameTime)
 {
 	isFired = true;
+	/*
 	VECTOR2 fromHere(whereFrom->getCenterX() - spriteData.width / 2, whereFrom->getCenterY() - spriteData.height / 2);
 	VECTOR2 goingTo(whereTo->getCenterX() - getCenterX(), whereTo->getCenterY() - getCenterY());
-	VECTOR2 minus(goingTo - fromHere);
-	Graphics::Vector2Normalize(&minus);
-	velocity = minus * bulletNS::SPEED;
+	VECTOR2 arrowVector(goingTo - fromHere);
+	Graphics::Vector2Normalize(&arrowVector);
+	velocity = arrowVector * bulletNS::SPEED;
+	*/
 }
 
 
