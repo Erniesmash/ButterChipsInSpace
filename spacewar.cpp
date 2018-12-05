@@ -283,6 +283,13 @@ void Spacewar::collisions()
 				eshat->setHealth(eshat->getHealth() - 100);
 				bull->setActive(false);
 				eshat->checkCollided = true;
+
+				Explosion *ex = new Explosion;
+				ex->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &explosionTexture);
+				ex->setX((eshat)->getX());
+				ex->setY((eshat)->getY());
+				ex->setScale(0.4);
+				explosionList.push_back(ex);
 			}
 		}
 	}
