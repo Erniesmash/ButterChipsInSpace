@@ -225,6 +225,14 @@ void Spacewar::update()
 			SAFE_DELETE(*it);
 			it = bulletList.erase(it);
 		}
+		for each (EShip* e in eshipList)
+		{
+			e->checkCollided = true;
+			for each (EBullet* eb in e->ebulletList)
+			{
+				eb->collided = true;
+			}
+		}
 	}
 	
 	for (vector<Powerup*>::iterator it = bulletSpeedPowerupList.begin();
