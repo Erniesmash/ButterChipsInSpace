@@ -272,11 +272,6 @@ void Spacewar::collisions()
 				eshat->setHealth(eshat->getHealth() - 100);
 				bull->setActive(false);
 				eshat->checkCollided = true;
-				Explosion *ex = new Explosion;
-				ex->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &explosionTexture);
-				ex->setX(eshat->getX());
-				ex->setY(eshat->getY());
-				explosionList.push_back(ex);
 			}
 		}
 	}
@@ -421,6 +416,11 @@ void Spacewar::checkEShip()
 	{
 		if ((*it)->checkCollided)
 		{
+			Explosion *ex = new Explosion;
+			ex->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &explosionTexture);
+			ex->setX((*it)->getX());
+			ex->setY((*it)->getY());
+			explosionList.push_back(ex);
 			SAFE_DELETE(*it);
 			it = eshipList.erase(it);
 		}
@@ -457,6 +457,12 @@ void Spacewar::checkEB()
 		{
 			if ((*it)->collided)
 			{
+				Explosion *ex = new Explosion;
+				ex->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &explosionTexture);
+				ex->setX((*it)->getX());
+				ex->setY((*it)->getY());
+				ex->setScale(0.4);
+				explosionList.push_back(ex);
 				SAFE_DELETE(*it);
 				it = e->ebulletList.erase(it);
 			}
