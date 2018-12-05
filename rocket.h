@@ -28,7 +28,7 @@ namespace rocketNS
 class Rocket : public Entity
 {
 private:
-	bool homingMissleActivated;
+	bool bulletSpeedActivated;
 
 public:
 	// constructor
@@ -37,10 +37,11 @@ public:
 	virtual void draw();
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols, TextureManager *textureM);
 	void update(float frameTime);
-	virtual bool gethomingMissleActivated() const { return homingMissleActivated; }
-	virtual void sethomingMissleActivated(bool a) { homingMissleActivated = a; }
+	virtual bool getbulletSpeedActivated() const { return bulletSpeedActivated; }
+	virtual void setbulletSpeedActivated(bool a) { bulletSpeedActivated = a; }
 	bool sbActive;
 	float sbTimer;
+	float bulletSpeedTimer;
 	float spd;
 };
 #endif

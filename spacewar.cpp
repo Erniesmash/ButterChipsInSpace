@@ -48,12 +48,7 @@ void Spacewar::initialize(HWND hwnd)
 	if (!powerupTexture.initialize(graphics, POWERUP_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing powerup texture"));
 
-	// homingmissle
-	if (!homingMissle.initialize(this, powerupNS::WIDTH, powerupNS::HEIGHT, powerupNS::TEXTURE_COLS, &powerupTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing homingmissle"));
-	homingMissle.setVelocity(VECTOR2(-powerupNS::SPEED, -powerupNS::SPEED)); // VECTOR2(X, Y)
-
-	// speed boost
+	// speed boost texture
 	if (!sbTexture.initialize(graphics, SPEEDBOOST_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing powerup texture"));
 
@@ -91,12 +86,6 @@ void Spacewar::initialize(HWND hwnd)
 	if (!ebulletTexture.initialize(graphics, EBULLET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error intializing enemy bullet texture"));
 
-	// enemy bullet
-	if (!ebullet.initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebulletTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy bullet"));
-	ebullet.setX(GAME_WIDTH / 4);
-	ebullet.setX(GAME_HEIGHT / 4);
-
 //=============================================================================
 // Enemy Ship 
 //=============================================================================
@@ -121,8 +110,9 @@ void Spacewar::update()
 	waitTimer -= frameTime;
 	sbSpawnTime -= frameTime;
 	time -= frameTime;
+	bulletSpeedTime -= frameTime;
 
-	if (rocketMain.gethomingMissleActivated() == false)
+	if (rocketMain.getbulletSpeedActivated() == false)
 	{
 		if (waitTimer <= 0.0f)
 		{
@@ -138,13 +128,13 @@ void Spacewar::update()
 		}
 	}
 
-	if (rocketMain.gethomingMissleActivated() == true)
+	if (rocketMain.getbulletSpeedActivated() == true)
 	{
 		if (waitTimer <= 0.0f)
 		{
 			if (input->isKeyDown(ROCKET_SPACE_KEY) == true)
 			{
-				waitTimer = 0.05f;
+				waitTimer = 0.06f;
 				Bullet *b = new Bullet();
 				b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
 				bulletList.push_back(b);
@@ -172,6 +162,20 @@ void Spacewar::update()
 			time = 2.0f;
 		}
 
+	}
+
+	if (bulletSpeedTime <= 0.0f)
+	{
+		if (bulletSpeedPowerupList.size() <= 3)
+		{
+			Powerup *speedBoost = new Powerup();
+			speedBoost->initialize(this, powerupNS::WIDTH, powerupNS::HEIGHT, powerupNS::TEXTURE_COLS, &powerupTexture);
+			speedBoost->setX(rand() % (GAME_WIDTH - powerupNS::WIDTH));
+			speedBoost->setY(rand() % (GAME_HEIGHT - powerupNS::HEIGHT));
+			speedBoost->setVelocity(VECTOR2(-powerupNS::SPEED, -powerupNS::SPEED));
+			bulletSpeedPowerupList.push_back(speedBoost);
+			bulletSpeedTime = 15.0f;
+		}
 	}
 
 	if (sbSpawnTime <= 0.0f)
@@ -209,6 +213,19 @@ void Spacewar::update()
 	checkEShip();
 	checkSB();
 	checkEB();
+	for (vector<Powerup*>::iterator it = bulletSpeedPowerupList.begin();
+		it != bulletSpeedPowerupList.end();)
+	{
+		if ((*it)->getActive() == false)
+		{
+			SAFE_DELETE(*it);
+			it = bulletSpeedPowerupList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
 
 //=============================================================================
 // Update frameTime for Animation 
@@ -220,7 +237,11 @@ void Spacewar::update()
 		bull->update(frameTime);
 	}
 
-	homingMissle.update(frameTime);
+	
+	for each (Powerup* p in bulletSpeedPowerupList)
+	{
+		p->update(frameTime);
+	}
 }
 
 //=============================================================================
@@ -261,11 +282,14 @@ void Spacewar::collisions()
 		}
 	}
 
-	if (rocketMain.collidesWith(homingMissle, collisionVector))
+	for each (Powerup* p in bulletSpeedPowerupList)
 	{
-		rocketMain.bounce(collisionVector, homingMissle);
-		homingMissle.setActive(false);
-		rocketMain.sethomingMissleActivated(true);
+		if (rocketMain.collidesWith(*p, collisionVector))
+		{
+			rocketMain.bounce(collisionVector, *p);
+			p->setActive(false);
+			rocketMain.setbulletSpeedActivated(true);
+		}
 	}
 
 	for each (SpeedBoost* sb in sbList)
@@ -303,9 +327,12 @@ void Spacewar::render()
 
 	starfield.draw();
 
-	if (homingMissle.getActive() == true)
+	for each (Powerup* p in bulletSpeedPowerupList)
 	{
-		homingMissle.draw();
+		if (p != NULL && p->getActive() == true)
+		{
+			p->draw();
+		}
 	}
 	
 	rocketMain.draw();						// add the rocket to the scene

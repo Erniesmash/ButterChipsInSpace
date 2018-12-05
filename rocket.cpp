@@ -21,7 +21,7 @@ Rocket::Rocket() : Entity()
 	radius = rocketNS::WIDTH / 2.0;
 	mass = rocketNS::MASS;
 	collisionType = entityNS::CIRCLE;
-	homingMissleActivated = false;
+	bulletSpeedActivated = false;
 	sbActive = false;
 	sbTimer = rocketNS::SB_TIMER;
 	spd = rocketNS::SPEED;
@@ -73,6 +73,20 @@ void Rocket::update(float frameTime)
 		sbActive = false;
 	}
 
+	if (bulletSpeedActivated == true)
+	{
+		bulletSpeedTimer -= frameTime;
+	}
+
+	if (bulletSpeedActivated == false)
+	{
+		bulletSpeedTimer = 10.0f; //reset
+	}
+
+	if (bulletSpeedTimer <= 0)
+	{
+		bulletSpeedActivated = false;
+	}
 
 	// Bounce off walls
 	if (spriteData.x > GAME_WIDTH - rocketNS::WIDTH)    // if hit right screen edge

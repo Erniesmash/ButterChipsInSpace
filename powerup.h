@@ -17,9 +17,13 @@ namespace powerupNS
 	const float ROTATION_RATE = (float)1.5 * PI; // radians per second
 	const float SPEED = 100;                // 100 pixels per second
 	const float MASS = 400.0f;              // mass
-	const int   TEXTURE_COLS = 4;          
-	const int   POWERUP_START_FRAME = 0;      // rocket starts at frame 0
-	const int   POWERUP_END_FRAME = 7;        // rocket animation frames 0,1,2,3
+	const int   TEXTURE_COLS = 4;       
+
+	const int   BULLETSPEED_POWERUP_START_FRAME = 0;    
+	const int   BULLETSPEED_POWERUP_END_FRAME = 3;    
+	const int   WAVE_POWERUP_START_FRAME = 4;   
+	const int   WAVE_POWERUP_END_FRAME = 7;       
+
 	const float POWERUP_ANIMATION_DELAY = 0.4f;    // time between frames
 }
 

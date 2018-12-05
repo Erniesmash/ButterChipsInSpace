@@ -15,8 +15,8 @@ Powerup::Powerup() : Entity()
 	velocity.x = 0;                             // velocity X
 	velocity.y = 0;                             // velocity Y
 	frameDelay = powerupNS::POWERUP_ANIMATION_DELAY;
-	startFrame = powerupNS::POWERUP_START_FRAME;     // first frame of ship animation
-	endFrame = powerupNS::POWERUP_END_FRAME;     // last frame of ship animation
+	startFrame = powerupNS::BULLETSPEED_POWERUP_START_FRAME;     // first frame of ship animation
+	endFrame = powerupNS::BULLETSPEED_POWERUP_END_FRAME;     // last frame of ship animation
 	currentFrame = startFrame;
 	radius = powerupNS::WIDTH / 2.0;
 	mass = powerupNS::MASS;

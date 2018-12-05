@@ -30,21 +30,26 @@ private:
 	TextureManager powerupTexture;
 	TextureManager sbTexture;
 
-	SpeedBoost sb;
-	Powerup homingMissle;
-	Rocket	rocketMain;
 	Image	farback;
 	Image	starfield;
 
+	SpeedBoost sb;
+	//Powerup increaseBulletSpeed;
+	Powerup waveShot;
+
+	Rocket	rocketMain;
 	EShip	eShip;			// enemy ship
-	EBullet	ebullet;			// enemy bullet
 
 	std::vector<Bullet*> bulletList;
 	vector<EShip*> eshipList;		// list of enemy ships
 	vector<EBullet*> ebulletList;
 	vector<SpeedBoost*> sbList;
+	vector<Powerup*> bulletSpeedPowerupList;
+	vector<Powerup*> WaveBulletPowerupList;
+
 	float sbSpawnTime = 0.0f;
-	float waitTimer = 0;
+	float waitTimer = 0.0f;
+	float bulletSpeedTime = 0.0f;
 
 public:
     // Constructor
