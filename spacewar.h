@@ -12,6 +12,7 @@
 #include <vector>
 #include "powerup.h"
 #include "speedboost.h"
+#include "explosion.h"
 
 //=============================================================================
 // This class is the core of the game
@@ -29,6 +30,7 @@ private:
 	TextureManager starfieldTexture;
 	TextureManager powerupTexture;
 	TextureManager sbTexture;
+	TextureManager explosionTexture;
 
 	Image	farback;
 	Image	starfield;
@@ -40,10 +42,12 @@ private:
 	Rocket	rocketMain;
 	EShip	eShip;			// enemy ship
 
+	Explosion explosion;
+
 	std::vector<Bullet*> bulletList;
 	vector<EShip*> eshipList;		// list of enemy ships
-	vector<EBullet*> ebulletList;
 	vector<SpeedBoost*> sbList;
+	vector<Explosion*> explosionList;
 	vector<Powerup*> bulletSpeedPowerupList;
 	vector<Powerup*> WaveBulletPowerupList;
 
@@ -69,6 +73,7 @@ public:
 	void checkEShip();
 	void checkSB();
 	void checkEB();
+	void checkEx();
 	//void checkBullet()
 };
 

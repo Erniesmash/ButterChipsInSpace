@@ -92,13 +92,11 @@ void Spacewar::initialize(HWND hwnd)
 	// enemy ship texture
 	if (!eShipTexture.initialize(graphics, ESHIP_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy ship texture"));
-
-	// enemy ship
-	if (!eShip.initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy ship"));
-	eShip.setFrames(eShipNS::ESHIP1_START_FRAME, eShipNS::ESHIP1_END_FRAME);
-	eShip.setCurrentFrame(eShipNS::ESHIP1_START_FRAME);
-	
+//=============================================================================
+// BAKURETSU MAHOU
+//=============================================================================
+	if (!explosionTexture.initialize(graphics, EXPLOSION_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing explosion"));
 }
 
 //=============================================================================
@@ -111,7 +109,10 @@ void Spacewar::update()
 	sbSpawnTime -= frameTime;
 	time -= frameTime;
 	bulletSpeedTime -= frameTime;
-
+	for each (Explosion* ex in explosionList)
+	{
+		ex->update(frameTime);
+	}
 	if (rocketMain.getbulletSpeedActivated() == false)
 	{
 		if (waitTimer <= 0.0f)
@@ -213,6 +214,8 @@ void Spacewar::update()
 	checkEShip();
 	checkSB();
 	checkEB();
+	checkEx();
+	
 	for (vector<Powerup*>::iterator it = bulletSpeedPowerupList.begin();
 		it != bulletSpeedPowerupList.end();)
 	{
@@ -269,6 +272,11 @@ void Spacewar::collisions()
 				eshat->setHealth(eshat->getHealth() - 100);
 				bull->setActive(false);
 				eshat->checkCollided = true;
+				Explosion *ex = new Explosion;
+				ex->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &explosionTexture);
+				ex->setX(eshat->getX());
+				ex->setY(eshat->getY());
+				explosionList.push_back(ex);
 			}
 		}
 	}
@@ -326,7 +334,6 @@ void Spacewar::render()
 	farback.draw();							// add the farback to the scene
 
 	starfield.draw();
-
 	for each (Powerup* p in bulletSpeedPowerupList)
 	{
 		if (p != NULL && p->getActive() == true)
@@ -334,7 +341,13 @@ void Spacewar::render()
 			p->draw();
 		}
 	}
-	
+	for each (Explosion* ex in explosionList)
+	{
+		if (ex != NULL)
+		{
+			ex->draw();
+		}
+	}
 	rocketMain.draw();						// add the rocket to the scene
 
 	for each(Bullet*  bull in bulletList)
@@ -353,8 +366,6 @@ void Spacewar::render()
 		{
 			if (b != NULL)
 			{
-				if (status == true)
-					status = true;
 				b->draw();
 			}
 		}
@@ -453,6 +464,23 @@ void Spacewar::checkEB()
 			{
 				++it;
 			}
+		}
+	}
+}
+
+void Spacewar::checkEx()
+{
+	for (vector<Explosion*>::iterator it = explosionList.begin();
+		it != explosionList.end();)
+	{
+		if ((*it)->exploded)
+		{
+			SAFE_DELETE(*it);
+			it = explosionList.erase(it);
+		}
+		else
+		{
+			++it;
 		}
 	}
 }
