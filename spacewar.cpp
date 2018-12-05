@@ -27,6 +27,17 @@ void Spacewar::initialize(HWND hwnd)
     Game::initialize(hwnd); // throws GameError
 
 //=============================================================================
+// Bullet Stuff
+//=============================================================================
+	// bullet texture
+	if (!bulletTexture.initialize(graphics, BULLET_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
+
+	// enemy bullet texture
+	if (!ebulletTexture.initialize(graphics, EBULLET_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error intializing enemy bullet texture"));
+
+//=============================================================================
 // Rocket
 //=============================================================================
 	// rocket texture
@@ -76,17 +87,6 @@ void Spacewar::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing starfield"));
 
 //=============================================================================
-// Bullet Stuff
-//=============================================================================
-	// bullet texture
-	if (!bulletTexture.initialize(graphics, BULLET_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bullet texture"));
-
-	// enemy bullet texture
-	if (!ebulletTexture.initialize(graphics, EBULLET_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error intializing enemy bullet texture"));
-
-//=============================================================================
 // Enemy Ship 
 //=============================================================================
 	// enemy ship texture
@@ -106,13 +106,16 @@ void Spacewar::update()
 {
 	//checkEShip();
 	waitTimer -= frameTime;
-	sbSpawnTime -= frameTime;
-	time -= frameTime;
+	sbSpawnTime -= frameTime;	//spawn timer for speed boost
+	time -= frameTime;			//spawn timer for enemy
 	bulletSpeedTime -= frameTime;
+
+	// run the update for explosions
 	for each (Explosion* ex in explosionList)
 	{
 		ex->update(frameTime);
 	}
+
 	if (rocketMain.getbulletSpeedActivated() == false)
 	{
 		if (waitTimer <= 0.0f)
@@ -152,17 +155,14 @@ void Spacewar::update()
 		}
 	}
 
+	// spawns a ship
 	if (time <= 0.0f) {
-		if (eshipList.size() < 6)
-		{
-			EShip *e = new EShip();
-			e->initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture);
-			e->setX(GAME_WIDTH - eShipNS::WIDTH);
-			e->setY(rand() % (GAME_HEIGHT - eShipNS::HEIGHT));
-			eshipList.push_back(e);
-			time = 2.0f;
-		}
-
+		EShip *e = new EShip();
+		e->initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture);
+		e->setX(GAME_WIDTH - eShipNS::WIDTH);
+		e->setY(rand() % (GAME_HEIGHT - eShipNS::HEIGHT));
+		eshipList.push_back(e);
+		time = 1.0f;
 	}
 
 	if (bulletSpeedTime <= 0.0f)
@@ -179,6 +179,7 @@ void Spacewar::update()
 		}
 	}
 
+	// spawns a speed boost
 	if (sbSpawnTime <= 0.0f)
 	{
 		if (sbList.size() <= 2)
@@ -188,10 +189,11 @@ void Spacewar::update()
 			sb->setX(rand() % (GAME_WIDTH - speedboostNS::WIDTH));
 			sb->setY(rand() % (GAME_HEIGHT - speedboostNS::HEIGHT));
 			sbList.push_back(sb);
-			sbSpawnTime = 60.0f;
+			sbSpawnTime = 30.0f;
 		}
 	}
 
+	// run eship update function and ebullet update function inside the eships ebullet list
 	for each (EShip* e in eshipList)
 	{
 		e->update(frameTime);
@@ -210,7 +212,7 @@ void Spacewar::update()
 		}
 	}	
 	
-	// delete vector items
+	// check to delete vector items
 	checkEShip();
 	checkSB();
 	checkEB();
