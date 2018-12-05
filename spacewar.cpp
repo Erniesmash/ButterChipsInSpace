@@ -273,15 +273,6 @@ void Spacewar::collisions()
 		}
 	}
 
-	for each (EBullet* b in ebulletList)
-	{
-		if (rocketMain.collidesWith(*b, collisionVector))
-		{
-			rocketMain.bounce(collisionVector, *b);
-			b->setActive(false);
-		}
-	}
-
 	for each (Powerup* p in bulletSpeedPowerupList)
 	{
 		if (rocketMain.collidesWith(*p, collisionVector))
@@ -312,6 +303,15 @@ void Spacewar::collisions()
 		if (e->collidesWith(*e, collisionVector))
 		{
 			e->bounce(collisionVector, *e);
+		}
+
+		for each (EBullet* b in e->ebulletList)
+		{
+			if (rocketMain.collidesWith(*b, collisionVector))
+			{
+				rocketMain.bounce(collisionVector, *b);
+				b->collided = true;
+			}
 		}
 	}
 }
