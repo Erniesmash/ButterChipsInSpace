@@ -45,6 +45,18 @@ void Spacewar::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error intializing enemy bullet texture"));
 
 //=============================================================================
+// Player
+//=============================================================================
+	// player texture
+	if (!playerTexture.initialize(graphics, PLAYER_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player texture"));
+
+	// player
+	if (!playerMain.initialize(this, playerNS::WIDTH, playerNS::HEIGHT, playerNS::TEXTURE_COLS, &playerTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player"));
+
+
+//=============================================================================
 // Rocket
 //=============================================================================
 	// rocket texture
@@ -365,6 +377,9 @@ void Spacewar::render()
 	farback.draw();							// add the farback to the scene
 
 	starfield.draw();
+
+	playerMain.draw();
+
 	for each (Powerup* p in bulletSpeedPowerupList)
 	{
 		if (p != NULL && p->getActive() == true)

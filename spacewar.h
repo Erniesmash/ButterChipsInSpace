@@ -20,6 +20,7 @@
 #include "powerup.h"
 #include "speedboost.h"
 #include "explosion.h"
+#include "player.h"
 
 //=============================================================================
 // This class is the core of the game
@@ -38,6 +39,7 @@ private:
 	TextureManager powerupTexture;
 	TextureManager sbTexture;
 	TextureManager explosionTexture;
+	TextureManager playerTexture;
 
 	Image	farback;
 	Image	starfield;
@@ -46,6 +48,7 @@ private:
 	//Powerup increaseBulletSpeed;
 	Powerup waveShot;
 
+	Player playerMain;
 	Rocket	rocketMain;
 	EShip	eShip;			// enemy ship
 

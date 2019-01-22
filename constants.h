@@ -58,6 +58,7 @@ const char POWERUP_IMAGE[] = "pictures\\balls.png";
 const char STARFIELD_IMAGE[] = "pictures\\starfield.png";
 const char SPEEDBOOST_IMAGE[] = "pictures\\head_sheet.png";
 const char EXPLOSION_IMAGE[] = "pictures\\explode1.png";
+const char PLAYER_IMAGE[] = "pictures\\player.png";
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
