@@ -285,6 +285,8 @@ void Spacewar::update()
 	{
 		p->update(frameTime);
 	}
+
+	playerMain.update(frameTime);
 }
 
 //=============================================================================

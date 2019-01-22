@@ -106,6 +106,7 @@
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="planet.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="powerup.cpp" />
     <ClCompile Include="rocket.cpp" />
     <ClCompile Include="spacewar.cpp" />
