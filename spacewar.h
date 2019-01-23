@@ -22,6 +22,8 @@
 #include "explosion.h"
 #include "player.h"
 
+#include "textDX.h"
+
 //=============================================================================
 // This class is the core of the game
 //=============================================================================
@@ -29,6 +31,7 @@ class Spacewar : public Game
 {
 private:
     // game items
+	TextDX dxFont;
     TextureManager gameTextures;    // game texture
 	TextureManager rocketTexture;	// rocket texture
 	TextureManager farbackTexture;	// farback texture

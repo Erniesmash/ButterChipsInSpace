@@ -3,6 +3,7 @@
 //=============================================================================
 // default constructor
 //=============================================================================
+
 Player::Player() : Entity()
 {
 	spriteData.width = playerNS::WIDTH;           // size of rocket
@@ -48,4 +49,33 @@ void Player::draw()
 void Player::update(float frameTime)
 {
 	Entity::update(frameTime);
+	/*
+	enum State{STATE_IDLE, STATE_ATTACK};
+	switch(state_)
+	{
+		case STATE_IDLE:
+
+		case STATE_ATTACK:
+
+	}
+	*/
+	if (input->isKeyDown(ROCKET_D_KEY))            // if move right
+	{
+		spriteData.x = spriteData.x + frameTime * playerNS::SPEED;
+	}
+
+	if (input->isKeyDown(ROCKET_A_KEY))             // if move left
+	{
+		spriteData.x = spriteData.x - frameTime * playerNS::SPEED;
+	}
+
+	if (input->isKeyDown(ROCKET_W_KEY))               // if move up
+	{
+		spriteData.y = spriteData.y - frameTime * playerNS::SPEED;
+	}
+
+	if (input->isKeyDown(ROCKET_S_KEY))             // if move down
+	{
+		spriteData.y = spriteData.y + frameTime * playerNS::SPEED;
+	}
 }
