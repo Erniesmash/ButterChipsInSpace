@@ -111,6 +111,13 @@ void Spacewar::initialize(HWND hwnd)
 	// enemy ship texture
 	if (!eShipTexture.initialize(graphics, ESHIP_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy ship texture"));
+
+	if (!eShip.initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing rocket"));
+	eShip.setFrames(eShipNS::ESHIP1_START_FRAME, eShipNS::ESHIP1_END_FRAME);
+	eShip.setCurrentFrame(eShipNS::ESHIP1_START_FRAME);
+	eShip.setX(GAME_WIDTH / 2);
+	eShip.setY(GAME_HEIGHT / 2);
 //=============================================================================
 // BAKURETSU MAHOU
 //=============================================================================
@@ -175,14 +182,14 @@ void Spacewar::update()
 	}
 
 	// spawns a ship
-	if (time <= 0.0f) {
+	/*if (time <= 0.0f) {
 		EShip *e = new EShip();
 		e->initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture);
 		e->setX(GAME_WIDTH - eShipNS::WIDTH);
 		e->setY(rand() % (GAME_HEIGHT - eShipNS::HEIGHT));
 		eshipList.push_back(e);
 		time = 1.0f;
-	}
+	}*/
 
 	if (bulletSpeedTime <= 0.0f)
 	{
@@ -213,7 +220,7 @@ void Spacewar::update()
 	}
 
 	// run eship update function and ebullet update function inside the eships ebullet list
-	for each (EShip* e in eshipList)
+	/*for each (EShip* e in eshipList)
 	{
 		e->update(frameTime);
 		e->chase(&rocketMain);
@@ -229,8 +236,20 @@ void Spacewar::update()
 		{
 			b->update(frameTime);
 		}
-	}	
-	
+	}*/
+	eShip.update(frameTime);
+	if (eShip.shotTimer <= 0.0f)
+	{
+		EBullet* b = new EBullet;
+		b->initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebulletTexture);
+		eShip.ebulletList.push_back(b);
+		b->getDir(&rocketMain, &eShip);
+		eShip.shotTimer = 1.0f;
+	}
+	for each (EBullet* b in eShip.ebulletList)
+	{
+		b->update(frameTime);
+	}
 	// check to delete vector items
 	checkEShip();
 	checkSB();
@@ -239,7 +258,7 @@ void Spacewar::update()
 
 	if (rocketMain.getHealth() <= 0)
 	{
-		rocketMain.setActive(false);
+		//rocketMain.setActive(false);
 		for (vector<Bullet*>::iterator it = bulletList.begin();
 			it != bulletList.end();)
 		{
@@ -249,10 +268,10 @@ void Spacewar::update()
 		for each (EShip* e in eshipList)
 		{
 			e->checkCollided = true;
-			for each (EBullet* eb in e->ebulletList)
+			/*for each (EBullet* eb in e->ebulletList)
 			{
 				eb->collided = true;
-			}
+			}*/
 		}
 	}
 	
@@ -381,6 +400,13 @@ void Spacewar::render()
 	starfield.draw();
 
 	playerMain.draw();
+
+	eShip.draw();
+
+	for each (EBullet*b in eShip.ebulletList)
+	{
+		b->draw();
+	}
 
 	for each (Powerup* p in bulletSpeedPowerupList)
 	{
