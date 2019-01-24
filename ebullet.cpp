@@ -8,6 +8,8 @@
 #include "ebullet.h"
 #include "eship.h"
 
+float nigga;
+
 //=============================================================================
 // default constructor
 //=============================================================================
@@ -59,7 +61,7 @@ void EBullet::update(float frameTime)
 	Entity::update(frameTime);
 	//spriteData.angle += frameTime * ebulletNS::ROTATION_RATE;  // rotate the ship
 	spriteData.x += frameTime * ebulletNS::SPEED; //* velocity.x;         // move ship along X 
-	//spriteData.y = sin(0.1*(spriteData.x)); //* velocity.y;         // move ship along Y
+	spriteData.y = nigga + ((GAME_HEIGHT/20)*sin(0.05*spriteData.x)); //* velocity.y;         // move ship along Y
 
 
 	// destroy at walls
@@ -84,7 +86,7 @@ void EBullet::update(float frameTime)
 void EBullet::getDir(Entity *to, Entity *from)
 {
 	spriteData.x = from->getCenterX() - spriteData.width / 2;
-	spriteData.y = from->getCenterY() - spriteData.height / 2;
+	nigga = from->getCenterY() - spriteData.height / 2;
 	/*VECTOR2 travel(to->getCenterX() - getCenterX(), to->getCenterY() - getCenterY());
 	Graphics::Vector2Normalize(&travel);
 	velocity = travel * ebulletNS::SPEED;*/

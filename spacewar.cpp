@@ -244,7 +244,7 @@ void Spacewar::update()
 		b->initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebulletTexture);
 		eShip.ebulletList.push_back(b);
 		b->getDir(&rocketMain, &eShip);
-		eShip.shotTimer = 1.0f;
+		eShip.shotTimer = 0.0f;
 	}
 	for each (EBullet* b in eShip.ebulletList)
 	{
