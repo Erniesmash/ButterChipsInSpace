@@ -1,4 +1,4 @@
-//  Module:             Gameplay Programming
+﻿//  Module:             Gameplay Programming
 //  Assignment1:        Butter Chips in Space
 //  Student Name:       Tan Cheng Hian
 //  Student Number:     S10179071A
@@ -52,6 +52,18 @@ void Spacewar::initialize(HWND hwnd)
 	}
 
 //=============================================================================
+// Player
+//=============================================================================
+	// player texture
+	if (!playerTexture.initialize(graphics, PLAYER_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player texture"));
+
+	// player
+	if (!playerMain.initialize(this, playerNS::WIDTH, playerNS::HEIGHT, playerNS::TEXTURE_COLS, &playerTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player"));
+
+
+//=============================================================================
 // Bullet Stuff
 //=============================================================================
 	// bullet texture
@@ -62,16 +74,6 @@ void Spacewar::initialize(HWND hwnd)
 	if (!ebulletTexture.initialize(graphics, EBULLET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error intializing enemy bullet texture"));
 
-//=============================================================================
-// Player
-//=============================================================================
-	// player texture
-	if (!playerTexture.initialize(graphics, PLAYER_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player texture"));
-
-	// player
-	if (!playerMain.initialize(this, playerNS::WIDTH, playerNS::HEIGHT, playerNS::TEXTURE_COLS, &playerTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player"));
 
 
 //=============================================================================
@@ -88,7 +90,7 @@ void Spacewar::initialize(HWND hwnd)
 	rocketMain.setCurrentFrame(rocketNS::ROCKET_START_FRAME);
 	rocketMain.setX(GAME_WIDTH / 2.3);
 	rocketMain.setY(GAME_HEIGHT / 1.15);
-
+	/*
 //=============================================================================
 // Powerups
 //=============================================================================
@@ -99,6 +101,7 @@ void Spacewar::initialize(HWND hwnd)
 	// speed boost texture
 	if (!sbTexture.initialize(graphics, SPEEDBOOST_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing powerup texture"));
+		*/
 
 //=============================================================================
 // Misc Background Stuff
@@ -122,20 +125,21 @@ void Spacewar::initialize(HWND hwnd)
 	// starfield image
 	if (!starfield.initialize(graphics, 0, 0, 0, &starfieldTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing starfield"));
-
+	
 //=============================================================================
 // Enemy Ship 
 //=============================================================================
 	// enemy ship texture
 	if (!eShipTexture.initialize(graphics, ESHIP_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy ship texture"));
+	
 //=============================================================================
 // BAKURETSU MAHOU
 //=============================================================================
 	if (!explosionTexture.initialize(graphics, EXPLOSION_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing explosion"));
 }
-
+	
 //=============================================================================
 // Update all game items
 //=============================================================================
@@ -392,6 +396,8 @@ void Spacewar::collisions()
 //=============================================================================
 void Spacewar::render()
 {
+	const int BUF_SIZE = 20;
+	static char buffer[BUF_SIZE];
     graphics->spriteBegin();                // begin drawing sprites
 
 	farback.draw();							// add the farback to the scene
@@ -410,6 +416,9 @@ void Spacewar::render()
 			}
 		}
 	}
+
+	_snprintf_s(buffer, BUF_SIZE, "Welcome to ブロブとトラブル");
+	dxFont.print(buffer, GAME_WIDTH/100, GAME_HEIGHT/1.05);
 
 	for each (Powerup* p in bulletSpeedPowerupList)
 	{
