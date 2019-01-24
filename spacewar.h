@@ -23,6 +23,7 @@
 #include "player.h"
 
 #include "textDX.h"
+#include "heart.h"
 
 //=============================================================================
 // This class is the core of the game
@@ -43,6 +44,10 @@ private:
 	TextureManager sbTexture;
 	TextureManager explosionTexture;
 	TextureManager playerTexture;
+
+	TextureManager heartTexture;
+	std::vector<Heart*> heartList;
+	float numberOfLives = 6;
 
 	Image	farback;
 	Image	starfield;

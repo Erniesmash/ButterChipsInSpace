@@ -33,6 +33,24 @@ void Spacewar::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
 
+	// dxFont
+	if (dxFont.initialize(graphics, gameNS::POINT_SIZE, false, false, gameNS::FONT) == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Failed to initialize DirectX font."));
+
+	// heart texture
+	if (!heartTexture.initialize(graphics, HEART_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing heart texture"));
+
+	for (int x = 0; x < numberOfLives; x++)
+	{
+
+		Heart *heart = new Heart();
+		heart->initialize(this, heartNS::WIDTH, heartNS::HEIGHT, heartNS::TEXTURE_COLS, &heartTexture);
+		heart->setX(GAME_WIDTH / 24 * (numberOfLives - (x - 17.5)));
+		heart->setY(GAME_HEIGHT / 100);
+		heartList.push_back(heart);
+	}
+
 //=============================================================================
 // Bullet Stuff
 //=============================================================================
@@ -382,6 +400,17 @@ void Spacewar::render()
 
 	playerMain.draw();
 
+	if (heartList.size() != 0)
+	{
+		for each (Heart* h in heartList)
+		{
+			if (h->getActive() == true)
+			{
+				h->draw();
+			}
+		}
+	}
+
 	for each (Powerup* p in bulletSpeedPowerupList)
 	{
 		if (p != NULL && p->getActive() == true)
@@ -445,6 +474,7 @@ void Spacewar::releaseAll()
 	rocketTexture.onLostDevice();
 	bulletTexture.onLostDevice();
 	eShipTexture.onLostDevice();
+	heartTexture.onLostDevice();
     Game::releaseAll();
     return;
 }
@@ -461,6 +491,7 @@ void Spacewar::resetAll()
 	starfieldTexture.onResetDevice();
 	bulletTexture.onResetDevice();
 	eShipTexture.onResetDevice();
+	heartTexture.onResetDevice();
     Game::resetAll();
     return;
 }

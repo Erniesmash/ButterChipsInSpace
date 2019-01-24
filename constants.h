@@ -31,11 +31,11 @@
 //-----------------------------------------------
 
 // window
-const char CLASS_NAME[] = "Butter Chips in Space";
-const char GAME_TITLE[] = "Butter Chips in Space";
+const char CLASS_NAME[] = "Blob";
+const char GAME_TITLE[] = "Blob";
 const bool FULLSCREEN = false;              // windowed or fullscreen
-const UINT GAME_WIDTH =  1100;               // width of game in pixels640
-const UINT GAME_HEIGHT = 600;               // height of game in pixels480
+const UINT GAME_WIDTH =  1100;           
+const UINT GAME_HEIGHT = 600;            
 
 // game
 const double PI = 3.14159265;
@@ -59,6 +59,8 @@ const char STARFIELD_IMAGE[] = "pictures\\starfield.png";
 const char SPEEDBOOST_IMAGE[] = "pictures\\head_sheet.png";
 const char EXPLOSION_IMAGE[] = "pictures\\explode1.png";
 const char PLAYER_IMAGE[] = "pictures\\player.png";
+const char SPECIAL_IMAGE[] = "pictures\\MeatSmall.png";
+const char HEART_IMAGE[] = "pictures\\heart.png";
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
@@ -73,6 +75,13 @@ const UCHAR ROCKET_S_KEY = 0x53;
 const UCHAR ROCKET_W_KEY = 0x57;
 const UCHAR ROCKET_E_KEY = 0x45;
 const UCHAR ROCKET_Q_KEY = 0x51;
+
+// For Specials
+const UCHAR ONE_KEY = 0x31;
+const UCHAR TWO_KEY = 0x32;
+const UCHAR THREE_KEY = 0x33;
+const UCHAR FOUR_KEY = 0x34;
+
 const UCHAR ARROW_LEFT = VK_LEFT;
 const UCHAR ARROW_RIGHT = VK_RIGHT;
 const UCHAR ARROW_UP = VK_UP;
