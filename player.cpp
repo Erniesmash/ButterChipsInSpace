@@ -49,6 +49,7 @@ void Player::draw()
 void Player::update(float frameTime)
 {
 	Entity::update(frameTime);
+	dashTimer += frameTime;
 	/*
 	enum State{STATE_IDLE, STATE_ATTACK};
 	switch(state_)
@@ -62,7 +63,6 @@ void Player::update(float frameTime)
 	if (input->isKeyDown(ROCKET_D_KEY))            // if move right
 	{
 		spriteData.x = spriteData.x + frameTime * playerNS::SPEED;
-		spriteData.y = -spriteData.y + 10*sin(0.05*spriteData.x);
 	}
 
 	if (input->isKeyDown(ROCKET_A_KEY))             // if move left
@@ -79,25 +79,14 @@ void Player::update(float frameTime)
 	{
 		spriteData.y = spriteData.y + frameTime * playerNS::SPEED;
 	}
-
-	/* Concept
-	float distance = t * z_distance_per_unit;
-	float theta = t * angle_delta_per_unit;
-	float offset = sin(theta) * effect_amplitude;
-	vector3 p = position + z * distance + x * offset;
-	*/
-
-	/*
+	
 	// Sine Wave Dodge Roll Test
 	if (input->isKeyDown(ONE_KEY))    
 	{
-		for (int x = spriteData.x; x + 50; x++)
-		{
-			//spriteData.y = 20 * sin(2* PI * x);
-			spriteData.y = ((GAME_HEIGHT / 20)*sin(0.05*spriteData.x));
-		}
+		spriteData.x = spriteData.x + frameTime * playerNS::SPEED;
+		spriteData.y = spriteData.y + 5 * sin(0.05 * spriteData.x);
 	}
-	*/
+	
 	// Bounce off walls
 	if (spriteData.x > GAME_WIDTH - playerNS::WIDTH)    // if hit right screen edge
 	{

@@ -467,13 +467,16 @@ void Spacewar::render()
 			s->draw();
 		}
 	}
-
 	/*
-	meatSpecials.draw();
-	*/
-
 	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Welcome to ブロブとトラブル");
 	dxFont.print(buffer, GAME_WIDTH/100, GAME_HEIGHT/1.05);
+	*/
+
+	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Click 1, 2, 3 or 4 to use Special Abilities!");
+	dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
+
+	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)playerMain.dashTimer);
+	dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 2);
 
 	//change ability/specials selection
 	if (input->isKeyDown(ONE_KEY))

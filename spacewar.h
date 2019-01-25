@@ -17,6 +17,7 @@
 #include "eship.h"
 #include "ebullet.h"
 #include <vector>
+#include <string>
 #include "powerup.h"
 #include "speedboost.h"
 #include "explosion.h"
@@ -31,7 +32,7 @@ namespace spacewarNS
 {
 	const char FONT[] = "Arial Bold";  // font
 	const int FONT_BIG_SIZE = 100;     // font height
-	const int BUF_SIZE = 20;
+	const int BUF_SIZE = 200;
 	const COLOR_ARGB FONT_COLOR = graphicsNS::YELLOW;
 }
 
