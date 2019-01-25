@@ -59,8 +59,9 @@ const char STARFIELD_IMAGE[] = "pictures\\starfield.png";
 const char SPEEDBOOST_IMAGE[] = "pictures\\head_sheet.png";
 const char EXPLOSION_IMAGE[] = "pictures\\explode1.png";
 const char PLAYER_IMAGE[] = "pictures\\player.png";
-const char SPECIAL_IMAGE[] = "pictures\\MeatSmall.png";
+const char SPECIALS_IMAGE[] = "pictures\\MeatSmall.png";
 const char HEART_IMAGE[] = "pictures\\heart.png";
+const char SELECTION_IMAGE[] = "pictures\\selection.png";
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
@@ -76,16 +77,16 @@ const UCHAR ROCKET_W_KEY = 0x57;
 const UCHAR ROCKET_E_KEY = 0x45;
 const UCHAR ROCKET_Q_KEY = 0x51;
 
-// For Specials
-const UCHAR ONE_KEY = 0x31;
-const UCHAR TWO_KEY = 0x32;
-const UCHAR THREE_KEY = 0x33;
-const UCHAR FOUR_KEY = 0x34;
-
 const UCHAR ARROW_LEFT = VK_LEFT;
 const UCHAR ARROW_RIGHT = VK_RIGHT;
 const UCHAR ARROW_UP = VK_UP;
 const UCHAR ARROW_DOWN = VK_DOWN;
 const UCHAR ROCKET_SPACE_KEY = VK_SPACE;
+
+// For Specials
+const UCHAR ONE_KEY = 0x31;
+const UCHAR TWO_KEY = 0x32;
+const UCHAR THREE_KEY = 0x33;
+const UCHAR FOUR_KEY = 0x34;
 
 #endif

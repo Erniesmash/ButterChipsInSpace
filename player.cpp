@@ -78,7 +78,16 @@ void Player::update(float frameTime)
 	{
 		spriteData.y = spriteData.y + frameTime * playerNS::SPEED;
 	}
-
+	/*
+	// Sine Wave Dodge Roll Test
+	if (input->isKeyDown(ONE_KEY))    
+	{
+		for (int x = spriteData.x; x + 50; x++)
+		{
+			spriteData.y = 20 * sin(2* PI * x);
+		}
+	}
+	*/
 	// Bounce off walls
 	if (spriteData.x > GAME_WIDTH - playerNS::WIDTH)    // if hit right screen edge
 	{

@@ -24,6 +24,17 @@
 
 #include "textDX.h"
 #include "heart.h"
+#include "specials.h"
+#include "selection.h"
+
+namespace spacewarNS
+{
+	const char FONT[] = "Arial Bold";  // font
+	const int FONT_BIG_SIZE = 100;     // font height
+	const int BUF_SIZE = 20;
+	const COLOR_ARGB FONT_COLOR = graphicsNS::YELLOW;
+}
+
 
 //=============================================================================
 // This class is the core of the game
@@ -33,6 +44,8 @@ class Spacewar : public Game
 private:
     // game items
 	TextDX dxFont;
+	TextDX fontBig;
+	char buffer[spacewarNS::BUF_SIZE];
     TextureManager gameTextures;    // game texture
 	TextureManager rocketTexture;	// rocket texture
 	TextureManager farbackTexture;	// farback texture
@@ -45,30 +58,32 @@ private:
 	TextureManager explosionTexture;
 	TextureManager playerTexture;
 
+	TextureManager selectionTexture;
+	std::vector<Selection*> selectionList;
 	TextureManager heartTexture;
 	std::vector<Heart*> heartList;
+	// Adjust Starting Number of Lives here
 	float numberOfLives = 6;
+	float numberOfSpecials = 4;
+
+	TextureManager specialsTexture;
+	//Specials meatSpecials;
+	std::vector<Specials*> specialList;
 
 	Image	farback;
 	Image	starfield;
-
 	SpeedBoost sb;
-	//Powerup increaseBulletSpeed;
+	Powerup increaseBulletSpeed;
 	Powerup waveShot;
-
 	Player playerMain;
 	Rocket	rocketMain;
-	EShip	eShip;			// enemy ship
-
 	Explosion explosion;
-
 	std::vector<Bullet*> bulletList;
 	vector<EShip*> eshipList;		// list of enemy ships
 	vector<SpeedBoost*> sbList;
 	vector<Explosion*> explosionList;
 	vector<Powerup*> bulletSpeedPowerupList;
 	vector<Powerup*> WaveBulletPowerupList;
-
 	float sbSpawnTime = 0.0f;
 	float waitTimer = 0.0f;
 	float bulletSpeedTime = 0.0f;
@@ -92,7 +107,6 @@ public:
 	void checkSB();
 	void checkEB();
 	void checkEx();
-	//void checkBullet()
 };
 
 #endif

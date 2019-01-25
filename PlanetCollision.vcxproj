@@ -68,6 +68,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d9.lib;d3dx9.lib;winmm.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -85,6 +86,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d9.lib;d3dx9.lib;winmm.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -110,7 +112,9 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="powerup.cpp" />
     <ClCompile Include="rocket.cpp" />
+    <ClCompile Include="selection.cpp" />
     <ClCompile Include="spacewar.cpp" />
+    <ClCompile Include="specials.cpp" />
     <ClCompile Include="speedboost.cpp" />
     <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureManager.cpp" />
@@ -136,7 +140,9 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="powerup.h" />
     <ClInclude Include="rocket.h" />
+    <ClInclude Include="selection.h" />
     <ClInclude Include="spacewar.h" />
+    <ClInclude Include="specials.h" />
     <ClInclude Include="speedboost.h" />
     <ClInclude Include="textDX.h" />
     <ClInclude Include="textureManager.h" />

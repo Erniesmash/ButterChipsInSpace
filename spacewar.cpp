@@ -37,19 +37,55 @@ void Spacewar::initialize(HWND hwnd)
 	if (dxFont.initialize(graphics, gameNS::POINT_SIZE, false, false, gameNS::FONT) == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Failed to initialize DirectX font."));
 
+	// initialize DirectX fonts
+	fontBig.initialize(graphics, spacewarNS::FONT_BIG_SIZE, false, false, spacewarNS::FONT);
+	//fontBig.setFontColor(spacewarNS::FONT_COLOR);
+
 	// heart texture
 	if (!heartTexture.initialize(graphics, HEART_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing heart texture"));
 
 	for (int x = 0; x < numberOfLives; x++)
 	{
-
 		Heart *heart = new Heart();
 		heart->initialize(this, heartNS::WIDTH, heartNS::HEIGHT, heartNS::TEXTURE_COLS, &heartTexture);
 		heart->setX(GAME_WIDTH / 24 * (numberOfLives - (x - 17.5)));
 		heart->setY(GAME_HEIGHT / 100);
 		heartList.push_back(heart);
 	}
+
+	// selection texture
+	if (!selectionTexture.initialize(graphics, SELECTION_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing selection texture"));
+
+	for (int x = 0; x < numberOfSpecials; x++)
+	{
+		Selection *selection = new Selection();
+		selection->initialize(this, selectionNS::WIDTH, selectionNS::HEIGHT, selectionNS::TEXTURE_COLS, &selectionTexture);
+		selection->setX(GAME_WIDTH / 15 * (numberOfSpecials - (x + 0.8)));
+		selection->setY(GAME_HEIGHT / 100);
+		selectionList.push_back(selection);
+	}
+
+	// specials texture
+	if (!specialsTexture.initialize(graphics, SPECIALS_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing specials texture"));
+
+	for (int x = 0; x < numberOfSpecials; x++)
+	{
+		Specials *special = new Specials();
+		special->initialize(this, specialsNS::WIDTH, specialsNS::HEIGHT, specialsNS::TEXTURE_COLS, &specialsTexture);
+		special->setFrames(x , x);
+		special->setX(GAME_WIDTH / 15 * (numberOfSpecials - (x + 0.8)));
+		special->setY(GAME_HEIGHT / 100);
+		specialList.push_back(special);
+	}
+
+	/*
+	// specials
+	if (!meatSpecials.initialize(this, specialsNS::WIDTH, specialsNS::HEIGHT, specialsNS::TEXTURE_COLS, &specialsTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing specials"));
+	*/
 
 //=============================================================================
 // Player
@@ -150,6 +186,7 @@ void Spacewar::update()
 	sbSpawnTime -= frameTime;	//spawn timer for speed boost
 	time -= frameTime;			//spawn timer for enemy
 	bulletSpeedTime -= frameTime;
+
 
 	// run the update for explosions
 	for each (Explosion* ex in explosionList)
@@ -396,8 +433,6 @@ void Spacewar::collisions()
 //=============================================================================
 void Spacewar::render()
 {
-	const int BUF_SIZE = 20;
-	static char buffer[BUF_SIZE];
     graphics->spriteBegin();                // begin drawing sprites
 
 	farback.draw();							// add the farback to the scene
@@ -417,8 +452,54 @@ void Spacewar::render()
 		}
 	}
 
-	_snprintf_s(buffer, BUF_SIZE, "Welcome to ブロブとトラブル");
+	for each (Selection* s in selectionList)
+	{
+		if (s->getActive() == true)
+		{
+			s->draw();
+		}
+	}
+
+	for each (Specials* s in specialList)
+	{
+		if (s->getActive() == true)
+		{
+			s->draw();
+		}
+	}
+
+	/*
+	meatSpecials.draw();
+	*/
+
+	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Welcome to ブロブとトラブル");
 	dxFont.print(buffer, GAME_WIDTH/100, GAME_HEIGHT/1.05);
+
+	//change ability/specials selection
+	if (input->isKeyDown(ONE_KEY))
+	{
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
+		fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
+	}
+
+	if (input->isKeyDown(TWO_KEY))
+	{
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
+		fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
+		
+	}
+
+	if (input->isKeyDown(THREE_KEY))
+	{
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
+		fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
+	}
+
+	if (input->isKeyDown(FOUR_KEY))
+	{
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
+		fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
+	}
 
 	for each (Powerup* p in bulletSpeedPowerupList)
 	{
@@ -484,6 +565,8 @@ void Spacewar::releaseAll()
 	bulletTexture.onLostDevice();
 	eShipTexture.onLostDevice();
 	heartTexture.onLostDevice();
+	specialsTexture.onLostDevice();
+	selectionTexture.onLostDevice();
     Game::releaseAll();
     return;
 }
@@ -501,6 +584,8 @@ void Spacewar::resetAll()
 	bulletTexture.onResetDevice();
 	eShipTexture.onResetDevice();
 	heartTexture.onResetDevice();
+	specialsTexture.onResetDevice();
+	selectionTexture.onResetDevice();
     Game::resetAll();
     return;
 }
