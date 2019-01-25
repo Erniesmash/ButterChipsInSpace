@@ -58,9 +58,13 @@ void EBullet::update(float frameTime)
 {
 	Entity::update(frameTime);
 	//spriteData.angle += frameTime * ebulletNS::ROTATION_RATE;  // rotate the ship
-	spriteData.x += frameTime * velocity.x;         // move ship along X 
+	spriteData.x += frameTime * velocity.x;         // move ship along X
 	spriteData.y += frameTime * velocity.y;         // move ship along Y
 
+	/*
+	spriteData.x += frameTime * ebulletNS::SPEED; //* velocity.x;         // move ship along X 
+	spriteData.y = nigga + ((GAME_HEIGHT / 20)*sin(0.05*spriteData.x)); //* velocity.y;         // move ship along Y
+	*/
 
 	// destroy at walls
 	if (spriteData.x > GAME_WIDTH - ebulletNS::WIDTH)    // if hit right screen edge
