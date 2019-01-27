@@ -37,9 +37,13 @@ void Spacewar::initialize(HWND hwnd)
 	if (dxFont.initialize(graphics, gameNS::POINT_SIZE, false, false, gameNS::FONT) == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Failed to initialize DirectX font."));
 
+	// dxFont Green
+	if (dxFontGreen.initialize(graphics, gameNS::POINT_SIZE, false, false, gameNS::FONT) == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Failed to initialize DirectX font."));
+	dxFontGreen.setFontColor(spacewarNS::FONT_COLOR);
+
 	// initialize DirectX fonts
 	fontBig.initialize(graphics, spacewarNS::FONT_BIG_SIZE, false, false, spacewarNS::FONT);
-	//fontBig.setFontColor(spacewarNS::FONT_COLOR);
 
 	// heart texture
 	if (!heartTexture.initialize(graphics, HEART_IMAGE))
@@ -483,7 +487,7 @@ void Spacewar::render()
 	else
 	{
 		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
-		dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
+		dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
 	}
 
 	//Ability Two

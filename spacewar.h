@@ -33,7 +33,7 @@ namespace spacewarNS
 	const char FONT[] = "Arial Bold";  // font
 	const int FONT_BIG_SIZE = 100;     // font height
 	const int BUF_SIZE = 200;
-	const COLOR_ARGB FONT_COLOR = graphicsNS::YELLOW;
+	const COLOR_ARGB FONT_COLOR = graphicsNS::GREEN;
 }
 
 
@@ -46,6 +46,7 @@ private:
     // game items
 	TextDX dxFont;
 	TextDX fontBig;
+	TextDX dxFontGreen;
 	char buffer[spacewarNS::BUF_SIZE];
     TextureManager gameTextures;    // game texture
 	TextureManager rocketTexture;	// rocket texture
