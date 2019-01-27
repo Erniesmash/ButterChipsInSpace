@@ -11,8 +11,8 @@ Specials::Specials() : Entity()
 	spriteData.y = specialsNS::Y;
 	spriteData.rect.bottom = specialsNS::HEIGHT;    // rectangle to select parts of an image
 	spriteData.rect.right = specialsNS::WIDTH;
-	//startFrame = specialsNS::SPECIALS_START_FRAME;     // first frame of ship animation
-	//endFrame = specialsNS::SPECIALS_END_FRAME;     // last frame of ship animation
+	startFrame = specialsNS::SPECIALS_START_FRAME;     // first frame of ship animation
+	endFrame = specialsNS::SPECIALS_END_FRAME;     // last frame of ship animation
 	currentFrame = startFrame;
 	radius = specialsNS::WIDTH / 2.0;
 	spriteData.scale = 1.5;

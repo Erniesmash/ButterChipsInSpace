@@ -58,6 +58,7 @@ void Spacewar::initialize(HWND hwnd)
 	if (!selectionTexture.initialize(graphics, SELECTION_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing selection texture"));
 
+	// selection items
 	for (int x = 0; x < numberOfSpecials; x++)
 	{
 		Selection *selection = new Selection();
@@ -71,21 +72,17 @@ void Spacewar::initialize(HWND hwnd)
 	if (!specialsTexture.initialize(graphics, SPECIALS_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing specials texture"));
 
+	// specials items
 	for (int x = 0; x < numberOfSpecials; x++)
 	{
 		Specials *special = new Specials();
 		special->initialize(this, specialsNS::WIDTH, specialsNS::HEIGHT, specialsNS::TEXTURE_COLS, &specialsTexture);
-		special->setFrames(x , x);
+		//special->setFrames(x, x);
+		special->setCurrentFrame(x);
 		special->setX(GAME_WIDTH / 15 * (numberOfSpecials - (x + 0.8)));
 		special->setY(GAME_HEIGHT / 100);
 		specialList.push_back(special);
 	}
-
-	/*
-	// specials
-	if (!meatSpecials.initialize(this, specialsNS::WIDTH, specialsNS::HEIGHT, specialsNS::TEXTURE_COLS, &specialsTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing specials"));
-	*/
 
 //=============================================================================
 // Player
@@ -467,6 +464,7 @@ void Spacewar::render()
 			s->draw();
 		}
 	}
+
 	/*
 	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Welcome to ブロブとトラブル");
 	dxFont.print(buffer, GAME_WIDTH/100, GAME_HEIGHT/1.05);
@@ -475,8 +473,30 @@ void Spacewar::render()
 	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Click 1, 2, 3 or 4 to use Special Abilities!");
 	dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
 
-	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)playerMain.dashTimer);
-	dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 2);
+	//Ability One Dash
+	if (playerMain.dashOnCooldown == true)
+	{
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)playerMain.dashCooldownTimer);
+		dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
+	}
+
+	else
+	{
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+		dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
+	}
+
+	//Ability Two
+	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+	dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
+
+	//Ability Three
+	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+	dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
+
+	//Ability Four
+	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+	dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
 
 	//change ability/specials selection
 	if (input->isKeyDown(ONE_KEY))

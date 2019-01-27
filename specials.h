@@ -16,8 +16,8 @@ namespace specialsNS
 	const float ROTATION_RATE = (float)PI / 4;
 
 	const int   TEXTURE_COLS = 4;
-	//const int   SPECIALS_START_FRAME = 8;
-	//const int   SPECIALS_END_FRAME = 8;
+	const int   SPECIALS_START_FRAME = 8;
+	const int   SPECIALS_END_FRAME = 8;
 }
 
 // inherits from Entity class

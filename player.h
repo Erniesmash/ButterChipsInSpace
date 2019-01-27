@@ -29,8 +29,8 @@ class Player : public Entity
 {
 private:
 	HealthComponent *healthcomponent;
-	//MovementComponent *movecomponent;
-	AttackComponent *attackcomponent;
+	MovementComponent *movecomponent;
+	AttackComponent *attackcomponent;	
 
 public:
 	// constructor
@@ -39,6 +39,9 @@ public:
 	virtual void draw();
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols, TextureManager *textureM);
 	void update(float frameTime);
-	float dashTimer = 0;
+	float dashCooldownTimer = 0;
+	float dashInUseTimer = 0.5;
+	bool dashOnCooldown = false;
+	bool dashActive = false;
 };
 #endif

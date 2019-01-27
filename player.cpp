@@ -49,7 +49,7 @@ void Player::draw()
 void Player::update(float frameTime)
 {
 	Entity::update(frameTime);
-	dashTimer += frameTime;
+
 	/*
 	enum State{STATE_IDLE, STATE_ATTACK};
 	switch(state_)
@@ -59,34 +59,45 @@ void Player::update(float frameTime)
 		case STATE_ATTACK:
 
 	}
-	*/
-	if (input->isKeyDown(ROCKET_D_KEY))            // if move right
+	*/	
+	
+	// Sine Wave Dodge Roll (Ability 1)
+	if (dashOnCooldown == false)
 	{
-		spriteData.x = spriteData.x + frameTime * playerNS::SPEED;
+		if (input->isKeyDown(ONE_KEY))
+		{
+			dashActive = true;
+			dashOnCooldown = true;
+		}
 	}
 
-	if (input->isKeyDown(ROCKET_A_KEY))             // if move left
+	else //dash is on cooldown
 	{
-		spriteData.x = spriteData.x - frameTime * playerNS::SPEED;
-	}
-
-	if (input->isKeyDown(ROCKET_W_KEY))               // if move up
-	{
-		spriteData.y = spriteData.y - frameTime * playerNS::SPEED;
-	}
-
-	if (input->isKeyDown(ROCKET_S_KEY))             // if move down
-	{
-		spriteData.y = spriteData.y + frameTime * playerNS::SPEED;
+		dashCooldownTimer -= frameTime;
+		if (dashCooldownTimer < 0)
+		{
+			dashOnCooldown = false;
+			dashCooldownTimer = 5;
+		}
 	}
 	
-	// Sine Wave Dodge Roll Test
-	if (input->isKeyDown(ONE_KEY))    
+	if (dashActive == true)
 	{
-		spriteData.x = spriteData.x + frameTime * playerNS::SPEED;
-		spriteData.y = spriteData.y + 5 * sin(0.05 * spriteData.x);
+		dashInUseTimer -= frameTime;
+
+		if (dashInUseTimer > 0)
+		{
+			spriteData.x = spriteData.x + frameTime * playerNS::SPEED;
+			spriteData.y = spriteData.y + 6 * sin(0.09 * spriteData.x);
+		}	
+
+		else //i.e less than zero
+		{
+			dashInUseTimer = 0.5;
+			dashActive = false;
+		}
 	}
-	
+
 	// Bounce off walls
 	if (spriteData.x > GAME_WIDTH - playerNS::WIDTH)    // if hit right screen edge
 	{
@@ -107,5 +118,28 @@ void Player::update(float frameTime)
 	{
 		spriteData.y = 0;                           // position at top screen edge
 		velocity.y = -velocity.y;                   // reverse Y direction
+	}
+
+	if (dashActive == false)
+	{
+		if (input->isKeyDown(ROCKET_D_KEY))            // if move right
+		{
+			spriteData.x = spriteData.x + frameTime * playerNS::SPEED;
+		}
+
+		if (input->isKeyDown(ROCKET_A_KEY))             // if move left
+		{
+			spriteData.x = spriteData.x - frameTime * playerNS::SPEED;
+		}
+
+		if (input->isKeyDown(ROCKET_W_KEY))               // if move up
+		{
+			spriteData.y = spriteData.y - frameTime * playerNS::SPEED;
+		}
+
+		if (input->isKeyDown(ROCKET_S_KEY))             // if move down
+		{
+			spriteData.y = spriteData.y + frameTime * playerNS::SPEED;
+		}
 	}
 }
