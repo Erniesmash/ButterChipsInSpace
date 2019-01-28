@@ -72,7 +72,7 @@
     <ClCompile Include="dfr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dfbullet.cpp">
+    <ClCompile Include="dfrbullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -146,7 +146,7 @@
     <ClInclude Include="dfr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dfbullet.h">
+    <ClInclude Include="dfrbullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

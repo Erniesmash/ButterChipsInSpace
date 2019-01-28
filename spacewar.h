@@ -21,6 +21,7 @@
 #include "speedboost.h"
 #include "explosion.h"
 #include "player.h"
+#include "dfr.h"
 
 #include "textDX.h"
 
@@ -43,6 +44,7 @@ private:
 	TextureManager sbTexture;
 	TextureManager explosionTexture;
 	TextureManager playerTexture;
+	TextureManager dfrTexture;
 
 	Image	farback;
 	Image	starfield;
@@ -56,6 +58,7 @@ private:
 	EShip	eShip;			// enemy ship
 
 	Explosion explosion;
+	Dfr dfr;
 
 	std::vector<Bullet*> bulletList;
 	vector<EShip*> eshipList;		// list of enemy ships

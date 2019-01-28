@@ -1,34 +1,34 @@
 #include "dfr.h"
-#include "dfbullet.h"
+#include "dfrbullet.h"
 
 //=============================================================================
 // default constructor
 //=============================================================================
-DfBullet::DfBullet() : Entity()
+DfrBullet::DfrBullet() : Entity()
 {
-	spriteData.width = dfbulletNS::WIDTH;           // size of Ship1
-	spriteData.height = dfbulletNS::HEIGHT;
-	spriteData.x = dfbulletNS::X;                   // location on screen
-	spriteData.y = dfbulletNS::Y;
-	spriteData.rect.bottom = dfbulletNS::HEIGHT;    // rectangle to select parts of an image
-	spriteData.rect.right = dfbulletNS::WIDTH;
+	spriteData.width = dfrbulletNS::WIDTH;           // size of Ship1
+	spriteData.height = dfrbulletNS::HEIGHT;
+	spriteData.x = dfrbulletNS::X;                   // location on screen
+	spriteData.y = dfrbulletNS::Y;
+	spriteData.rect.bottom = dfrbulletNS::HEIGHT;    // rectangle to select parts of an image
+	spriteData.rect.right = dfrbulletNS::WIDTH;
 	velocity.x = 1;                             // velocity X
 	velocity.y = 1;                             // velocity Y
-	frameDelay = dfbulletNS::DFBULLET_ANIMATION_DELAY;
-	startFrame = dfbulletNS::DFBULLET_START_FRAME;     // first frame of ship animation
-	endFrame = dfbulletNS::DFBULLET_END_FRAME;     // last frame of ship animation
+	frameDelay = dfrbulletNS::DFRBULLET_ANIMATION_DELAY;
+	startFrame = dfrbulletNS::DFRBULLET_START_FRAME;     // first frame of ship animation
+	endFrame = dfrbulletNS::DFRBULLET_END_FRAME;     // last frame of ship animation
 	currentFrame = startFrame;
-	radius = dfbulletNS::WIDTH / 2.0;
-	mass = dfbulletNS::MASS;
+	radius = dfrbulletNS::WIDTH / 2.0;
+	mass = dfrbulletNS::MASS;
 	collisionType = entityNS::CIRCLE;
 	collided = false;
 }
 
 //=============================================================================
-// Initialize the DfBullet.
+// Initialize the DfrBullet.
 // Post: returns true if successful, false if failed
 //=============================================================================
-bool DfBullet::initialize(Game *gamePtr, int width, int height, int ncols,
+bool DfrBullet::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
@@ -37,7 +37,7 @@ bool DfBullet::initialize(Game *gamePtr, int width, int height, int ncols,
 //=============================================================================
 // draw the ship
 //=============================================================================
-void DfBullet::draw()
+void DfrBullet::draw()
 {
 	Image::draw();              // draw ship
 }
@@ -47,16 +47,16 @@ void DfBullet::draw()
 // typically called once per frame
 // frameTime is used to regulate the speed of movement and animation
 //=============================================================================
-void DfBullet::update(float frameTime)
+void DfrBullet::update(float frameTime)
 {
 	Entity::update(frameTime);
-	//spriteData.angle += frameTime * dfbulletNS::ROTATION_RATE;  // rotate the ship
-	spriteData.x += frameTime * velocity.x;         // move ship along X 
-	spriteData.y += frameTime * velocity.y;         // move ship along Y
+	//spriteData.angle += frameTime * dfrbulletNS::ROTATION_RATE;  // rotate the ship
+	spriteData.x += frameTime; //* velocity.x;         // move ship along X 
+	//spriteData.y += frameTime; //* velocity.y;         // move ship along Y
 
 
 	// destroy at walls
-	if (spriteData.x > GAME_WIDTH - dfbulletNS::WIDTH)    // if hit right screen edge
+	if (spriteData.x > GAME_WIDTH - dfrbulletNS::WIDTH)    // if hit right screen edge
 	{
 		collided = true;
 	}
@@ -64,7 +64,7 @@ void DfBullet::update(float frameTime)
 	{
 		collided = true;
 	}
-	if (spriteData.y > GAME_HEIGHT - dfbulletNS::HEIGHT)  // if hit bottom screen edge
+	if (spriteData.y > GAME_HEIGHT - dfrbulletNS::HEIGHT)  // if hit bottom screen edge
 	{
 		collided = true;
 	}
@@ -74,11 +74,11 @@ void DfBullet::update(float frameTime)
 	}
 }
 
-void DfBullet::getDir(Entity *to, Entity *from)
+void DfrBullet::getDir(Entity *to, Entity *from)
 {
 	spriteData.x = from->getCenterX() - spriteData.width / 2;
 	spriteData.y = from->getCenterY() - spriteData.height / 2;
 	VECTOR2 travel(to->getCenterX() - getCenterX(), to->getCenterY() - getCenterY());
 	Graphics::Vector2Normalize(&travel);
-	velocity = travel * dfbulletNS::SPEED;
+	velocity = travel * dfrbulletNS::SPEED;
 }

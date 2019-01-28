@@ -59,6 +59,8 @@ const char STARFIELD_IMAGE[] = "pictures\\starfield.png";
 const char SPEEDBOOST_IMAGE[] = "pictures\\head_sheet.png";
 const char EXPLOSION_IMAGE[] = "pictures\\explode1.png";
 const char PLAYER_IMAGE[] = "pictures\\player.png";
+const char DFR_IMAGE[] = "pictures\\dfr_atk.png";
+const char DFRBULLET_IMAGE[] = "pictures\\dfrbullet.png";
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used

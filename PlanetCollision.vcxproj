@@ -97,7 +97,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bullet.cpp" />
-    <ClCompile Include="dfbullet.cpp" />
+    <ClCompile Include="dfrbullet.cpp" />
     <ClCompile Include="dfr.cpp" />
     <ClCompile Include="ebullet.cpp" />
     <ClCompile Include="entity.cpp" />
@@ -121,7 +121,7 @@
     <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="constants.h" />
-    <ClInclude Include="dfbullet.h" />
+    <ClInclude Include="dfrbullet.h" />
     <ClInclude Include="dfr.h" />
     <ClInclude Include="ebullet.h" />
     <ClInclude Include="entity.h" />

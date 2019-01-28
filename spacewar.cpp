@@ -10,6 +10,7 @@
 using namespace std;
 float time = 0.0f;
 bool status = false;
+Spacewar *sw;
 
 //=============================================================================
 // Constructor
@@ -112,12 +113,14 @@ void Spacewar::initialize(HWND hwnd)
 	if (!eShipTexture.initialize(graphics, ESHIP_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy ship texture"));
 
-	if (!eShip.initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture))
+	if(!dfrTexture.initialize(graphics, DFR_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
+	if (!dfr.initialize(this, dfrNS::WIDTH, dfrNS::HEIGHT, dfrNS::TEXTURE_COLS, &dfrTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing rocket"));
-	eShip.setFrames(eShipNS::ESHIP1_START_FRAME, eShipNS::ESHIP1_END_FRAME);
-	eShip.setCurrentFrame(eShipNS::ESHIP1_START_FRAME);
-	eShip.setX(GAME_WIDTH / 2);
-	eShip.setY(GAME_HEIGHT / 2);
+	dfr.setFrames(dfrNS::DFR_START_FRAME, dfrNS::DFR_END_FRAME);
+	dfr.setCurrentFrame(dfrNS::DFR_START_FRAME);
+	dfr.setX(GAME_WIDTH / 2);
+	dfr.setY(GAME_HEIGHT / 2);
 //=============================================================================
 // BAKURETSU MAHOU
 //=============================================================================
@@ -237,7 +240,6 @@ void Spacewar::update()
 			b->update(frameTime);
 		}
 	}*/
-	eShip.update(frameTime);
 	if (eShip.shotTimer <= 0.0f)
 	{
 		EBullet* b = new EBullet;
@@ -306,6 +308,7 @@ void Spacewar::update()
 	}
 
 	playerMain.update(frameTime);
+	dfr.update(frameTime);
 }
 
 //=============================================================================
@@ -455,6 +458,8 @@ void Spacewar::render()
 			sb->draw();
 		}
 	}
+
+	dfr.draw();
 
     graphics->spriteEnd();                  // end drawing sprites
 }

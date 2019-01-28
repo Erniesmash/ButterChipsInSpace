@@ -1,6 +1,7 @@
 #include "dfr.h"
 #include "spacewar.h"
 
+Spacewar *sw;
 //=============================================================================
 // default constructor
 //=============================================================================
@@ -33,6 +34,7 @@ Dfr::Dfr() : Entity()
 bool Dfr::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
+	dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
@@ -42,6 +44,10 @@ bool Dfr::initialize(Game *gamePtr, int width, int height, int ncols,
 void Dfr::draw()
 {
 	Image::draw();
+	for each (DfrBullet* b in dfrbList) 
+	{
+		b->draw();
+	}
 	// draw Dfr
 }
 
@@ -58,6 +64,11 @@ void Dfr::update(float frameTime)
 	spriteData.x += frameTime * velocity.x;         // move Dfr along X 
 	spriteData.y += frameTime * velocity.y;         // move Dfr along Y
 
+	shoot();
+	for each (DfrBullet* b in dfrbList)
+	{
+		b->update(frameTime);
+	}
 													// Bounce off walls
 	if (spriteData.x > GAME_WIDTH - dfrNS::WIDTH)    // if hit right screen edge
 	{
@@ -88,16 +99,9 @@ void Dfr::chase(Entity *target)
 	velocity = travel * dfrNS::SPEED;
 }
 
-/*void Dfr::shoot()
+void Dfr::shoot()
 {
-	if (waitShotTimer <= 0.0f)
-	{
-		
-		waitShotTimer = bulletNS::WAIT_SHOOT; //Resets the shotTimer using namespace value
-		isFired = true;
-		velocity.x = cos(whereFrom->getRadians()) * bulletNS::SPEED;
-		velocity.y = sin(whereFrom->getRadians()) * bulletNS::SPEED;
-		spriteData.x = whereFrom->getCenterX() - spriteData.width / 2;
-		spriteData.y = whereFrom->getCenterY() - spriteData.height / 2;
-	}
-}*/
+	DfrBullet* b = new DfrBullet;
+	b->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
+	dfrbList.push_back(b);
+}
