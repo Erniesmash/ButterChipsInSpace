@@ -52,12 +52,12 @@ private:
 	TextDX fontMenu;
 
 	char buffer[spacewarNS::BUF_SIZE];
-    TextureManager gameTextures;    // game texture
-	TextureManager rocketTexture;	// rocket texture
-	TextureManager farbackTexture;	// farback texture
-	TextureManager bulletTexture;	// bullet texture
-	TextureManager eShipTexture;	// enemy ship texture
-	TextureManager ebulletTexture;	// enemy bullet texure
+    TextureManager gameTextures;    
+	TextureManager rocketTexture;	
+	TextureManager farbackTexture;	
+	TextureManager bulletTexture;	
+	TextureManager eShipTexture;	
+	TextureManager ebulletTexture;	
 	TextureManager starfieldTexture;
 	TextureManager powerupTexture;
 	TextureManager sbTexture;
@@ -66,14 +66,15 @@ private:
 
 	TextureManager selectionTexture;
 	std::vector<Selection*> selectionList;
+
 	TextureManager heartTexture;
 	std::vector<Heart*> heartList;
+
 	// Adjust Starting Number of Lives here
 	float numberOfLives = 6;
 	float numberOfSpecials = 4;
 
 	TextureManager specialsTexture;
-	//Specials meatSpecials;
 	std::vector<Specials*> specialList;
 
 	Image	farback;
@@ -82,21 +83,9 @@ private:
 	Image menu;
 	bool menuOn;
 
-	SpeedBoost sb;
-	Powerup increaseBulletSpeed;
-	Powerup waveShot;
 	Player playerMain;
-	Rocket	rocketMain;
-	Explosion explosion;
 	std::vector<Bullet*> bulletList;
-	vector<EShip*> eshipList;		// list of enemy ships
-	vector<SpeedBoost*> sbList;
-	vector<Explosion*> explosionList;
-	vector<Powerup*> bulletSpeedPowerupList;
-	vector<Powerup*> WaveBulletPowerupList;
-	float sbSpawnTime = 0.0f;
-	float waitTimer = 0.0f;
-	float bulletSpeedTime = 0.0f;
+	float waitTimer;
 	
 
 public:
@@ -114,10 +103,6 @@ public:
     void render();      // "
     void releaseAll();
     void resetAll();
-	void checkEShip();
-	void checkSB();
-	void checkEB();
-	void checkEx();
 };
 
 #endif
