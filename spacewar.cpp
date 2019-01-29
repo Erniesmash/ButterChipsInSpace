@@ -10,7 +10,6 @@
 using namespace std;
 float time = 0.0f;
 bool status = false;
-Spacewar *sw;
 
 //=============================================================================
 // Constructor
@@ -126,6 +125,21 @@ void Spacewar::initialize(HWND hwnd)
 //=============================================================================
 	if (!explosionTexture.initialize(graphics, EXPLOSION_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing explosion"));
+
+//=============================================================================
+// Demon Flower
+//=============================================================================
+	if (!dfrTexture.initialize(graphics, DFR_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
+
+	if (!dfrbTexture.initialize(graphics, DFRBULLET_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfrbullet"));
+	
+	Dfr* d = new Dfr;
+	d->initialize(this, dfrNS::WIDTH, dfrNS::HEIGHT, dfrNS::TEXTURE_COLS, &dfrTexture);
+	d->setX(GAME_WIDTH / 2);
+	d->setY(GAME_HEIGHT / 3);
+	dfrList.push_back(d);
 }
 
 //=============================================================================
@@ -308,7 +322,17 @@ void Spacewar::update()
 	}
 
 	playerMain.update(frameTime);
-	dfr.update(frameTime);
+
+	for each (Dfr* d in dfrList)
+	{
+		d->update(frameTime);
+
+		if (d->getCurrentFrame() == 10 && d->shot == false)
+		{
+			shotgun();
+			d->shot = true;
+		}
+	}
 }
 
 //=============================================================================
@@ -406,10 +430,7 @@ void Spacewar::render()
 
 	eShip.draw();
 
-	for each (EBullet*b in eShip.ebulletList)
-	{
-		b->draw();
-	}
+
 
 	for each (Powerup* p in bulletSpeedPowerupList)
 	{
@@ -459,7 +480,10 @@ void Spacewar::render()
 		}
 	}
 
-	dfr.draw();
+	for each (Dfr* d in dfrList)
+	{
+		d->draw();
+	}
 
     graphics->spriteEnd();                  // end drawing sprites
 }
@@ -602,3 +626,17 @@ void Spacewar::checkBullet()
 	}
 }
 */
+
+void Spacewar::shotgun()
+{
+	for each (Dfr* dfr in dfrList)
+	{
+		for (int i = -2; i < 3; i++)
+		{
+			DfrBullet* d = new DfrBullet;
+			d->initialize(this, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
+			d->appImpulse(dfr->getX(), dfr->getY(), 0 , dfr->getY() + (i*100));
+			dfr->dfrbList.push_back(d);
+		}
+	}
+}

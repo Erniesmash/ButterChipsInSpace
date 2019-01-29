@@ -18,7 +18,7 @@ namespace dfrbulletNS
 	const int   TEXTURE_COLS = 6;           // texture has 8 columns
 	const int   DFRBULLET_START_FRAME = 0;      // ship1 starts at frame 0
 	const int   DFRBULLET_END_FRAME = 5;        // ship1 animation frames 0,1,2,3
-	const float DFRBULLET_ANIMATION_DELAY = 0.2f;    // time between frames
+	const float DFRBULLET_ANIMATION_DELAY = 0;    // time between frames
 }
 
 // inherits from Entity class
@@ -36,5 +36,6 @@ public:
 	void update(float frameTime);
 	void getDir(Entity *to, Entity *from);
 	bool collided;
+	void appImpulse(float xpos, float ypos, float ximp, float yimp);
 };
 #endif

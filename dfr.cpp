@@ -1,7 +1,7 @@
 #include "dfr.h"
 #include "spacewar.h"
 
-Spacewar *sw;
+//Spacewar * sw;
 //=============================================================================
 // default constructor
 //=============================================================================
@@ -25,6 +25,7 @@ Dfr::Dfr() : Entity()
 	collisionType = entityNS::CIRCLE;
 	health = 200;
 	checkCollided = false;
+	shot = false;
 }
 
 //=============================================================================
@@ -34,7 +35,7 @@ Dfr::Dfr() : Entity()
 bool Dfr::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
-	dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
+	//dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
@@ -64,7 +65,10 @@ void Dfr::update(float frameTime)
 	spriteData.x += frameTime * velocity.x;         // move Dfr along X 
 	spriteData.y += frameTime * velocity.y;         // move Dfr along Y
 
-	shoot();
+	if (currentFrame == 11)
+	{
+		shot = false;
+	}
 	for each (DfrBullet* b in dfrbList)
 	{
 		b->update(frameTime);
@@ -101,7 +105,7 @@ void Dfr::chase(Entity *target)
 
 void Dfr::shoot()
 {
-	DfrBullet* b = new DfrBullet;
+	/*DfrBullet* b = new DfrBullet;
 	b->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
-	dfrbList.push_back(b);
+	dfrbList.push_back(b);*/
 }

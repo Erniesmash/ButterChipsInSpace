@@ -51,8 +51,8 @@ void DfrBullet::update(float frameTime)
 {
 	Entity::update(frameTime);
 	//spriteData.angle += frameTime * dfrbulletNS::ROTATION_RATE;  // rotate the ship
-	spriteData.x += frameTime; //* velocity.x;         // move ship along X 
-	//spriteData.y += frameTime; //* velocity.y;         // move ship along Y
+	spriteData.x += frameTime * velocity.x; //* velocity.x;         // move ship along X 
+	spriteData.y += frameTime * velocity.y;         // move ship along Y
 
 
 	// destroy at walls
@@ -79,6 +79,16 @@ void DfrBullet::getDir(Entity *to, Entity *from)
 	spriteData.x = from->getCenterX() - spriteData.width / 2;
 	spriteData.y = from->getCenterY() - spriteData.height / 2;
 	VECTOR2 travel(to->getCenterX() - getCenterX(), to->getCenterY() - getCenterY());
+	Graphics::Vector2Normalize(&travel);
+	velocity = travel * dfrbulletNS::SPEED;
+}
+
+void DfrBullet::appImpulse(float xpos, float ypos, float ximp, float yimp)
+{
+	spriteData.x = xpos - spriteData.width/2;
+	spriteData.y = ypos - spriteData.height/2;
+
+	VECTOR2 travel(ximp - getCenterX(), yimp - getCenterY());
 	Graphics::Vector2Normalize(&travel);
 	velocity = travel * dfrbulletNS::SPEED;
 }

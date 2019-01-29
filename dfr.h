@@ -21,7 +21,7 @@ namespace dfrNS
 	const int   TEXTURE_COLS = 14;           // texture has 1 columns
 	const int   DFR_START_FRAME = 0;      // ship1 starts at frame 0
 	const int   DFR_END_FRAME = 13;        // ship1 animation frames 0,1,2,3
-	const float DFR_ANIMATION_DELAY = 0.2f;    // time between frames
+	const float DFR_ANIMATION_DELAY = 0.12f;    // time between frames
 	const float DFR_SHOT_TIMER = 1.0f;
 }
 
@@ -44,5 +44,6 @@ public:
 	bool checkCollided;
 	void chase(Entity *target);
 	void shoot();
+	bool shot;
 };
 #endif

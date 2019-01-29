@@ -45,6 +45,7 @@ private:
 	TextureManager explosionTexture;
 	TextureManager playerTexture;
 	TextureManager dfrTexture;
+	TextureManager dfrbTexture;
 
 	Image	farback;
 	Image	starfield;
@@ -58,7 +59,6 @@ private:
 	EShip	eShip;			// enemy ship
 
 	Explosion explosion;
-	Dfr dfr;
 
 	std::vector<Bullet*> bulletList;
 	vector<EShip*> eshipList;		// list of enemy ships
@@ -66,6 +66,17 @@ private:
 	vector<Explosion*> explosionList;
 	vector<Powerup*> bulletSpeedPowerupList;
 	vector<Powerup*> WaveBulletPowerupList;
+
+	//demon flower
+	Dfr dfr;
+
+	vector<Dfr*> dfrList;	//demon flower list
+
+	//demon flower shot
+	DfrBullet dfrb;
+
+
+
 
 	float sbSpawnTime = 0.0f;
 	float waitTimer = 0.0f;
@@ -90,6 +101,7 @@ public:
 	void checkSB();
 	void checkEB();
 	void checkEx();
+	void shotgun();
 	//void checkBullet()
 };
 
