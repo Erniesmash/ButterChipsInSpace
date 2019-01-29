@@ -60,6 +60,27 @@ void Player::update(float frameTime)
 
 	}
 	*/	
+
+	// Rotate Player Sprite based on Cursor Position
+	/*
+	float theta;
+	VECTOR2 travel(input->getMouseX(), input->getMouseY());
+	VECTOR2 origin(spriteData.x, spriteData.y);
+	theta = ((acos(graphics->Vector2Dot(&travel, &origin) / graphics->Vector2Length(&travel) + graphics->Vector2Length(&origin))) / 360) * (2 * PI);
+	spriteData.angle = (theta / 360) * (2 * PI);
+	float delta_x;
+	float delta_y;
+	
+	delta_y = spriteData.y - input->getMouseY();
+	delta_x = spriteData.x - input->getMouseX();
+	theta = atan2(delta_y, delta_x);
+	spriteData.angle += frameTime * theta;
+	
+	if (input->isKeyDown(ROCKET_E_KEY))      
+	{
+		spriteData.angle = frameTime * playerNS::ROTATION_RATE;
+	}
+	*/
 	
 	// Sine Wave Dodge Roll (Ability 1)
 	if (dashOnCooldown == false)
@@ -141,5 +162,10 @@ void Player::update(float frameTime)
 		{
 			spriteData.y = spriteData.y + frameTime * playerNS::SPEED;
 		}
+
+		//Vector2 playerToMouseDirection = (mouseWorld - player.position);
+		//playerToMouseDirection.normalize();
+
+		
 	}
 }

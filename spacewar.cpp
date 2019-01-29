@@ -15,7 +15,9 @@ bool status = false;
 // Constructor
 //=============================================================================
 Spacewar::Spacewar()
-{}
+{
+	menuOn = true;
+}
 
 //=============================================================================
 // Destructor
@@ -44,6 +46,9 @@ void Spacewar::initialize(HWND hwnd)
 
 	// initialize DirectX fonts
 	fontBig.initialize(graphics, spacewarNS::FONT_BIG_SIZE, false, false, spacewarNS::FONT);
+
+	// initialize DirectX fonts
+	fontMenu.initialize(graphics, spacewarNS::FONT_MENU_SIZE, false, false, spacewarNS::FONT_MENU);
 
 	// heart texture
 	if (!heartTexture.initialize(graphics, HEART_IMAGE))
@@ -162,6 +167,10 @@ void Spacewar::initialize(HWND hwnd)
 	// starfield image
 	if (!starfield.initialize(graphics, 0, 0, 0, &starfieldTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing starfield"));
+
+	// menu image
+	if (!menu.initialize(graphics, 0, 0, 0, &farbackTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing menu"));
 	
 //=============================================================================
 // Enemy Ship 
@@ -182,171 +191,242 @@ void Spacewar::initialize(HWND hwnd)
 //=============================================================================
 void Spacewar::update()
 {
-	//checkEShip();
+	if (menuOn == true)
+	{
+		if (input->anyKeyPressed())
+		{
+			menuOn = false;
+			input->clearAll();
+		}
+
+		playerMain.setX(playerMain.getX() + frameTime * playerNS::SPEED);
+		playerMain.update(frameTime);
+
+		if (playerMain.getX() > GAME_WIDTH - playerNS::WIDTH - 1)    // if hit right screen edge
+		{
+			playerMain.setX(0);    // position at right screen edge
+		}
+	}
+
 	waitTimer -= frameTime;
 	sbSpawnTime -= frameTime;	//spawn timer for speed boost
 	time -= frameTime;			//spawn timer for enemy
 	bulletSpeedTime -= frameTime;
-
-
-	// run the update for explosions
-	for each (Explosion* ex in explosionList)
-	{
-		ex->update(frameTime);
-	}
-
-	if (rocketMain.getbulletSpeedActivated() == false)
-	{
-		if (waitTimer <= 0.0f)
-		{
-			if (input->isKeyDown(ROCKET_SPACE_KEY) == true)
-			{
-				waitTimer = 0.8f;
-				Bullet *b = new Bullet();
-				b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
-				bulletList.push_back(b);
-				b->shoot(&rocketMain, frameTime);
-				input->clearKeyPress(ROCKET_SPACE_KEY);
-			}
-		}
-	}
-
-	if (rocketMain.getbulletSpeedActivated() == true)
-	{
-		if (waitTimer <= 0.0f)
-		{
-			if (input->isKeyDown(ROCKET_SPACE_KEY) == true)
-			{
-				waitTimer = 0.06f;
-				Bullet *b = new Bullet();
-				b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
-				bulletList.push_back(b);
-
-				for each (Bullet* b in bulletList)
-				{
-					b->increaseSpeed = true;
-				}
-				b->shoot(&rocketMain, frameTime);
-				//b->setScale(10);
-				//b->shoot(&rocketMain, frameTime);
-				input->clearKeyPress(ROCKET_SPACE_KEY);
-			}
-		}
-	}
-
-	// spawns a ship
-	if (time <= 0.0f) {
-		EShip *e = new EShip();
-		e->initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture);
-		e->setX(GAME_WIDTH - eShipNS::WIDTH);
-		e->setY(rand() % (GAME_HEIGHT - eShipNS::HEIGHT));
-		eshipList.push_back(e);
-		time = 1.0f;
-	}
-
-	if (bulletSpeedTime <= 0.0f)
-	{
-		if (bulletSpeedPowerupList.size() <= 3)
-		{
-			Powerup *speedBoost = new Powerup();
-			speedBoost->initialize(this, powerupNS::WIDTH, powerupNS::HEIGHT, powerupNS::TEXTURE_COLS, &powerupTexture);
-			speedBoost->setX(rand() % (GAME_WIDTH - powerupNS::WIDTH));
-			speedBoost->setY(rand() % (GAME_HEIGHT - powerupNS::HEIGHT));
-			speedBoost->setVelocity(VECTOR2(-powerupNS::SPEED, -powerupNS::SPEED));
-			bulletSpeedPowerupList.push_back(speedBoost);
-			bulletSpeedTime = 15.0f;
-		}
-	}
-
-	// spawns a speed boost
-	if (sbSpawnTime <= 0.0f)
-	{
-		if (sbList.size() <= 2)
-		{
-			SpeedBoost *sb = new SpeedBoost();
-			sb->initialize(this, speedboostNS::WIDTH, speedboostNS::HEIGHT, speedboostNS::TEXTURE_COLS, &sbTexture);
-			sb->setX(rand() % (GAME_WIDTH - speedboostNS::WIDTH));
-			sb->setY(rand() % (GAME_HEIGHT - speedboostNS::HEIGHT));
-			sbList.push_back(sb);
-			sbSpawnTime = 30.0f;
-		}
-	}
-
-	// run eship update function and ebullet update function inside the eships ebullet list
-	for each (EShip* e in eshipList)
-	{
-		e->update(frameTime);
-		e->chase(&rocketMain);
-		if (e->shotTimer <= 0.0f)
-		{
-			EBullet* b = new EBullet;
-			b->initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebulletTexture);
-			e->ebulletList.push_back(b);
-			b->getDir(&rocketMain, e);
-			e->shotTimer = 1.0f;
-		}
-		for each (EBullet* b in e->ebulletList)
-		{
-			b->update(frameTime);
-		}
-	}	
 	
-	// check to delete vector items
-	checkEShip();
-	checkSB();
-	checkEB();
-	checkEx();
-
-	if (rocketMain.getHealth() <= 0)
+	if (menuOn == false)
 	{
-		rocketMain.setActive(false);
 		for (vector<Bullet*>::iterator it = bulletList.begin();
 			it != bulletList.end();)
 		{
-			SAFE_DELETE(*it);
-			it = bulletList.erase(it);
-		}
-		for each (EShip* e in eshipList)
-		{
-			e->checkCollided = true;
-			for each (EBullet* eb in e->ebulletList)
+			if ((*it)->bounceInUseTimer == 4)
 			{
-				eb->collided = true;
+				if ((*it)->getX() > GAME_WIDTH - bulletNS::WIDTH)    // if hit right screen edge
+				{
+					SAFE_DELETE(*it);
+					it = bulletList.erase(it);
+				}
+				else if ((*it)->getX() < 0)                    // else if hit left screen edge
+				{
+					SAFE_DELETE(*it);
+					it = bulletList.erase(it);
+				}
+
+				else if ((*it)->getY() > GAME_HEIGHT - bulletNS::HEIGHT)  // if hit bottom screen edge
+				{
+					SAFE_DELETE(*it);
+					it = bulletList.erase(it);
+				}
+				else if ((*it)->getY() < 0)                    // else if hit top screen edge
+				{
+					SAFE_DELETE(*it);
+					it = bulletList.erase(it);
+				}
+
+				else
+				{
+					++it;
+				}
+			}
+
+			else
+			{
+				++it;
 			}
 		}
-	}
-	
-	for (vector<Powerup*>::iterator it = bulletSpeedPowerupList.begin();
-		it != bulletSpeedPowerupList.end();)
-	{
-		if ((*it)->getActive() == false)
+
+		if (input->getMouseLButton() == true)
 		{
-			SAFE_DELETE(*it);
-			it = bulletSpeedPowerupList.erase(it);
+			if (waitTimer <= 0.0f)
+			{
+				waitTimer = 0.4f;
+				Bullet *b = new Bullet();
+				b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
+				bulletList.push_back(b);
+				b->shoot(&playerMain, frameTime);
+			}
 		}
-		else
+
+		// run the update for explosions
+		for each (Explosion* ex in explosionList)
 		{
-			++it;
+			ex->update(frameTime);
 		}
-	}
 
-//=============================================================================
-// Update frameTime for Animation 
-//=============================================================================
-	rocketMain.update(frameTime);
+		if (rocketMain.getbulletSpeedActivated() == false)
+		{
+			if (waitTimer <= 0.0f)
+			{
+				if (input->isKeyDown(ROCKET_SPACE_KEY) == true)
+				{
+					waitTimer = 0.8f;
+					Bullet *b = new Bullet();
+					b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
+					bulletList.push_back(b);
+					b->shoot(&rocketMain, frameTime);
+					input->clearKeyPress(ROCKET_SPACE_KEY);
+				}
+			}
+		}
 
-	for each(Bullet*  bull in bulletList)
-	{
-		bull->update(frameTime);
-	}
+		if (rocketMain.getbulletSpeedActivated() == true)
+		{
+			if (waitTimer <= 0.0f)
+			{
+				if (input->isKeyDown(ROCKET_SPACE_KEY) == true)
+				{
+					waitTimer = 0.06f;
+					Bullet *b = new Bullet();
+					b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
+					bulletList.push_back(b);
 
-	
-	for each (Powerup* p in bulletSpeedPowerupList)
-	{
-		p->update(frameTime);
-	}
+					for each (Bullet* b in bulletList)
+					{
+						b->increaseSpeed = true;
+					}
+					b->shoot(&rocketMain, frameTime);
+					//b->setScale(10);
+					//b->shoot(&rocketMain, frameTime);
+					input->clearKeyPress(ROCKET_SPACE_KEY);
+				}
+			}
+		}
 
-	playerMain.update(frameTime);
+		// spawns a ship
+		if (time <= 0.0f) {
+			EShip *e = new EShip();
+			e->initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture);
+			e->setX(GAME_WIDTH - eShipNS::WIDTH);
+			e->setY(rand() % (GAME_HEIGHT - eShipNS::HEIGHT));
+			eshipList.push_back(e);
+			time = 1.0f;
+		}
+
+		if (bulletSpeedTime <= 0.0f)
+		{
+			if (bulletSpeedPowerupList.size() <= 3)
+			{
+				Powerup *speedBoost = new Powerup();
+				speedBoost->initialize(this, powerupNS::WIDTH, powerupNS::HEIGHT, powerupNS::TEXTURE_COLS, &powerupTexture);
+				speedBoost->setX(rand() % (GAME_WIDTH - powerupNS::WIDTH));
+				speedBoost->setY(rand() % (GAME_HEIGHT - powerupNS::HEIGHT));
+				speedBoost->setVelocity(VECTOR2(-powerupNS::SPEED, -powerupNS::SPEED));
+				bulletSpeedPowerupList.push_back(speedBoost);
+				bulletSpeedTime = 15.0f;
+			}
+		}
+
+		// spawns a speed boost
+		if (sbSpawnTime <= 0.0f)
+		{
+			if (sbList.size() <= 2)
+			{
+				SpeedBoost *sb = new SpeedBoost();
+				sb->initialize(this, speedboostNS::WIDTH, speedboostNS::HEIGHT, speedboostNS::TEXTURE_COLS, &sbTexture);
+				sb->setX(rand() % (GAME_WIDTH - speedboostNS::WIDTH));
+				sb->setY(rand() % (GAME_HEIGHT - speedboostNS::HEIGHT));
+				sbList.push_back(sb);
+				sbSpawnTime = 30.0f;
+			}
+		}
+
+		// run eship update function and ebullet update function inside the eships ebullet list
+		for each (EShip* e in eshipList)
+		{
+			e->update(frameTime);
+			e->chase(&rocketMain);
+			if (e->shotTimer <= 0.0f)
+			{
+				EBullet* b = new EBullet;
+				b->initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebulletTexture);
+				e->ebulletList.push_back(b);
+				b->getDir(&rocketMain, e);
+				e->shotTimer = 1.0f;
+			}
+			for each (EBullet* b in e->ebulletList)
+			{
+				b->update(frameTime);
+			}
+		}
+
+		// check to delete vector items
+		checkEShip();
+		checkSB();
+		checkEB();
+		checkEx();
+
+		if (rocketMain.getHealth() <= 0)
+		{
+			rocketMain.setActive(false);
+			/*
+			for (vector<Bullet*>::iterator it = bulletList.begin();
+				it != bulletList.end();)
+			{
+				SAFE_DELETE(*it);
+				it = bulletList.erase(it);
+			}
+			*/
+			for each (EShip* e in eshipList)
+			{
+				e->checkCollided = true;
+				for each (EBullet* eb in e->ebulletList)
+				{
+					eb->collided = true;
+				}
+			}
+		}
+
+		for (vector<Powerup*>::iterator it = bulletSpeedPowerupList.begin();
+			it != bulletSpeedPowerupList.end();)
+		{
+			if ((*it)->getActive() == false)
+			{
+				SAFE_DELETE(*it);
+				it = bulletSpeedPowerupList.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+
+		//=============================================================================
+		// Update frameTime for Animation 
+		//=============================================================================
+		rocketMain.update(frameTime);
+
+		for each(Bullet*  bull in bulletList)
+		{
+			bull->update(frameTime);
+		}
+
+
+		for each (Powerup* p in bulletSpeedPowerupList)
+		{
+			p->update(frameTime);
+		}
+
+		playerMain.update(frameTime);
+	}	
 }
 
 //=============================================================================
@@ -360,73 +440,76 @@ void Spacewar::ai()
 //=============================================================================
 void Spacewar::collisions()
 {
-    VECTOR2 collisionVector;
- 
-	for each(Bullet*  bull in bulletList)
+	if (menuOn == false)
 	{
-		for each (EShip* eshat in eshipList)
-		{
-			if (bull->collidesWith(*eshat, collisionVector))
-			{
-				// bounce off planet
-				bull->bounce(collisionVector, *eshat);
-				bull->isFired = false;
-				eshat->setHealth(eshat->getHealth() - 100);
-				bull->setActive(false);
-				eshat->checkCollided = true;
+		VECTOR2 collisionVector;
 
-				Explosion *ex = new Explosion;
-				ex->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &explosionTexture);
-				ex->setX((eshat)->getX());
-				ex->setY((eshat)->getY());
-				ex->setScale(0.4);
-				explosionList.push_back(ex);
+		for each(Bullet*  bull in bulletList)
+		{
+			for each (EShip* eshat in eshipList)
+			{
+				if (bull->collidesWith(*eshat, collisionVector))
+				{
+					// bounce off planet
+					bull->bounce(collisionVector, *eshat);
+					bull->isFired = false;
+					eshat->setHealth(eshat->getHealth() - 100);
+					bull->setActive(false);
+					eshat->checkCollided = true;
+
+					Explosion *ex = new Explosion;
+					ex->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &explosionTexture);
+					ex->setX((eshat)->getX());
+					ex->setY((eshat)->getY());
+					ex->setScale(0.4);
+					explosionList.push_back(ex);
+				}
 			}
 		}
-	}
 
-	for each (Powerup* p in bulletSpeedPowerupList)
-	{
-		if (rocketMain.collidesWith(*p, collisionVector))
+		for each (Powerup* p in bulletSpeedPowerupList)
 		{
-			rocketMain.bounce(collisionVector, *p);
-			p->setActive(false);
-			rocketMain.setbulletSpeedActivated(true);
-		}
-	}
-
-	for each (SpeedBoost* sb in sbList)
-	{
-		if (sb->collidesWith(rocketMain, collisionVector))
-		{
-			sb->collided = true;
-			rocketMain.sbActive = true;
-		}
-	}
-
-	for each (EShip* e in eshipList)
-	{
-		if (e->collidesWith(rocketMain, collisionVector))
-		{
-			e->setVelocity(-(e->getVelocity()));
-			e->checkCollided = true;
-		}
-
-		if (e->collidesWith(*e, collisionVector))
-		{
-			e->bounce(collisionVector, *e);
-		}
-
-		for each (EBullet* b in e->ebulletList)
-		{
-			if (rocketMain.collidesWith(*b, collisionVector))
+			if (rocketMain.collidesWith(*p, collisionVector))
 			{
-				rocketMain.setHealth(rocketMain.getHealth() - 100);
-				rocketMain.bounce(collisionVector, *b);
-				b->collided = true;
+				rocketMain.bounce(collisionVector, *p);
+				p->setActive(false);
+				rocketMain.setbulletSpeedActivated(true);
 			}
 		}
-	}
+
+		for each (SpeedBoost* sb in sbList)
+		{
+			if (sb->collidesWith(rocketMain, collisionVector))
+			{
+				sb->collided = true;
+				rocketMain.sbActive = true;
+			}
+		}
+
+		for each (EShip* e in eshipList)
+		{
+			if (e->collidesWith(rocketMain, collisionVector))
+			{
+				e->setVelocity(-(e->getVelocity()));
+				e->checkCollided = true;
+			}
+
+			if (e->collidesWith(*e, collisionVector))
+			{
+				e->bounce(collisionVector, *e);
+			}
+
+			for each (EBullet* b in e->ebulletList)
+			{
+				if (rocketMain.collidesWith(*b, collisionVector))
+				{
+					rocketMain.setHealth(rocketMain.getHealth() - 100);
+					rocketMain.bounce(collisionVector, *b);
+					b->collided = true;
+				}
+			}
+		}
+	}    
 }
 
 //=============================================================================
@@ -436,146 +519,186 @@ void Spacewar::render()
 {
     graphics->spriteBegin();                // begin drawing sprites
 
-	farback.draw();							// add the farback to the scene
-
-	starfield.draw();
-
-	playerMain.draw();
-
-	if (heartList.size() != 0)
+	if (menuOn == true)
 	{
-		for each (Heart* h in heartList)
+		menu.draw();
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Blob and Trouble");
+		fontMenu.print(buffer, GAME_WIDTH / 3.35, GAME_HEIGHT / 2.5);
+
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Click any button on the keyboard to begin the game!");
+		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
+
+		playerMain.draw();
+	}
+
+	if (menuOn == false)
+	{
+		farback.draw();							// add the farback to the scene
+
+		starfield.draw();
+
+		playerMain.draw();
+
+		if (heartList.size() != 0)
 		{
-			if (h->getActive() == true)
+			for each (Heart* h in heartList)
 			{
-				h->draw();
+				if (h->getActive() == true)
+				{
+					h->draw();
+				}
 			}
 		}
-	}
 
-	for each (Selection* s in selectionList)
-	{
-		if (s->getActive() == true)
+		for each (Selection* s in selectionList)
 		{
-			s->draw();
+			if (s->getActive() == true)
+			{
+				s->draw();
+			}
 		}
-	}
 
-	for each (Specials* s in specialList)
-	{
-		if (s->getActive() == true)
+		for each (Specials* s in specialList)
 		{
-			s->draw();
+			if (s->getActive() == true)
+			{
+				s->draw();
+			}
 		}
-	}
 
-	/*
-	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Welcome to ブロブとトラブル");
-	dxFont.print(buffer, GAME_WIDTH/100, GAME_HEIGHT/1.05);
-	*/
+		/*
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Welcome to ブロブとトラブル");
+		dxFont.print(buffer, GAME_WIDTH/100, GAME_HEIGHT/1.05);
+		*/
 
-	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Click 1, 2, 3 or 4 to use Special Abilities!");
-	dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Click 1, 2, 3 or 4 to use Special Abilities!");
+		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
 
-	//Ability One Dash
-	if (playerMain.dashOnCooldown == true)
-	{
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)playerMain.dashCooldownTimer);
-		dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
-	}
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", input->getMouseX());
+		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 3);
 
-	else
-	{
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
-		dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
-	}
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", input->getMouseY());
+		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 4);
 
-	//Ability Two
-	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
-	dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
-
-	//Ability Three
-	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
-	dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
-
-	//Ability Four
-	_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
-	dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
-
-	//change ability/specials selection
-	if (input->isKeyDown(ONE_KEY))
-	{
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
-		fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
-	}
-
-	if (input->isKeyDown(TWO_KEY))
-	{
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
-		fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
-		
-	}
-
-	if (input->isKeyDown(THREE_KEY))
-	{
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
-		fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
-	}
-
-	if (input->isKeyDown(FOUR_KEY))
-	{
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
-		fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
-	}
-
-	for each (Powerup* p in bulletSpeedPowerupList)
-	{
-		if (p != NULL && p->getActive() == true)
+		//Ability One Dash
+		if (playerMain.dashOnCooldown == true)
 		{
-			p->draw();
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)playerMain.dashCooldownTimer);
+			dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
 		}
-	}
-	for each (Explosion* ex in explosionList)
-	{
-		if (ex != NULL)
-		{
-			ex->draw();
-		}
-	}
-	if (rocketMain.getHealth() > 0)
-	{
-		rocketMain.draw();						// add the rocket to the scene
-	}
 
-	for each(Bullet*  bull in bulletList)
-	{
-		bull->draw();
-	}
-
-	for each(EShip*  enemy in eshipList)	// all eship draw functions go here
-	{
-		if (enemy->getHealth() > 0)
-			enemy->draw();						// draw every enemy ship in the list
 		else
-			enemy->setActive(false);
-
-		for each (EBullet* b in enemy->ebulletList)
 		{
-			if (b != NULL)
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+			dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
+		}
+
+		//Ability Two
+		for each(Bullet* bullet in bulletList)
+		{
+			if (bullet->bounceOnCooldown == true)
 			{
-				b->draw();
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)bullet->bounceCooldownTimer);
+				dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
+
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)bullet->bounceInUseTimer);
+				dxFont.print(buffer, playerMain.getCenterX() - 5, playerMain.getCenterY() + 20);
+			}
+
+			else
+			{
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+				dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
+			}
+		}
+		if (bulletList.size() <= 0)
+		{
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+			dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
+		}
+
+		//Ability Three
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+		dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
+
+		//Ability Four
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+		dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
+
+		//change ability/specials selection
+		if (input->isKeyDown(ONE_KEY))
+		{
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
+			fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
+		}
+
+		if (input->isKeyDown(TWO_KEY))
+		{
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
+			fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
+
+		}
+
+		if (input->isKeyDown(THREE_KEY))
+		{
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
+			fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
+		}
+
+		if (input->isKeyDown(FOUR_KEY))
+		{
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
+			fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
+		}
+
+		for each (Powerup* p in bulletSpeedPowerupList)
+		{
+			if (p != NULL && p->getActive() == true)
+			{
+				p->draw();
+			}
+		}
+		for each (Explosion* ex in explosionList)
+		{
+			if (ex != NULL)
+			{
+				ex->draw();
+			}
+		}
+		if (rocketMain.getHealth() > 0)
+		{
+			rocketMain.draw();						// add the rocket to the scene
+		}
+
+		for each(Bullet*  bull in bulletList)
+		{
+			bull->draw();
+		}
+
+		for each(EShip*  enemy in eshipList)	// all eship draw functions go here
+		{
+			if (enemy->getHealth() > 0)
+				enemy->draw();						// draw every enemy ship in the list
+			else
+				enemy->setActive(false);
+
+			for each (EBullet* b in enemy->ebulletList)
+			{
+				if (b != NULL)
+				{
+					b->draw();
+				}
+			}
+		}
+
+		for each(SpeedBoost* sb in sbList)
+		{
+			if (sb != NULL)
+			{
+				sb->draw();
 			}
 		}
 	}
-
-	for each(SpeedBoost* sb in sbList)
-	{
-		if (sb != NULL)
-		{
-			sb->draw();
-		}
-	}
-
     graphics->spriteEnd();                  // end drawing sprites
 }
 
@@ -705,21 +828,3 @@ void Spacewar::checkEx()
 		}
 	}
 }
-/*
-void Spacewar::checkBullet()
-{
-	for (vector<Bullet*>::iterator it = bulletList.begin();
-		it != bulletList.end();)
-	{
-		if ((*it)->checkCollided)
-		{
-			SAFE_DELETE(*it);
-			it = bulletList.erase(it);
-		}
-		else
-		{
-			++it;
-		}
-	}
-}
-*/

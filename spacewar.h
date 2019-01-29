@@ -31,8 +31,10 @@
 namespace spacewarNS
 {
 	const char FONT[] = "Arial Bold";  // font
+	const char FONT_MENU[] = "Consolas";  // font menu
 	const int FONT_BIG_SIZE = 100;     // font height
 	const int BUF_SIZE = 200;
+	const int FONT_MENU_SIZE = 60;
 	const COLOR_ARGB FONT_COLOR = graphicsNS::GREEN;
 }
 
@@ -47,6 +49,8 @@ private:
 	TextDX dxFont;
 	TextDX fontBig;
 	TextDX dxFontGreen;
+	TextDX fontMenu;
+
 	char buffer[spacewarNS::BUF_SIZE];
     TextureManager gameTextures;    // game texture
 	TextureManager rocketTexture;	// rocket texture
@@ -74,6 +78,10 @@ private:
 
 	Image	farback;
 	Image	starfield;
+
+	Image menu;
+	bool menuOn;
+
 	SpeedBoost sb;
 	Powerup increaseBulletSpeed;
 	Powerup waveShot;
@@ -89,6 +97,7 @@ private:
 	float sbSpawnTime = 0.0f;
 	float waitTimer = 0.0f;
 	float bulletSpeedTime = 0.0f;
+	
 
 public:
     // Constructor

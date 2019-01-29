@@ -18,7 +18,7 @@ namespace bulletNS
 {
 	const int WIDTH = 16;                   // image width
 	const int HEIGHT = 16;                  // image height
-	const float SPEED = 300;
+	const float SPEED = 650;
 	const float MASS = 300.0f;              // mass
 	const int   TEXTURE_COLS = 1;           // texture has 8 columns
 	const int   BULLET_START_FRAME = 0;      // bullet starts at frame 0
@@ -40,9 +40,12 @@ public:
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols, TextureManager *textureM);
 	void update(float frameTime);
 	void shoot(Entity *whereFrom, float frameTime);
-	void shootHoming(Entity *whereFrom, Entity *whereTo, float frameTime);
 	bool isFired;
 	bool checkCollided;
 	bool increaseSpeed;
+	bool bounceManActive = false;
+	bool bounceOnCooldown = false;
+	float bounceCooldownTimer = 0;
+	float bounceInUseTimer = 4;
 };
 #endif

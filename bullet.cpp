@@ -61,6 +61,63 @@ void Bullet::update(float frameTime)
 	Entity::update(frameTime); 
 	spriteData.x = spriteData.x + frameTime * velocity.x;
 	spriteData.y = spriteData.y + frameTime * velocity.y;
+
+	// BounceMan Bounce Shot (Ability 2)
+	if (bounceOnCooldown == false)
+	{
+		if (input->isKeyDown(TWO_KEY))
+		{
+			bounceManActive = true;
+			bounceOnCooldown = true;
+		}
+	}
+
+	else //bounce shot is on cooldown
+	{
+		bounceCooldownTimer -= frameTime;
+		if (bounceCooldownTimer < 0)
+		{
+			bounceOnCooldown = false;
+			bounceCooldownTimer = 7;
+		}
+	}
+
+	if (bounceManActive == true)
+	{
+		bounceInUseTimer -= frameTime;
+
+		if (bounceInUseTimer > 0)
+		{
+			// Bounce off walls
+			if (spriteData.x > GAME_WIDTH - bulletNS::WIDTH)    // if hit right screen edge
+			{
+				spriteData.x = GAME_WIDTH - bulletNS::WIDTH;    // position at right screen edge
+				velocity.x = -velocity.x;                   // reverse X direction				
+			}
+			else if (spriteData.x < 0)                    // else if hit left screen edge
+			{
+				spriteData.x = 0;                           // position at left screen edge
+				velocity.x = -velocity.x;                   // reverse X direction
+			}
+
+			if (spriteData.y > GAME_HEIGHT - bulletNS::HEIGHT)  // if hit bottom screen edge
+			{
+				spriteData.y = GAME_HEIGHT - bulletNS::HEIGHT;  // position at bottom screen edge
+				velocity.y = -velocity.y;                   // reverse Y direction
+			}
+			else if (spriteData.y < 0)                    // else if hit top screen edge
+			{
+				spriteData.y = 0;                           // position at top screen edge
+				velocity.y = -velocity.y;                   // reverse Y direction
+			}
+		}
+
+		else //i.e less than zero
+		{
+			bounceInUseTimer = 4;
+			bounceManActive = false;
+		}
+	}	
 }
 
 void Bullet::shoot(Entity *whereFrom, float frameTime)
@@ -71,26 +128,21 @@ void Bullet::shoot(Entity *whereFrom, float frameTime)
 		velocity.x = cos(whereFrom->getRadians()) * bulletNS::QUICKSPEED; //basic trigo toa coa soh
 		velocity.y = sin(whereFrom->getRadians()) * bulletNS::QUICKSPEED;
 	}
-
+	/*
 	if (increaseSpeed == false)
 	{
 		velocity.x = cos(whereFrom->getRadians()) * bulletNS::SPEED; //basic trigo toa coa soh
 		velocity.y = sin(whereFrom->getRadians()) * bulletNS::SPEED;
 	}
-	spriteData.x = whereFrom->getCenterX() - spriteData.width / 2; //starting position
+	*/
+	spriteData.x = whereFrom->getCenterX() - spriteData.width / 2; 
 	spriteData.y = whereFrom->getCenterY() - spriteData.height / 2;
+	VECTOR2 travel(input->getMouseX() - spriteData.x, input->getMouseY() - spriteData.y);
+	Graphics::Vector2Normalize(&travel);
+	velocity = travel * bulletNS::SPEED;	
 }
 
-void Bullet::shootHoming(Entity *whereFrom, Entity *whereTo, float frameTime)
-{
-	isFired = true;
-	/*
-	VECTOR2 fromHere(whereFrom->getCenterX() - spriteData.width / 2, whereFrom->getCenterY() - spriteData.height / 2);
-	VECTOR2 goingTo(whereTo->getCenterX() - getCenterX(), whereTo->getCenterY() - getCenterY());
-	VECTOR2 arrowVector(goingTo - fromHere);
-	Graphics::Vector2Normalize(&arrowVector);
-	velocity = arrowVector * bulletNS::SPEED;
-	*/
-}
+
+
 
 
