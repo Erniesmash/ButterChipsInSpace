@@ -46,6 +46,7 @@ public:
 	void shoot();
 	bool shot;
 	float dir(float fromx, float fromy, float tox, float toy);
+	void wave();
 	Game* sw;
 };
 #endif

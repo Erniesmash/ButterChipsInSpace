@@ -68,7 +68,7 @@ void Dfr::update(float frameTime)
 
 	dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
 
-	if (currentFrame == 11)
+	/*if (currentFrame == 11)
 	{
 		shot = false;
 	}
@@ -76,7 +76,7 @@ void Dfr::update(float frameTime)
 	{
 		shoot();
 		shot = true;
-	}
+	}*/
 	for each (DfrBullet* b in dfrbList)
 	{
 		b->update(frameTime);
@@ -102,6 +102,7 @@ void Dfr::update(float frameTime)
 		spriteData.y = 0;                           // position at top screen edge
 		velocity.y = -velocity.y;                   // reverse Y direction
 	}
+	wave();
 }
 
 void Dfr::chase(Entity *target)
@@ -114,11 +115,11 @@ void Dfr::chase(Entity *target)
 void Dfr::shoot()
 {
 
-	for (int i = -2; i < 3; i++)
+	for (int i = -3; i < 3; i++)
 	{
 		DfrBullet* d = new DfrBullet;
 		d->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
-		d->appImpulse(getX(), getY(), 0, getY() + (i * 100));
+		d->appImpulse(getX(), getY(), 0, getY() + (i));
 		dfrbList.push_back(d);
 	}
 }
@@ -129,4 +130,18 @@ float Dfr::dir(float fromx, float fromy, float tox, float toy)
 	VECTOR2 to(tox, toy);
 	float angle = acos((Graphics::Vector2Dot(&from, &to) / Graphics::Vector2Length(&from)*Graphics::Vector2Length(&to)));
 	return 0;
+}
+
+void Dfr::wave()
+{
+	DfrBullet* a = new DfrBullet;
+	a->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
+	a->invert = true;
+	a->wavy(this);
+	dfrbList.push_back(a);
+
+	DfrBullet* b = new DfrBullet;
+	b->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
+	b->wavy(this);
+	dfrbList.push_back(b);
 }

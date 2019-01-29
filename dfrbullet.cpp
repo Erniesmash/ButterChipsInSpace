@@ -1,6 +1,8 @@
 #include "dfr.h"
 #include "dfrbullet.h"
 
+float height;
+
 //=============================================================================
 // default constructor
 //=============================================================================
@@ -22,6 +24,7 @@ DfrBullet::DfrBullet() : Entity()
 	mass = dfrbulletNS::MASS;
 	collisionType = entityNS::CIRCLE;
 	collided = false;
+	invert = false;
 }
 
 //=============================================================================
@@ -51,9 +54,23 @@ void DfrBullet::update(float frameTime)
 {
 	Entity::update(frameTime);
 	//spriteData.angle += frameTime * dfrbulletNS::ROTATION_RATE;  // rotate the ship
-	spriteData.x += frameTime * velocity.x; //* velocity.x;         // move ship along X 
-	spriteData.y += frameTime * velocity.y;         // move ship along Y
 
+	//for spray and 1 shot
+	/*
+	spriteData.x += frameTime * velocity.x; //* velocity.x;         // move ship along X 
+	spriteData.y += frameTime * velocity.y;         // move ship along Y*/
+
+	//for wave
+	if (invert == true)
+	{
+		spriteData.x -= frameTime * dfrbulletNS::SPEED;
+		spriteData.y = height-((GAME_HEIGHT*2)*sin(0.05*spriteData.x));
+	}
+	if (invert == false)
+	{
+		spriteData.x -= frameTime * dfrbulletNS::SPEED;
+		spriteData.y = height+((GAME_HEIGHT*2)*sin(0.05*spriteData.x));
+	}
 
 	// destroy at walls
 	if (spriteData.x > GAME_WIDTH - dfrbulletNS::WIDTH)    // if hit right screen edge
@@ -91,4 +108,10 @@ void DfrBullet::appImpulse(float xpos, float ypos, float ximp, float yimp)
 	VECTOR2 travel(ximp - getCenterX(), yimp - getCenterY());
 	Graphics::Vector2Normalize(&travel);
 	velocity = travel * dfrbulletNS::SPEED;
+}
+
+void DfrBullet::wavy(Entity* from)
+{
+	spriteData.x = from->getCenterX();
+	height = from->getCenterY();
 }
