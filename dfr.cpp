@@ -1,7 +1,7 @@
 #include "dfr.h"
 #include "spacewar.h"
 
-//Spacewar * sw;
+
 //=============================================================================
 // default constructor
 //=============================================================================
@@ -35,6 +35,7 @@ Dfr::Dfr() : Entity()
 bool Dfr::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
+	sw = gamePtr;
 	//dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
@@ -65,9 +66,16 @@ void Dfr::update(float frameTime)
 	spriteData.x += frameTime * velocity.x;         // move Dfr along X 
 	spriteData.y += frameTime * velocity.y;         // move Dfr along Y
 
+	dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
+
 	if (currentFrame == 11)
 	{
 		shot = false;
+	}
+	if (currentFrame == 10 && shot == false)
+	{
+		shoot();
+		shot = true;
 	}
 	for each (DfrBullet* b in dfrbList)
 	{
@@ -105,7 +113,20 @@ void Dfr::chase(Entity *target)
 
 void Dfr::shoot()
 {
-	/*DfrBullet* b = new DfrBullet;
-	b->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
-	dfrbList.push_back(b);*/
+
+	for (int i = -2; i < 3; i++)
+	{
+		DfrBullet* d = new DfrBullet;
+		d->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
+		d->appImpulse(getX(), getY(), 0, getY() + (i * 100));
+		dfrbList.push_back(d);
+	}
+}
+
+float Dfr::dir(float fromx, float fromy, float tox, float toy)
+{
+	VECTOR2 from(fromx, fromy);
+	VECTOR2 to(tox, toy);
+	float angle = acos((Graphics::Vector2Dot(&from, &to) / Graphics::Vector2Length(&from)*Graphics::Vector2Length(&to)));
+	return 0;
 }

@@ -45,5 +45,7 @@ public:
 	void chase(Entity *target);
 	void shoot();
 	bool shot;
+	float dir(float fromx, float fromy, float tox, float toy);
+	Game* sw;
 };
 #endif

@@ -326,12 +326,6 @@ void Spacewar::update()
 	for each (Dfr* d in dfrList)
 	{
 		d->update(frameTime);
-
-		if (d->getCurrentFrame() == 10 && d->shot == false)
-		{
-			shotgun();
-			d->shot = true;
-		}
 	}
 }
 
