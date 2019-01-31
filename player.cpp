@@ -62,21 +62,23 @@ void Player::update(float frameTime)
 	*/	
 
 	// Rotate Player Sprite based on Cursor Position
-	
-	float theta;
 	/*
+	float theta;
+	
 	VECTOR2 travel(input->getMouseX(), input->getMouseY());
 	VECTOR2 origin(spriteData.x, spriteData.y);
-	theta = ((acos(graphics->Vector2Dot(&travel, &origin) / graphics->Vector2Length(&travel) + graphics->Vector2Length(&origin))) / 360) * (2 * PI);
-	spriteData.angle = (theta / 360) * (2 * PI);
+	theta = acos(graphics->Vector2Dot(&travel, &origin) / graphics->Vector2Length(&travel) + graphics->Vector2Length(&origin));
+	spriteData.angle += (theta/180 * PI) * frameTime;
 	*/
+	/*
 	float delta_x;
 	float delta_y;
 	delta_y = spriteData.y - input->getMouseY();
 	delta_x = spriteData.x - input->getMouseX();
 	theta = atan2(delta_y, delta_x);
+	*/
 
-	spriteData.angle += frameTime * theta;
+	//spriteData.angle += frameTime * theta;
 	
 	/*
 	if (input->isKeyDown(ROCKET_E_KEY))      
@@ -128,16 +130,19 @@ void Player::update(float frameTime)
 		spriteData.x = GAME_WIDTH - playerNS::WIDTH * spriteData.scale;    // position at right screen edge
 		velocity.x = -velocity.x;                   // reverse X direction
 	}
+
 	else if (spriteData.x < 0)                    // else if hit left screen edge
 	{
 		spriteData.x = 0;                           // position at left screen edge
 		velocity.x = -velocity.x;                   // reverse X direction
 	}
-	if (spriteData.y > GAME_HEIGHT - playerNS::HEIGHT * spriteData.scale)  // if hit bottom screen edge
+
+	else if (spriteData.y > GAME_HEIGHT - playerNS::HEIGHT * spriteData.scale)  // if hit bottom screen edge
 	{
 		spriteData.y = GAME_HEIGHT - playerNS::HEIGHT * spriteData.scale;  // position at bottom screen edge
 		velocity.y = -velocity.y;                   // reverse Y direction
 	}
+
 	else if (spriteData.y < 0)                    // else if hit top screen edge
 	{
 		spriteData.y = 0;                           // position at top screen edge
@@ -165,10 +170,5 @@ void Player::update(float frameTime)
 		{
 			spriteData.y = spriteData.y + frameTime * playerNS::SPEED;
 		}
-
-		//Vector2 playerToMouseDirection = (mouseWorld - player.position);
-		//playerToMouseDirection.normalize();
-
-		
 	}
 }

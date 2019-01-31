@@ -26,8 +26,6 @@ Bullet::Bullet() : Entity()
 	radius = bulletNS::WIDTH / 2.0;
 	mass = bulletNS::MASS;
 	collisionType = entityNS::BOX;	
-	checkCollided = false;
-	increaseSpeed = false;
 }
 
 //=============================================================================
@@ -123,18 +121,6 @@ void Bullet::update(float frameTime)
 void Bullet::shoot(Entity *whereFrom, float frameTime)
 {	
 	isFired = true;
-	if (increaseSpeed == true)
-	{
-		velocity.x = cos(whereFrom->getRadians()) * bulletNS::QUICKSPEED; //basic trigo toa coa soh
-		velocity.y = sin(whereFrom->getRadians()) * bulletNS::QUICKSPEED;
-	}
-	/*
-	if (increaseSpeed == false)
-	{
-		velocity.x = cos(whereFrom->getRadians()) * bulletNS::SPEED; //basic trigo toa coa soh
-		velocity.y = sin(whereFrom->getRadians()) * bulletNS::SPEED;
-	}
-	*/
 	spriteData.x = whereFrom->getCenterX() - spriteData.width / 2; 
 	spriteData.y = whereFrom->getCenterY() - spriteData.height / 2;
 	VECTOR2 travel(input->getMouseX() - spriteData.x, input->getMouseY() - spriteData.y);

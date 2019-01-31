@@ -41,8 +41,6 @@ public:
 	void update(float frameTime);
 	void shoot(Entity *whereFrom, float frameTime);
 	bool isFired;
-	bool checkCollided;
-	bool increaseSpeed;
 	bool bounceManActive = false;
 	bool bounceOnCooldown = false;
 	float bounceCooldownTimer = 0;

@@ -167,6 +167,11 @@ void Spacewar::update()
 	
 	if (menuOn == false)
 	{
+		/*
+		Player* it = &playerMain;
+		SAFE_DELETE(*it);
+		*/
+
 		for (vector<Bullet*>::iterator it = bulletList.begin();
 			it != bulletList.end();)
 		{
