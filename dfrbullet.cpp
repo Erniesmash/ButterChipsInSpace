@@ -64,12 +64,12 @@ void DfrBullet::update(float frameTime)
 	if (invert == true)
 	{
 		spriteData.x -= frameTime * dfrbulletNS::SPEED;
-		spriteData.y = height-((GAME_HEIGHT*2)*sin(0.05*spriteData.x));
+		spriteData.y = height-((GAME_HEIGHT/20)*sin(0.05*spriteData.x));
 	}
 	if (invert == false)
 	{
 		spriteData.x -= frameTime * dfrbulletNS::SPEED;
-		spriteData.y = height+((GAME_HEIGHT*2)*sin(0.05*spriteData.x));
+		spriteData.y = height+((GAME_HEIGHT/20)*sin(0.05*spriteData.x));
 	}
 
 	// destroy at walls

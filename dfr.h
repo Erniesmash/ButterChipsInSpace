@@ -11,26 +11,28 @@ using namespace std;
 
 namespace dfrNS
 {
-	const int WIDTH = 64;                   // image width
-	const int HEIGHT = 57;                  // image height
+	const int WIDTH = 44;                   // image width44
+	const int HEIGHT = 42;                  // image height42
 	const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
 	const int Y = GAME_HEIGHT / 2 - HEIGHT / 2;
 	const float ROTATION_RATE = (float)0; // radians per second
 	const float SPEED = 100;                // 100 pixels per second
 	const float MASS = 300.0f;              // mass
-	const int   TEXTURE_COLS = 14;           // texture has 1 columns
+	const int   TEXTURE_COLS = 14;           // texture has 14 columns
 	const int   DFR_START_FRAME = 0;      // ship1 starts at frame 0
 	const int   DFR_END_FRAME = 13;        // ship1 animation frames 0,1,2,3
 	const float DFR_ANIMATION_DELAY = 0.12f;    // time between frames
 	const float DFR_SHOT_TIMER = 1.0f;
+	const int	DFR_HEALTH = 100;
 }
 
 // inherits from Entity class
 class Dfr : public Entity
 {
 private:
-	DfrBullet dfrb;
 	TextureManager dfrbTexture;
+	DfrBullet dfrb;
+
 public:
 	// constructor
 	Dfr();
@@ -45,8 +47,10 @@ public:
 	void chase(Entity *target);
 	void shoot();
 	bool shot;
+	float health;
 	float dir(float fromx, float fromy, float tox, float toy);
 	void wave();
+	void healthBar();
 	Game* sw;
 };
 #endif

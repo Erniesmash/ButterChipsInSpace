@@ -10,6 +10,7 @@
 using namespace std;
 float time = 0.0f;
 bool status = false;
+float gg = 100;
 
 //=============================================================================
 // Constructor
@@ -111,15 +112,7 @@ void Spacewar::initialize(HWND hwnd)
 	// enemy ship texture
 	if (!eShipTexture.initialize(graphics, ESHIP_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy ship texture"));
-
-	if(!dfrTexture.initialize(graphics, DFR_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
-	if (!dfr.initialize(this, dfrNS::WIDTH, dfrNS::HEIGHT, dfrNS::TEXTURE_COLS, &dfrTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing rocket"));
-	dfr.setFrames(dfrNS::DFR_START_FRAME, dfrNS::DFR_END_FRAME);
-	dfr.setCurrentFrame(dfrNS::DFR_START_FRAME);
-	dfr.setX(GAME_WIDTH / 2);
-	dfr.setY(GAME_HEIGHT / 2);
+	
 //=============================================================================
 // BAKURETSU MAHOU
 //=============================================================================
@@ -132,14 +125,19 @@ void Spacewar::initialize(HWND hwnd)
 	if (!dfrTexture.initialize(graphics, DFR_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
 
-	if (!dfrbTexture.initialize(graphics, DFRBULLET_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfrbullet"));
-	
 	Dfr* d = new Dfr;
 	d->initialize(this, dfrNS::WIDTH, dfrNS::HEIGHT, dfrNS::TEXTURE_COLS, &dfrTexture);
 	d->setX(GAME_WIDTH / 2);
 	d->setY(GAME_HEIGHT / 3);
 	dfrList.push_back(d);
+
+	if (!hbTexture.initialize(graphics, HEALTHBAR_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
+	if (!hb.initialize(this, hbNS::WIDTH, hbNS::HEIGHT, hbNS::TEXTURE_COLS, &hbTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "hb"));
+	hb.setY(GAME_HEIGHT / 2);
+	hb.setX(GAME_WIDTH / 2);
+	//hb.setWidth(hbNS::WIDTH / 2);
 }
 
 //=============================================================================
@@ -152,6 +150,15 @@ void Spacewar::update()
 	sbSpawnTime -= frameTime;	//spawn timer for speed boost
 	time -= frameTime;			//spawn timer for enemy
 	bulletSpeedTime -= frameTime;
+
+
+	if (input->isKeyDown(VK_SPACE))
+	{
+		gg = gg-10;
+	}
+
+	hb.setWidth(gg);
+	hb.update(frameTime);
 
 	// run the update for explosions
 	for each (Explosion* ex in explosionList)
@@ -478,7 +485,7 @@ void Spacewar::render()
 	{
 		d->draw();
 	}
-
+	hb.draw();
     graphics->spriteEnd();                  // end drawing sprites
 }
 

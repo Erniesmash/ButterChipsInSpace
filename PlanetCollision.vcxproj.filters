@@ -75,6 +75,9 @@
     <ClCompile Include="dfrbullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h">
@@ -147,6 +150,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dfrbullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

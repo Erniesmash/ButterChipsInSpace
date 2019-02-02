@@ -1,6 +1,7 @@
 #include "dfr.h"
 #include "spacewar.h"
 
+float n;
 
 //=============================================================================
 // default constructor
@@ -23,9 +24,10 @@ Dfr::Dfr() : Entity()
 	mass = dfrNS::MASS;
 	shotTimer = dfrNS::DFR_SHOT_TIMER;
 	collisionType = entityNS::CIRCLE;
-	health = 200;
 	checkCollided = false;
 	shot = false;
+	health = dfrNS::DFR_HEALTH;
+
 }
 
 //=============================================================================
@@ -38,6 +40,7 @@ bool Dfr::initialize(Game *gamePtr, int width, int height, int ncols,
 	sw = gamePtr;
 	//dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
+
 }
 
 //=============================================================================
@@ -66,8 +69,8 @@ void Dfr::update(float frameTime)
 	spriteData.x += frameTime * velocity.x;         // move Dfr along X 
 	spriteData.y += frameTime * velocity.y;         // move Dfr along Y
 
+	//initialize
 	dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
-
 	/*if (currentFrame == 11)
 	{
 		shot = false;
@@ -77,6 +80,8 @@ void Dfr::update(float frameTime)
 		shoot();
 		shot = true;
 	}*/
+
+
 	for each (DfrBullet* b in dfrbList)
 	{
 		b->update(frameTime);
@@ -102,7 +107,15 @@ void Dfr::update(float frameTime)
 		spriteData.y = 0;                           // position at top screen edge
 		velocity.y = -velocity.y;                   // reverse Y direction
 	}
-	wave();
+
+	if (input->isKeyDown(VK_SPACE))
+	{
+		/*if (health >= 0)
+		{
+			healthbar.setWidth((health - 0.1) / dfrNS::DFR_HEALTH*eHealthNS::WIDTH);
+		}*/
+		//healthbar.setWidth(10);
+	}
 }
 
 void Dfr::chase(Entity *target)
@@ -144,4 +157,8 @@ void Dfr::wave()
 	b->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
 	b->wavy(this);
 	dfrbList.push_back(b);
+}
+
+void Dfr::healthBar()
+{
 }

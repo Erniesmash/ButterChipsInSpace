@@ -107,6 +107,12 @@ class Image
     // Set Y location.
     virtual void setY(float newY)   {spriteData.y = newY;}
 
+	// Set sprite width
+	virtual void setWidth(float newWidth) { spriteData.width = newWidth; }
+
+	// Set sprite height
+	virtual void setHeight(float newHeight) { spriteData.height = newHeight; }
+
     // Set scale.
     virtual void setScale(float s)  {spriteData.scale = s;}
 
