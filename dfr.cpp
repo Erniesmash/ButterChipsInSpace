@@ -1,7 +1,6 @@
 #include "dfr.h"
 #include "spacewar.h"
 
-float n;
 //=============================================================================
 // default constructor
 //=============================================================================
@@ -21,12 +20,12 @@ Dfr::Dfr() : Entity()
 	currentFrame = startFrame;
 	radius = dfrNS::WIDTH / 2.0;
 	mass = dfrNS::MASS;
+	health = dfrNS::DFR_HEALTH;
 	shotTimer = dfrNS::DFR_SHOT_TIMER;
 	collisionType = entityNS::CIRCLE;
-	checkCollided = false;
 	shot = false;
-	health = dfrNS::DFR_HEALTH;
-
+	dead = false;
+	imgChanged = false;
 }
 
 //=============================================================================
@@ -123,6 +122,11 @@ void Dfr::update(float frameTime)
 		{
 			health = health - 1;
 		}
+	}
+
+	if (health <= 0)
+	{
+		dead = true;
 	}
 }
 

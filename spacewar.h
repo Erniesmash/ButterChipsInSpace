@@ -102,7 +102,7 @@ public:
     void render();      // "
     void releaseAll();
     void resetAll();
-	void checkEShip();
+	void checkDfr();
 	void checkSB();
 	void checkEB();
 	void checkEx();

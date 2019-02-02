@@ -62,6 +62,7 @@ const char PLAYER_IMAGE[] = "pictures\\player.png";
 const char DFR_IMAGE[] = "pictures\\dfr_atk.png";
 const char DFRBULLET_IMAGE[] = "pictures\\dfrbullet.png";
 const char HEALTHBAR_IMAGE[] = "pictures\\healthbar.png";
+const char DF_DEATH_IMAGE[] = "pictures\\df_death.png";
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used

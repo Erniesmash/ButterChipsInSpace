@@ -45,16 +45,18 @@ public:
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
 		TextureManager *textureM);
 	void update(float frameTime);
-	float shotTimer;
-	vector<DfrBullet*> dfrbList;
-	bool checkCollided;
-	void chase(Entity *target);
-	void shoot();
-	bool shot;
-	float health;
 	float dir(float fromx, float fromy, float tox, float toy);
 	void wave();
 	void healthBar();
+	void chase(Entity *target);
+	float shotTimer;
+	vector<DfrBullet*> dfrbList;
+	void shoot();
+	bool shot;
+	bool dead;
+	bool imgChanged;
+	float health;
+
 	Game* sw;
 };
 #endif

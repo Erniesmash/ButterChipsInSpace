@@ -131,12 +131,6 @@ void Spacewar::initialize(HWND hwnd)
 	d->setY(GAME_HEIGHT / 3);
 	dfrList.push_back(d);
 
-	Dfr* dd = new Dfr;
-	dd->initialize(this, dfrNS::WIDTH, dfrNS::HEIGHT, dfrNS::TEXTURE_COLS, &dfrTexture);
-	dd->setX(GAME_WIDTH / 2);
-	dd->setY(GAME_HEIGHT / 4);
-	dfrList.push_back(dd);
-
 	if (!hbTexture.initialize(graphics, HEALTHBAR_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
 	//hb.setWidth(hbNS::WIDTH / 2);
@@ -267,7 +261,7 @@ void Spacewar::update()
 		b->update(frameTime);
 	}
 	// check to delete vector items
-	checkEShip();
+	checkDfr();
 	checkSB();
 	checkEB();
 	checkEx();
@@ -326,6 +320,12 @@ void Spacewar::update()
 	for each (Dfr* d in dfrList)
 	{
 		d->update(frameTime);
+		if (d->dead == true && d->imgChanged == false)
+		{
+			dfrTexture.initialize(graphics, DF_DEATH_IMAGE);
+			d->setCurrentFrame(0);
+			d->imgChanged = true;
+		}
 	}
 }
 
@@ -513,26 +513,22 @@ void Spacewar::resetAll()
     return;
 }
 
-void Spacewar::checkEShip()
+void Spacewar::checkDfr()
 {
-	for (vector<EShip*>::iterator it = eshipList.begin();
-		it != eshipList.end();)
+	for (vector<Dfr*>::iterator it = dfrList.begin();
+		it != dfrList.end();)
 	{
-		if ((*it)->checkCollided)
+		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
 		{
-			Explosion *ex = new Explosion;
-			ex->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &explosionTexture);
-			ex->setX((*it)->getX());
-			ex->setY((*it)->getY());
-			explosionList.push_back(ex);
+
 			SAFE_DELETE(*it);
-			it = eshipList.erase(it);
+			it = dfrList.erase(it);
 		}
 
 		else if (rocketMain.getActive() == false)
 		{
 			SAFE_DELETE(*it);
-			it = eshipList.erase(it);
+			it = dfrList.erase(it);
 		}
 
 		else
