@@ -133,10 +133,6 @@ void Spacewar::initialize(HWND hwnd)
 
 	if (!hbTexture.initialize(graphics, HEALTHBAR_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
-	if (!hb.initialize(this, hbNS::WIDTH, hbNS::HEIGHT, hbNS::TEXTURE_COLS, &hbTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "hb"));
-	hb.setY(GAME_HEIGHT / 2);
-	hb.setX(GAME_WIDTH / 2);
 	//hb.setWidth(hbNS::WIDTH / 2);
 }
 
@@ -150,15 +146,6 @@ void Spacewar::update()
 	sbSpawnTime -= frameTime;	//spawn timer for speed boost
 	time -= frameTime;			//spawn timer for enemy
 	bulletSpeedTime -= frameTime;
-
-
-	if (input->isKeyDown(VK_SPACE))
-	{
-		gg = gg-10;
-	}
-
-	hb.setWidth(gg);
-	hb.update(frameTime);
 
 	// run the update for explosions
 	for each (Explosion* ex in explosionList)
@@ -485,7 +472,6 @@ void Spacewar::render()
 	{
 		d->draw();
 	}
-	hb.draw();
     graphics->spriteEnd();                  // end drawing sprites
 }
 

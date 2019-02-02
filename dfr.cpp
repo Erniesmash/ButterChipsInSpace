@@ -2,7 +2,6 @@
 #include "spacewar.h"
 
 float n;
-
 //=============================================================================
 // default constructor
 //=============================================================================
@@ -39,6 +38,8 @@ bool Dfr::initialize(Game *gamePtr, int width, int height, int ncols,
 {
 	sw = gamePtr;
 	//dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
+	//hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
+	hb.initialize(sw, hbNS::WIDTH, hbNS::HEIGHT, hbNS::TEXTURE_COLS, &hbTexture);
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 
 }
@@ -53,6 +54,7 @@ void Dfr::draw()
 	{
 		b->draw();
 	}
+	hb.draw();
 	// draw Dfr
 }
 
@@ -71,6 +73,13 @@ void Dfr::update(float frameTime)
 
 	//initialize
 	dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
+	hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
+
+	hb.setX(GAME_WIDTH / 2);
+	hb.setY(GAME_HEIGHT / 2);
+	hb.setWidth((50 / health) * hbNS::WIDTH);
+
+	hb.update(frameTime);
 	/*if (currentFrame == 11)
 	{
 		shot = false;

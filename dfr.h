@@ -7,6 +7,7 @@
 #include "entity.h"
 #include "constants.h"
 #include "dfrbullet.h"
+#include "hb.h"
 using namespace std;
 
 namespace dfrNS
@@ -32,6 +33,9 @@ class Dfr : public Entity
 private:
 	TextureManager dfrbTexture;
 	DfrBullet dfrb;
+
+	TextureManager hbTexture;
+	Hb hb;
 
 public:
 	// constructor
