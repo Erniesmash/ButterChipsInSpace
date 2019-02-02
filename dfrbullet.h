@@ -9,15 +9,15 @@
 
 namespace dfrbulletNS
 {
-	const int WIDTH = 31;                   // image width
-	const int HEIGHT = 35;                  // image height
+	const int WIDTH = 16;                   // image width
+	const int HEIGHT = 16;                  // image height
 	const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
 	const int Y = GAME_HEIGHT / 2 - HEIGHT / 2;
 	const float SPEED = 300;                // 100 pixels per second
 	const float MASS = 300.0f;              // mass
-	const int   TEXTURE_COLS = 6;           // texture has 8 columns
+	const int   TEXTURE_COLS = 1;           // texture has 8 columns
 	const int   DFRBULLET_START_FRAME = 0;      // ship1 starts at frame 0
-	const int   DFRBULLET_END_FRAME = 5;        // ship1 animation frames 0,1,2,3
+	const int   DFRBULLET_END_FRAME = 3;        // ship1 animation frames 0,1,2,3
 	const float DFRBULLET_ANIMATION_DELAY = 0;    // time between frames
 }
 

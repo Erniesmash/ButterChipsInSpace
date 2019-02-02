@@ -67,10 +67,13 @@ const char SKULL_IMAGE[] = "pictures\\h_skull.png";
 const char BOSS_IMAGE[] = "pictures\\boss_walk.png";
 
 const char DFRBULLET_IMAGE[] = "pictures\\dfrbullet.png";
+const char DFBBULLET_IMAGE[] = "pictures\\dfbbullet.png";
+const char DFGBULLET_IMAGE[] = "pictures\\dfgbullet.png";
 
 const char HEALTHBAR_IMAGE[] = "pictures\\healthbar.png";
 const char DF_DEATH_IMAGE[] = "pictures\\df_death.png";
 const char SKULL_ENTRANCE_IMAGE[] = "pictures\\hskull_appear.png";
+const char SKULL_DEATH_IMAGE[] = "pictures\\hskull_death.png";
 const char BOSS_DEATH[] = "pictures\\boss_death.png";
 
 // key mappings

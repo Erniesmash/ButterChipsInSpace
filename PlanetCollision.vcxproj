@@ -96,7 +96,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="boss.cpp" />
     <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="dfb.cpp" />
+    <ClCompile Include="dfbbullet.cpp" />
+    <ClCompile Include="dfg.cpp" />
+    <ClCompile Include="dfgbullet.cpp" />
     <ClCompile Include="dfrbullet.cpp" />
     <ClCompile Include="dfr.cpp" />
     <ClCompile Include="ebullet.cpp" />
@@ -112,6 +117,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="powerup.cpp" />
     <ClCompile Include="rocket.cpp" />
+    <ClCompile Include="skull.cpp" />
     <ClCompile Include="spacewar.cpp" />
     <ClCompile Include="speedboost.cpp" />
     <ClCompile Include="textDX.cpp" />
@@ -145,6 +151,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="powerup.h" />
     <ClInclude Include="rocket.h" />
+    <ClInclude Include="skull.h" />
     <ClInclude Include="spacewar.h" />
     <ClInclude Include="speedboost.h" />
     <ClInclude Include="textDX.h" />
