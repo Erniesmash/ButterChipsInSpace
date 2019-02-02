@@ -131,6 +131,12 @@ void Spacewar::initialize(HWND hwnd)
 	d->setY(GAME_HEIGHT / 3);
 	dfrList.push_back(d);
 
+	Dfr* dd = new Dfr;
+	dd->initialize(this, dfrNS::WIDTH, dfrNS::HEIGHT, dfrNS::TEXTURE_COLS, &dfrTexture);
+	dd->setX(GAME_WIDTH / 2);
+	dd->setY(GAME_HEIGHT / 4);
+	dfrList.push_back(dd);
+
 	if (!hbTexture.initialize(graphics, HEALTHBAR_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
 	//hb.setWidth(hbNS::WIDTH / 2);

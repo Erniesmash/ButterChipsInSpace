@@ -75,9 +75,9 @@ void Dfr::update(float frameTime)
 	dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
 	hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
 
-	hb.setX(GAME_WIDTH / 2);
-	hb.setY(GAME_HEIGHT / 2);
-	hb.setWidth((50 / health) * hbNS::WIDTH);
+	hb.setY(spriteData.y - hbNS::HEIGHT);
+	hb.setX(getCenterX() - hbNS::WIDTH / 2);
+	hb.setWidth((health / dfrNS::DFR_HEALTH) * hbNS::WIDTH);
 
 	hb.update(frameTime);
 	/*if (currentFrame == 11)
@@ -119,11 +119,10 @@ void Dfr::update(float frameTime)
 
 	if (input->isKeyDown(VK_SPACE))
 	{
-		/*if (health >= 0)
+		if (health >= 0)
 		{
-			healthbar.setWidth((health - 0.1) / dfrNS::DFR_HEALTH*eHealthNS::WIDTH);
-		}*/
-		//healthbar.setWidth(10);
+			health = health - 1;
+		}
 	}
 }
 
