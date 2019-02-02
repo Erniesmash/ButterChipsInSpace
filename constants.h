@@ -59,10 +59,19 @@ const char STARFIELD_IMAGE[] = "pictures\\starfield.png";
 const char SPEEDBOOST_IMAGE[] = "pictures\\head_sheet.png";
 const char EXPLOSION_IMAGE[] = "pictures\\explode1.png";
 const char PLAYER_IMAGE[] = "pictures\\player.png";
+
 const char DFR_IMAGE[] = "pictures\\dfr_atk.png";
+const char DFB_IMAGE[] = "pictures\\dfb_atk.png";
+const char DFG_IMAGE[] = "pictures\\dfg_atk.png";
+const char SKULL_IMAGE[] = "pictures\\h_skull.png";
+const char BOSS_IMAGE[] = "pictures\\boss_walk.png";
+
 const char DFRBULLET_IMAGE[] = "pictures\\dfrbullet.png";
+
 const char HEALTHBAR_IMAGE[] = "pictures\\healthbar.png";
 const char DF_DEATH_IMAGE[] = "pictures\\df_death.png";
+const char SKULL_ENTRANCE_IMAGE[] = "pictures\\hskull_appear.png";
+const char BOSS_DEATH[] = "pictures\\boss_death.png";
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used

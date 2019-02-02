@@ -155,5 +155,20 @@
     <ClInclude Include="hb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="dfb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="boss.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dfbbullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dfgbullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

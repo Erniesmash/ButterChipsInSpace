@@ -120,8 +120,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AttackComponent.h" />
+    <ClInclude Include="boss.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="constants.h" />
+    <ClInclude Include="dfb.h" />
+    <ClInclude Include="dfbbullet.h" />
+    <ClInclude Include="dfg.h" />
+    <ClInclude Include="dfgbullet.h" />
     <ClInclude Include="dfrbullet.h" />
     <ClInclude Include="dfr.h" />
     <ClInclude Include="ebullet.h" />
