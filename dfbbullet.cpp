@@ -54,21 +54,9 @@ void DfbBullet::update(float frameTime)
 	//spriteData.angle += frameTime * dfbbulletNS::ROTATION_RATE;  // rotate the ship
 
 	//for spray and 1 shot
-	/*
-	spriteData.x += frameTime * velocity.x; //* velocity.x;         // move ship along X
-	spriteData.y += frameTime * velocity.y;         // move ship along Y*/
-
-	//for wave
-	if (invert == true)
-	{
-		spriteData.x -= frameTime * dfbbulletNS::SPEED;
-		spriteData.y = height - ((GAME_HEIGHT / 20)*sin(0.05*spriteData.x));
-	}
-	if (invert == false)
-	{
-		spriteData.x -= frameTime * dfbbulletNS::SPEED;
-		spriteData.y = height + ((GAME_HEIGHT / 20)*sin(0.05*spriteData.x));
-	}
+	
+	spriteData.x += frameTime * velocity.x;			// move ship along X
+	spriteData.y += frameTime * velocity.y;         // move ship along Y
 
 	// destroy at walls
 	if (spriteData.x > GAME_WIDTH - dfbbulletNS::WIDTH)    // if hit right screen edge
@@ -98,12 +86,17 @@ void DfbBullet::getDir(Entity *to, Entity *from)
 	velocity = travel * dfbbulletNS::SPEED;
 }
 
-void DfbBullet::appImpulse(float xpos, float ypos, float ximp, float yimp)
+void DfbBullet::appImpulse(float xpos, float ypos, float angle)
 {
 	spriteData.x = xpos - spriteData.width / 2;
 	spriteData.y = ypos - spriteData.height / 2;
 
-	VECTOR2 travel(ximp - getCenterX(), yimp - getCenterY());
+	//D3DXMATRIX matrix;
+	//D3DXMatrixTranslation
+
+	VECTOR2 ref(0 - getCenterX(), 0);
+	//VECTOR2 travel = matrix * ref;
+	VECTOR2 travel(Graphics::Vector2Length(&ref)*cos((angle/360)*(2*PI)), Graphics::Vector2Length(&ref)*sin((angle / 360)*(2*PI)));
 	Graphics::Vector2Normalize(&travel);
 	velocity = travel * dfbbulletNS::SPEED;
 }

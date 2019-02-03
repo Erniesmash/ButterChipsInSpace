@@ -1,6 +1,7 @@
 #include "dfb.h"
 #include "spacewar.h"
 
+float a;
 //=============================================================================
 // default constructor
 //=============================================================================
@@ -26,6 +27,7 @@ Dfb::Dfb() : Entity()
 	shot = false;
 	dead = false;
 	imgChanged = false;
+
 }
 
 //=============================================================================
@@ -79,16 +81,24 @@ void Dfb::update(float frameTime)
 	hb.setWidth((health / dfbNS::DFB_HEALTH) * hbNS::WIDTH);
 
 	hb.update(frameTime);
-	/*if (currentFrame == 11)
+
+	if (currentFrame == 11)
 	{
 		shot = false;
 	}
 	if (currentFrame == 10 && shot == false)
 	{
-		shoot();
+		//shoot();
 		shot = true;
-	}*/
-
+	}
+	a++;
+	for (int i = 0; i < 2; i++)
+	{
+		DfbBullet* d = new DfbBullet;
+		d->initialize(sw, dfbbulletNS::WIDTH, dfbbulletNS::HEIGHT, dfbbulletNS::TEXTURE_COLS, &dfbbTexture);
+		d->appImpulse(spriteData.x, spriteData.y, -90 + 180*i + a);
+		dfbbList.push_back(d);
+	}
 
 	for each (DfbBullet* b in dfbbList)
 	{
@@ -130,47 +140,13 @@ void Dfb::update(float frameTime)
 	}
 }
 
-void Dfb::chase(Entity *target)
-{
-	VECTOR2 travel(target->getCenterX() - getCenterX(), target->getCenterY() - getCenterY());
-	Graphics::Vector2Normalize(&travel);
-	velocity = travel * dfbNS::SPEED;
-}
-
 void Dfb::shoot()
 {
-
-	for (int i = -3; i < 3; i++)
+	for (int i = 1; i < dfbNS::BULLET_COUNT + 1; i++)
 	{
 		DfbBullet* d = new DfbBullet;
 		d->initialize(sw, dfbbulletNS::WIDTH, dfbbulletNS::HEIGHT, dfbbulletNS::TEXTURE_COLS, &dfbbTexture);
-		d->appImpulse(getX(), getY(), 0, getY() + (i));
+		d->appImpulse(spriteData.x,spriteData.y,dfbNS::DFB_ANGLE + dfbNS::DFB_SPREAD_ANGLE*i);
 		dfbbList.push_back(d);
 	}
-}
-
-float Dfb::dir(float fromx, float fromy, float tox, float toy)
-{
-	VECTOR2 from(fromx, fromy);
-	VECTOR2 to(tox, toy);
-	float angle = acos((Graphics::Vector2Dot(&from, &to) / Graphics::Vector2Length(&from)*Graphics::Vector2Length(&to)));
-	return 0;
-}
-
-void Dfb::wave()
-{
-	DfbBullet* a = new DfbBullet;
-	a->initialize(sw, dfbbulletNS::WIDTH, dfbbulletNS::HEIGHT, dfbbulletNS::TEXTURE_COLS, &dfbbTexture);
-	a->invert = true;
-	a->wavy(this);
-	dfbbList.push_back(a);
-
-	DfbBullet* b = new DfbBullet;
-	b->initialize(sw, dfbbulletNS::WIDTH, dfbbulletNS::HEIGHT, dfbbulletNS::TEXTURE_COLS, &dfbbTexture);
-	b->wavy(this);
-	dfbbList.push_back(b);
-}
-
-void Dfb::healthBar()
-{
 }

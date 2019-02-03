@@ -25,6 +25,9 @@ namespace dfbNS
 	const float DFB_ANIMATION_DELAY = 0.12f;    // time between frames
 	const float DFB_SHOT_TIMER = 1.0f;
 	const int	DFB_HEALTH = 100;
+	const float DFB_SPREAD_ANGLE = 15;
+	const float DFB_ANGLE = 135;
+	const int BULLET_COUNT = 5;
 }
 
 // inherits from Entity class
@@ -45,10 +48,6 @@ public:
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
 		TextureManager *textureM);
 	void update(float frameTime);
-	float dir(float fromx, float fromy, float tox, float toy);
-	void wave();
-	void healthBar();
-	void chase(Entity *target);
 	float shotTimer;
 	vector<DfbBullet*> dfbbList;
 	void shoot();

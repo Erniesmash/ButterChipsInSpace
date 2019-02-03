@@ -36,7 +36,7 @@ public:
 	void update(float frameTime);
 	void getDir(Entity *to, Entity *from);
 	bool collided;
-	void appImpulse(float xpos, float ypos, float ximp, float yimp);
+	void appImpulse(float xpos, float ypos, float angle);
 	bool invert;
 	void wavy(Entity* from);
 	float height;
