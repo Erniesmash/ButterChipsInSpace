@@ -39,5 +39,6 @@ public:
 	void appImpulse(float xpos, float ypos, float ximp, float yimp);
 	bool invert;
 	void wavy(Entity* from);
+	float height;
 };
 #endif

@@ -21,11 +21,13 @@ Skull::Skull() : Entity()
 	radius = skullNS::WIDTH / 2.0;
 	mass = skullNS::MASS;
 	health = skullNS::SKULL_HEALTH;
-	shotTimer = skullNS::SKULL_SHOT_TIMER;
 	collisionType = entityNS::CIRCLE;
-	shot = false;
+	active = false;
 	dead = false;
 	imgChanged = false;
+	entered = false;
+	enteredChanged == false;
+	textcols = skullNS::TEXTURE_COLS;
 }
 
 //=============================================================================
@@ -60,7 +62,6 @@ void Skull::draw()
 //=============================================================================
 void Skull::update(float frameTime)
 {
-	shotTimer -= frameTime;
 	Entity::update(frameTime);
 	spriteData.angle += frameTime * skullNS::ROTATION_RATE;  // rotate the Skull
 	spriteData.x += frameTime * velocity.x;         // move Skull along X 
@@ -69,21 +70,24 @@ void Skull::update(float frameTime)
 	//initialize
 	hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
 
-	hb.setY(spriteData.y - hbNS::HEIGHT);
+	hb.setY(spriteData.y - 2*hbNS::HEIGHT);
 	hb.setX(getCenterX() - hbNS::WIDTH / 2);
 	hb.setWidth((health / skullNS::SKULL_HEALTH) * hbNS::WIDTH);
 
 	hb.update(frameTime);
-	/*if (currentFrame == 11)
-	{
-		shot = false;
-	}
-	if (currentFrame == 10 && shot == false)
-	{
-		shoot();
-		shot = true;
-	}*/
 
+	if (enteredChanged == true && entered == false)
+	{
+		float x = getCenterX();
+		spriteData.width = skullNS::ACTIVE_WIDTH;
+		spriteData.height = skullNS::ACTIVE_HEIGHT;
+		textcols = skullNS::ACTIVE_TEXTURE_COLS;
+		startFrame = skullNS::ACTIVE_START_FRAME;
+		endFrame = skullNS::ACTIVE_END_FRAME;
+		currentFrame == skullNS::ACTIVE_START_FRAME;
+		spriteData.x = x - skullNS::ACTIVE_WIDTH / 2;
+		entered = true;
+	}
 	// Bounce off walls
 	if (spriteData.x > GAME_WIDTH - skullNS::WIDTH)    // if hit right screen edge
 	{
@@ -125,41 +129,4 @@ void Skull::chase(Entity *target)
 	VECTOR2 travel(target->getCenterX() - getCenterX(), target->getCenterY() - getCenterY());
 	Graphics::Vector2Normalize(&travel);
 	velocity = travel * skullNS::SPEED;
-}
-
-void Skull::shoot()
-{
-	/*for (int i = -3; i < 3; i++)
-	{
-		SkullBullet* d = new SkullBullet;
-		d->initialize(sw, skullbulletNS::WIDTH, skullbulletNS::HEIGHT, skullbulletNS::TEXTURE_COLS, &skullbTexture);
-		d->appImpulse(getX(), getY(), 0, getY() + (i));
-		skullbList.push_back(d);
-	}*/
-}
-
-float Skull::dir(float fromx, float fromy, float tox, float toy)
-{
-	VECTOR2 from(fromx, fromy);
-	VECTOR2 to(tox, toy);
-	float angle = acos((Graphics::Vector2Dot(&from, &to) / Graphics::Vector2Length(&from)*Graphics::Vector2Length(&to)));
-	return 0;
-}
-
-void Skull::wave()
-{
-	/*SkullBullet* a = new SkullBullet;
-	a->initialize(sw, skullbulletNS::WIDTH, skullbulletNS::HEIGHT, skullbulletNS::TEXTURE_COLS, &skullbTexture);
-	a->invert = true;
-	a->wavy(this);
-	skullbList.push_back(a);
-
-	SkullBullet* b = new SkullBullet;
-	b->initialize(sw, skullbulletNS::WIDTH, skullbulletNS::HEIGHT, skullbulletNS::TEXTURE_COLS, &skullbTexture);
-	b->wavy(this);
-	skullbList.push_back(b);*/
-}
-
-void Skull::healthBar()
-{
 }

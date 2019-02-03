@@ -11,19 +11,27 @@ using namespace std;
 
 namespace skullNS
 {
-	const int WIDTH = 44;                   // image width44
+	// entrance/death
+	const int WIDTH = 37;                   // image width44
 	const int HEIGHT = 42;                  // image height42
 	const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
 	const int Y = GAME_HEIGHT / 2 - HEIGHT / 2;
 	const float ROTATION_RATE = (float)0; // radians per second
 	const float SPEED = 100;                // 100 pixels per second
 	const float MASS = 300.0f;              // mass
-	const int   TEXTURE_COLS = 14;           // texture has 14 columns
+	const int   TEXTURE_COLS = 8;           // texture has 14 columns
 	const int   SKULL_START_FRAME = 0;      // ship1 starts at frame 0
-	const int   SKULL_END_FRAME = 13;        // ship1 animation frames 0,1,2,3
+	const int   SKULL_END_FRAME = 8;        // ship1 animation frames 0,1,2,3
 	const float SKULL_ANIMATION_DELAY = 0.12f;    // time between frames
-	const float SKULL_SHOT_TIMER = 1.0f;
+	const float SKULL_SHOT_TIMER = 0.10f;
 	const int	SKULL_HEALTH = 100;
+
+	//active
+	const int	ACTIVE_WIDTH = 20;
+	const int	ACTIVE_HEIGHT = 25;
+	const int	ACTIVE_TEXTURE_COLS = 2;
+	const int	ACTIVE_START_FRAME = 0;
+	const int	ACTIVE_END_FRAME = 1;
 }
 
 // inherits from Entity class
@@ -43,15 +51,13 @@ public:
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
 		TextureManager *textureM);
 	void update(float frameTime);
-	float dir(float fromx, float fromy, float tox, float toy);
-	void wave();
-	void healthBar();
 	void chase(Entity *target);
-	float shotTimer;
-	void shoot();
-	bool shot;
 	bool dead;
 	bool imgChanged;
+	bool entered;
+	bool enteredChanged;
+	bool active;
+	int textcols;
 	float health;
 
 	Game* sw;

@@ -21,7 +21,14 @@
 #include "speedboost.h"
 #include "explosion.h"
 #include "player.h"
+
+//enemies
 #include "dfr.h"
+#include "dfb.h"
+#include "dfg.h"
+#include "skull.h"
+#include "boss.h"
+
 #include "hb.h"
 
 #include "textDX.h"
@@ -45,8 +52,15 @@ private:
 	TextureManager sbTexture;
 	TextureManager explosionTexture;
 	TextureManager playerTexture;
+
+	//enemy texture
 	TextureManager dfrTexture;
-	TextureManager dfrbTexture;
+	TextureManager dfbTexture;
+	TextureManager dfgTexture;
+	TextureManager skullTexture;
+	TextureManager bossTexture;
+
+	//enemy health
 	TextureManager ehealthTexture;
 
 	Image	farback;
@@ -72,16 +86,19 @@ private:
 	vector<Powerup*> bulletSpeedPowerupList;
 	vector<Powerup*> WaveBulletPowerupList;
 
-	//demon flower
+	//enemies
 	Dfr dfr;
+	Dfb dfb;
+	Dfg dfg;
+	Skull skull;
+	Boss boss;
 
-	vector<Dfr*> dfrList;	//demon flower list
-
-	//demon flower shot
-	DfrBullet dfrb;
-
-
-
+	//enemy vectors
+	vector<Dfr*> dfrList;
+	vector<Dfb*> dfbList;
+	vector<Dfg*> dfgList;
+	vector<Skull*> skullList;
+	vector<Boss*> bossList;
 
 	float sbSpawnTime = 0.0f;
 	float waitTimer = 0.0f;
@@ -102,11 +119,14 @@ public:
     void render();      // "
     void releaseAll();
     void resetAll();
+
+	// kill enemy
 	void checkDfr();
-	void checkSB();
-	void checkEB();
-	void checkEx();
-	void shotgun();
+	void checkDfb();
+	void checkDfg();
+	void checkSkull();
+	void checkBoss();
+
 	//void checkBullet()
 };
 

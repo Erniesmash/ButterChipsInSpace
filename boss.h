@@ -11,16 +11,16 @@ using namespace std;
 
 namespace bossNS
 {
-	const int WIDTH = 44;                   // image width44
-	const int HEIGHT = 42;                  // image height42
+	const int WIDTH = 26 ;                   // image width44
+	const int HEIGHT = 33;                  // image height42
 	const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
 	const int Y = GAME_HEIGHT / 2 - HEIGHT / 2;
 	const float ROTATION_RATE = (float)0; // radians per second
 	const float SPEED = 100;                // 100 pixels per second
 	const float MASS = 300.0f;              // mass
-	const int   TEXTURE_COLS = 14;           // texture has 14 columns
+	const int   TEXTURE_COLS = 5;           // texture has 14 columns
 	const int   BOSS_START_FRAME = 0;      // ship1 starts at frame 0
-	const int   BOSS_END_FRAME = 13;        // ship1 animation frames 0,1,2,3
+	const int   BOSS_END_FRAME = 4;        // ship1 animation frames 0,1,2,3
 	const float BOSS_ANIMATION_DELAY = 0.12f;    // time between frames
 	const float BOSS_SHOT_TIMER = 1.0f;
 	const int	BOSS_HEALTH = 100;

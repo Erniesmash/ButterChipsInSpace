@@ -120,20 +120,49 @@ void Spacewar::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing explosion"));
 
 //=============================================================================
-// Demon Flower
+// Enemies
 //=============================================================================
 	if (!dfrTexture.initialize(graphics, DFR_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
+	if (!dfbTexture.initialize(graphics, DFB_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfb"));
+	if (!dfgTexture.initialize(graphics, DFG_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfg"));
+	if (!skullTexture.initialize(graphics, SKULL_ENTRANCE_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing skull"));
+	if (!bossTexture.initialize(graphics, BOSS_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing boss"));
 
-	Dfr* d = new Dfr;
-	d->initialize(this, dfrNS::WIDTH, dfrNS::HEIGHT, dfrNS::TEXTURE_COLS, &dfrTexture);
-	d->setX(GAME_WIDTH / 2);
-	d->setY(GAME_HEIGHT / 3);
-	dfrList.push_back(d);
+	//spawn enemies on game start
+	Dfr* r = new Dfr;
+	r->initialize(this, dfrNS::WIDTH, dfrNS::HEIGHT, dfrNS::TEXTURE_COLS, &dfrTexture);
+	r->setX(GAME_WIDTH / 2);
+	r->setY(GAME_HEIGHT / 5);
+	dfrList.push_back(r);
 
-	if (!hbTexture.initialize(graphics, HEALTHBAR_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
-	//hb.setWidth(hbNS::WIDTH / 2);
+	Dfb* b = new Dfb;
+	b->initialize(this, dfbNS::WIDTH, dfbNS::HEIGHT, dfbNS::TEXTURE_COLS, &dfbTexture);
+	b->setX(GAME_WIDTH / 2);
+	b->setY(2*GAME_HEIGHT / 5);
+	dfbList.push_back(b);
+
+	Dfg* g = new Dfg;
+	g->initialize(this, dfgNS::WIDTH, dfgNS::HEIGHT, dfgNS::TEXTURE_COLS, &dfgTexture);
+	g->setX(GAME_WIDTH / 2);
+	g->setY(3*GAME_HEIGHT / 5);
+	dfgList.push_back(g);
+
+	Skull* skull = new Skull;
+	skull->initialize(this, skullNS::WIDTH, skullNS::HEIGHT, skull->textcols, &skullTexture);
+	skull->setX(GAME_WIDTH / 2);
+	skull->setY(4*GAME_HEIGHT / 5);
+	skullList.push_back(skull);
+
+	Boss* boss = new Boss;
+	boss->initialize(this, bossNS::WIDTH, bossNS::HEIGHT, bossNS::TEXTURE_COLS, &bossTexture);
+	boss->setX(GAME_WIDTH / 2);
+	boss->setY(5*GAME_HEIGHT / 5);
+	bossList.push_back(boss);
 }
 
 //=============================================================================
@@ -141,192 +170,71 @@ void Spacewar::initialize(HWND hwnd)
 //=============================================================================
 void Spacewar::update()
 {
-	//checkEShip();
-	waitTimer -= frameTime;
-	sbSpawnTime -= frameTime;	//spawn timer for speed boost
-	time -= frameTime;			//spawn timer for enemy
-	bulletSpeedTime -= frameTime;
-
-	// run the update for explosions
-	for each (Explosion* ex in explosionList)
-	{
-		ex->update(frameTime);
-	}
-
-	if (rocketMain.getbulletSpeedActivated() == false)
-	{
-		if (waitTimer <= 0.0f)
-		{
-			if (input->isKeyDown(ROCKET_SPACE_KEY) == true)
-			{
-				waitTimer = 0.8f;
-				Bullet *b = new Bullet();
-				b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
-				bulletList.push_back(b);
-				b->shoot(&rocketMain, frameTime);
-				input->clearKeyPress(ROCKET_SPACE_KEY);
-			}
-		}
-	}
-
-	if (rocketMain.getbulletSpeedActivated() == true)
-	{
-		if (waitTimer <= 0.0f)
-		{
-			if (input->isKeyDown(ROCKET_SPACE_KEY) == true)
-			{
-				waitTimer = 0.06f;
-				Bullet *b = new Bullet();
-				b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
-				bulletList.push_back(b);
-
-				for each (Bullet* b in bulletList)
-				{
-					b->increaseSpeed = true;
-				}
-				b->shoot(&rocketMain, frameTime);
-				//b->setScale(10);
-				//b->shoot(&rocketMain, frameTime);
-				input->clearKeyPress(ROCKET_SPACE_KEY);
-			}
-		}
-	}
-
-	// spawns a ship
-	/*if (time <= 0.0f) {
-		EShip *e = new EShip();
-		e->initialize(this, eShipNS::WIDTH, eShipNS::HEIGHT, eShipNS::TEXTURE_COLS, &eShipTexture);
-		e->setX(GAME_WIDTH - eShipNS::WIDTH);
-		e->setY(rand() % (GAME_HEIGHT - eShipNS::HEIGHT));
-		eshipList.push_back(e);
-		time = 1.0f;
-	}*/
-
-	if (bulletSpeedTime <= 0.0f)
-	{
-		if (bulletSpeedPowerupList.size() <= 3)
-		{
-			Powerup *speedBoost = new Powerup();
-			speedBoost->initialize(this, powerupNS::WIDTH, powerupNS::HEIGHT, powerupNS::TEXTURE_COLS, &powerupTexture);
-			speedBoost->setX(rand() % (GAME_WIDTH - powerupNS::WIDTH));
-			speedBoost->setY(rand() % (GAME_HEIGHT - powerupNS::HEIGHT));
-			speedBoost->setVelocity(VECTOR2(-powerupNS::SPEED, -powerupNS::SPEED));
-			bulletSpeedPowerupList.push_back(speedBoost);
-			bulletSpeedTime = 15.0f;
-		}
-	}
-
-	// spawns a speed boost
-	if (sbSpawnTime <= 0.0f)
-	{
-		if (sbList.size() <= 2)
-		{
-			SpeedBoost *sb = new SpeedBoost();
-			sb->initialize(this, speedboostNS::WIDTH, speedboostNS::HEIGHT, speedboostNS::TEXTURE_COLS, &sbTexture);
-			sb->setX(rand() % (GAME_WIDTH - speedboostNS::WIDTH));
-			sb->setY(rand() % (GAME_HEIGHT - speedboostNS::HEIGHT));
-			sbList.push_back(sb);
-			sbSpawnTime = 30.0f;
-		}
-	}
-
-	// run eship update function and ebullet update function inside the eships ebullet list
-	/*for each (EShip* e in eshipList)
-	{
-		e->update(frameTime);
-		e->chase(&rocketMain);
-		if (e->shotTimer <= 0.0f)
-		{
-			EBullet* b = new EBullet;
-			b->initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebulletTexture);
-			e->ebulletList.push_back(b);
-			b->getDir(&rocketMain, e);
-			e->shotTimer = 1.0f;
-		}
-		for each (EBullet* b in e->ebulletList)
-		{
-			b->update(frameTime);
-		}
-	}*/
-	if (eShip.shotTimer <= 0.0f)
-	{
-		EBullet* b = new EBullet;
-		b->initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebulletTexture);
-		eShip.ebulletList.push_back(b);
-		b->getDir(&rocketMain, &eShip);
-		eShip.shotTimer = 0.0f;
-	}
-	for each (EBullet* b in eShip.ebulletList)
-	{
-		b->update(frameTime);
-	}
-	// check to delete vector items
-	checkDfr();
-	checkSB();
-	checkEB();
-	checkEx();
-
-	if (rocketMain.getHealth() <= 0)
-	{
-		//rocketMain.setActive(false);
-		for (vector<Bullet*>::iterator it = bulletList.begin();
-			it != bulletList.end();)
-		{
-			SAFE_DELETE(*it);
-			it = bulletList.erase(it);
-		}
-		for each (EShip* e in eshipList)
-		{
-			e->checkCollided = true;
-			/*for each (EBullet* eb in e->ebulletList)
-			{
-				eb->collided = true;
-			}*/
-		}
-	}
-	
-	for (vector<Powerup*>::iterator it = bulletSpeedPowerupList.begin();
-		it != bulletSpeedPowerupList.end();)
-	{
-		if ((*it)->getActive() == false)
-		{
-			SAFE_DELETE(*it);
-			it = bulletSpeedPowerupList.erase(it);
-		}
-		else
-		{
-			++it;
-		}
-	}
-
-//=============================================================================
-// Update frameTime for Animation 
-//=============================================================================
-	rocketMain.update(frameTime);
-
-	for each(Bullet*  bull in bulletList)
-	{
-		bull->update(frameTime);
-	}
-
-	
-	for each (Powerup* p in bulletSpeedPowerupList)
-	{
-		p->update(frameTime);
-	}
-
 	playerMain.update(frameTime);
 
-	for each (Dfr* d in dfrList)
+	for each (Dfr* r in dfrList)
 	{
-		d->update(frameTime);
-		if (d->dead == true && d->imgChanged == false)
+		r->update(frameTime);
+
+		if (r->dead == true && r->imgChanged == false)
 		{
 			dfrTexture.initialize(graphics, DF_DEATH_IMAGE);
-			d->setCurrentFrame(0);
-			d->imgChanged = true;
+			r->setCurrentFrame(dfrNS::DFR_START_FRAME);
+			r->imgChanged = true;
 		}
 	}
+
+	for each (Dfb* b in dfbList)
+	{
+		b->update(frameTime);
+		if (b->dead == true && b->imgChanged == false)
+		{
+			dfbTexture.initialize(graphics, DF_DEATH_IMAGE);
+			b->setCurrentFrame(dfbNS::DFB_START_FRAME);
+			b->imgChanged = true;
+		}
+	}
+	
+	for each (Dfg* g in dfgList)
+	{
+		g->update(frameTime);
+		if (g->dead == true && g->imgChanged == false)
+		{
+			dfgTexture.initialize(graphics, DF_DEATH_IMAGE);
+			g->setCurrentFrame(dfgNS::DFG_START_FRAME);
+			g->imgChanged = true;
+		}
+	}
+
+	for each (Skull* skull in skullList)
+	{
+		skull->update(frameTime);
+
+		//skull appear
+		if (skull->getCurrentFrame() == skullNS::SKULL_END_FRAME)
+		{
+			skull->setCurrentFrame(skullNS::ACTIVE_END_FRAME);
+			skull->enteredChanged = true;
+		}
+		
+		if (skull->entered == true && skull->enteredChanged == true && skull->active == false)
+		{
+			skull->setCurrentFrame(skullNS::ACTIVE_END_FRAME);
+			skullTexture.initialize(graphics, SKULL_IMAGE);
+			skull->active = true;
+
+		}
+	}
+
+	for each (Boss* boss in bossList)
+	{
+		boss->update(frameTime);
+	}
+
+	// check to delete vector items
+	checkDfr();
+	checkDfb();
+	checkDfg();
 }
 
 //=============================================================================
@@ -341,48 +249,6 @@ void Spacewar::ai()
 void Spacewar::collisions()
 {
     VECTOR2 collisionVector;
- 
-	for each(Bullet*  bull in bulletList)
-	{
-		for each (EShip* eshat in eshipList)
-		{
-			if (bull->collidesWith(*eshat, collisionVector))
-			{
-				// bounce off planet
-				bull->bounce(collisionVector, *eshat);
-				bull->isFired = false;
-				eshat->setHealth(eshat->getHealth() - 100);
-				bull->setActive(false);
-				eshat->checkCollided = true;
-
-				Explosion *ex = new Explosion;
-				ex->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &explosionTexture);
-				ex->setX((eshat)->getX());
-				ex->setY((eshat)->getY());
-				ex->setScale(0.4);
-				explosionList.push_back(ex);
-			}
-		}
-	}
-
-	for each (Powerup* p in bulletSpeedPowerupList)
-	{
-		if (rocketMain.collidesWith(*p, collisionVector))
-		{
-			rocketMain.bounce(collisionVector, *p);
-			p->setActive(false);
-			rocketMain.setbulletSpeedActivated(true);
-		}
-	}
-
-	for each (SpeedBoost* sb in sbList)
-	{
-		if (sb->collidesWith(rocketMain, collisionVector))
-		{
-			sb->collided = true;
-			rocketMain.sbActive = true;
-		}
-	}
 
 	for each (EShip* e in eshipList)
 	{
@@ -422,61 +288,28 @@ void Spacewar::render()
 
 	playerMain.draw();
 
-	eShip.draw();
-
-
-
-	for each (Powerup* p in bulletSpeedPowerupList)
-	{
-		if (p != NULL && p->getActive() == true)
-		{
-			p->draw();
-		}
-	}
-	for each (Explosion* ex in explosionList)
-	{
-		if (ex != NULL)
-		{
-			ex->draw();
-		}
-	}
-	if (rocketMain.getHealth() > 0)
-	{
-		rocketMain.draw();						// add the rocket to the scene
-	}
-
-	for each(Bullet*  bull in bulletList)
-	{
-		bull->draw();
-	}
-
-	for each(EShip*  enemy in eshipList)	// all eship draw functions go here
-	{
-		if (enemy->getHealth() > 0)
-			enemy->draw();						// draw every enemy ship in the list
-		else
-			enemy->setActive(false);
-
-		for each (EBullet* b in enemy->ebulletList)
-		{
-			if (b != NULL)
-			{
-				b->draw();
-			}
-		}
-	}
-
-	for each(SpeedBoost* sb in sbList)
-	{
-		if (sb != NULL)
-		{
-			sb->draw();
-		}
-	}
-
 	for each (Dfr* d in dfrList)
 	{
 		d->draw();
+	}
+	for each (Dfb* b in dfbList)
+	{
+		b->draw();
+	}
+
+	for each (Dfg* g in dfgList)
+	{
+		g->draw();
+	}
+
+	for each (Skull* skull in skullList)
+	{
+		skull->draw();
+	}
+
+	for each (Boss* boss in bossList)
+	{
+		boss->draw();
 	}
     graphics->spriteEnd();                  // end drawing sprites
 }
@@ -520,7 +353,6 @@ void Spacewar::checkDfr()
 	{
 		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
 		{
-
 			SAFE_DELETE(*it);
 			it = dfrList.erase(it);
 		}
@@ -538,16 +370,23 @@ void Spacewar::checkDfr()
 	}
 }
 
-void Spacewar::checkSB()
+void Spacewar::checkDfb()
 {
-	for (vector<SpeedBoost*>::iterator it = sbList.begin();
-		it != sbList.end();)
+	for (vector<Dfb*>::iterator it = dfbList.begin();
+		it != dfbList.end();)
 	{
-		if ((*it)->collided)
+		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
 		{
 			SAFE_DELETE(*it);
-			it = sbList.erase(it);
+			it = dfbList.erase(it);
 		}
+
+		else if (rocketMain.getActive() == false)
+		{
+			SAFE_DELETE(*it);
+			it = dfbList.erase(it);
+		}
+
 		else
 		{
 			++it;
@@ -555,77 +394,74 @@ void Spacewar::checkSB()
 	}
 }
 
-void Spacewar::checkEB()
+void Spacewar::checkDfg()
 {
-	for each (EShip* e in eshipList)
+	for (vector<Dfg*>::iterator it = dfgList.begin();
+		it != dfgList.end();)
 	{
-		for (vector<EBullet*>::iterator it = e->ebulletList.begin();
-			it != e->ebulletList.end();)
-		{
-			if ((*it)->collided)
-			{
-				Explosion *ex = new Explosion;
-				ex->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &explosionTexture);
-				ex->setX((*it)->getX());
-				ex->setY((*it)->getY());
-				ex->setScale(0.4);
-				explosionList.push_back(ex);
-				SAFE_DELETE(*it);
-				it = e->ebulletList.erase(it);
-			}
-			else
-			{
-				++it;
-			}
-		}
-	}
-}
-
-void Spacewar::checkEx()
-{
-	for (vector<Explosion*>::iterator it = explosionList.begin();
-		it != explosionList.end();)
-	{
-		if ((*it)->exploded)
+		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
 		{
 			SAFE_DELETE(*it);
-			it = explosionList.erase(it);
+			it = dfgList.erase(it);
 		}
+
+		else if (rocketMain.getActive() == false)
+		{
+			SAFE_DELETE(*it);
+			it = dfgList.erase(it);
+		}
+
 		else
 		{
 			++it;
 		}
 	}
 }
-/*
-void Spacewar::checkBullet()
+
+void Spacewar::checkSkull()
 {
-	for (vector<Bullet*>::iterator it = bulletList.begin();
-		it != bulletList.end();)
+	/*for (vector<Dfr*>::iterator it = dfrList.begin();
+		it != dfrList.end();)
 	{
-		if ((*it)->checkCollided)
+		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
 		{
 			SAFE_DELETE(*it);
-			it = bulletList.erase(it);
+			it = dfrList.erase(it);
 		}
+
+		else if (rocketMain.getActive() == false)
+		{
+			SAFE_DELETE(*it);
+			it = dfrList.erase(it);
+		}
+
 		else
 		{
 			++it;
 		}
-	}
+	}*/
 }
-*/
 
-void Spacewar::shotgun()
+void Spacewar::checkBoss()
 {
-	for each (Dfr* dfr in dfrList)
+	/*for (vector<Dfr*>::iterator it = dfrList.begin();
+		it != dfrList.end();)
 	{
-		for (int i = -2; i < 3; i++)
+		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
 		{
-			DfrBullet* d = new DfrBullet;
-			d->initialize(this, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
-			d->appImpulse(dfr->getX(), dfr->getY(), 0 , dfr->getY() + (i*100));
-			dfr->dfrbList.push_back(d);
+			SAFE_DELETE(*it);
+			it = dfrList.erase(it);
 		}
-	}
+
+		else if (rocketMain.getActive() == false)
+		{
+			SAFE_DELETE(*it);
+			it = dfrList.erase(it);
+		}
+
+		else
+		{
+			++it;
+		}
+	}*/
 }
