@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>ButterChips</ProjectName>
+    <ProjectName>Blob</ProjectName>
     <ProjectGuid>{0259B800-2046-467E-94A2-D13B6F5210BC}</ProjectGuid>
     <RootNamespace>Destroyer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
@@ -98,52 +98,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="audio.cpp" />
     <ClCompile Include="bullet.cpp" />
-    <ClCompile Include="ebullet.cpp" />
     <ClCompile Include="entity.cpp" />
-    <ClCompile Include="eship.cpp" />
-    <ClCompile Include="explosion.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="heart.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
-    <ClCompile Include="planet.cpp" />
+    <ClCompile Include="missle.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="powerup.cpp" />
-    <ClCompile Include="rocket.cpp" />
     <ClCompile Include="selection.cpp" />
     <ClCompile Include="spacewar.cpp" />
     <ClCompile Include="specials.cpp" />
-    <ClCompile Include="speedboost.cpp" />
     <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AttackComponent.h" />
+    <ClInclude Include="audio.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="constants.h" />
-    <ClInclude Include="ebullet.h" />
     <ClInclude Include="entity.h" />
-    <ClInclude Include="eship.h" />
-    <ClInclude Include="explosion.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameError.h" />
     <ClInclude Include="graphics.h" />
-    <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="heart.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
-    <ClInclude Include="MovementComponent.h" />
-    <ClInclude Include="planet.h" />
+    <ClInclude Include="missle.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="powerup.h" />
-    <ClInclude Include="rocket.h" />
     <ClInclude Include="selection.h" />
     <ClInclude Include="spacewar.h" />
     <ClInclude Include="specials.h" />
-    <ClInclude Include="speedboost.h" />
     <ClInclude Include="textDX.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>

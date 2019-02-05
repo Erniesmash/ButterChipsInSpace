@@ -17,6 +17,8 @@
 #include "gameError.h"
 #include "TextDX.h"
 
+#include "audio.h"
+
 namespace gameNS
 {
 	const char FONT[] = "Courier New";  // font
@@ -30,6 +32,9 @@ protected:
     // common game properties
     Graphics *graphics;         // pointer to Graphics
     Input   *input;             // pointer to Input
+
+	Audio   *audio;
+
     HWND    hwnd;               // window handle
     HRESULT hr;                 // standard return type
     LARGE_INTEGER timeStart;    // Performance Counter start value
@@ -107,6 +112,8 @@ public:
     // Call graphics->spriteEnd();
     //   draw non-sprites
     virtual void render() = 0;
+
+	Audio* getAudio() { return audio; }
 };
 
 #endif

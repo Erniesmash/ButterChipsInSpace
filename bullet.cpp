@@ -57,9 +57,11 @@ void Bullet::draw()
 void Bullet::update(float frameTime) 
 {
 	Entity::update(frameTime); 
+	
 	spriteData.x = spriteData.x + frameTime * velocity.x;
 	spriteData.y = spriteData.y + frameTime * velocity.y;
 
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	// BounceMan Bounce Shot (Ability 2)
 	if (bounceOnCooldown == false)
 	{
@@ -92,6 +94,7 @@ void Bullet::update(float frameTime)
 				spriteData.x = GAME_WIDTH - bulletNS::WIDTH;    // position at right screen edge
 				velocity.x = -velocity.x;                   // reverse X direction				
 			}
+
 			else if (spriteData.x < 0)                    // else if hit left screen edge
 			{
 				spriteData.x = 0;                           // position at left screen edge
@@ -103,6 +106,7 @@ void Bullet::update(float frameTime)
 				spriteData.y = GAME_HEIGHT - bulletNS::HEIGHT;  // position at bottom screen edge
 				velocity.y = -velocity.y;                   // reverse Y direction
 			}
+
 			else if (spriteData.y < 0)                    // else if hit top screen edge
 			{
 				spriteData.y = 0;                           // position at top screen edge
@@ -116,16 +120,17 @@ void Bullet::update(float frameTime)
 			bounceManActive = false;
 		}
 	}	
+	//////////////////////////////////////////////////////////////////////////////////////////
 }
 
 void Bullet::shoot(Entity *whereFrom, float frameTime)
 {	
 	isFired = true;
-	spriteData.x = whereFrom->getCenterX() - spriteData.width / 2; 
+	spriteData.x = whereFrom->getCenterX() - spriteData.width / 2;
 	spriteData.y = whereFrom->getCenterY() - spriteData.height / 2;
 	VECTOR2 travel(input->getMouseX() - spriteData.x, input->getMouseY() - spriteData.y);
 	Graphics::Vector2Normalize(&travel);
-	velocity = travel * bulletNS::SPEED;	
+	velocity = travel * bulletNS::SPEED;
 }
 
 

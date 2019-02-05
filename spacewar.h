@@ -1,10 +1,3 @@
-//  Module:             Gameplay Programming
-//  Assignment1:        Butter Chips in Space
-//  Student Name:       Tan Cheng Hian
-//  Student Number:     S10179071A
-//  Student Name:       Ernest Cheo
-//  Student Number:     S10177445D
-
 #ifndef _SPACEWAR_H             // Prevent multiple definitions if this 
 #define _SPACEWAR_H             // file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
@@ -12,21 +5,19 @@
 #include "game.h"
 #include "textureManager.h"
 #include "image.h"
-#include "rocket.h"
 #include "bullet.h"
-#include "eship.h"
-#include "ebullet.h"
 #include <vector>
 #include <string>
-#include "powerup.h"
-#include "speedboost.h"
-#include "explosion.h"
 #include "player.h"
-
 #include "textDX.h"
 #include "heart.h"
 #include "specials.h"
 #include "selection.h"
+#include "missle.h"
+#include <Mmsystem.h>
+#include <mciapi.h>
+//these two headers are already included in the <Windows.h> header
+#pragma comment(lib, "Winmm.lib")
 
 namespace spacewarNS
 {
@@ -56,14 +47,12 @@ private:
 	TextureManager rocketTexture;	
 	TextureManager farbackTexture;	
 	TextureManager bulletTexture;	
-	TextureManager eShipTexture;	
-	TextureManager ebulletTexture;	
 	TextureManager starfieldTexture;
-	TextureManager powerupTexture;
-	TextureManager sbTexture;
 	TextureManager explosionTexture;
 	TextureManager playerTexture;
-
+	TextureManager missleTexture;
+	TextureManager spaceTexture;
+	TextureManager enemyTexture;
 	TextureManager selectionTexture;
 	std::vector<Selection*> selectionList;
 
@@ -79,14 +68,17 @@ private:
 
 	Image	farback;
 	Image	starfield;
+	Image space;
 
 	Image menu;
 	bool menuOn;
 
 	Player playerMain;
+	Player startPlayer;
+	Missle missleShot;
+
 	std::vector<Bullet*> bulletList;
 	float waitTimer;
-	
 
 public:
     // Constructor

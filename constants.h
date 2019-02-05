@@ -1,10 +1,3 @@
-//  Module:             Gameplay Programming
-//  Assignment1:        Butter Chips in Space
-//  Student Name:       Tan Cheng Hian
-//  Student Number:     S10179071A
-//  Student Name:       Ernest Cheo
-//  Student Number:     S10177445D
-
 #ifndef _CONSTANTS_H            // Prevent multiple definitions if this 
 #define _CONSTANTS_H            // file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
@@ -24,7 +17,7 @@
 #define SAFE_ON_LOST_DEVICE(ptr)    { if(ptr) { ptr->onLostDevice(); } }
 // Safely call onResetDevice
 #define SAFE_ON_RESET_DEVICE(ptr)   { if(ptr) { ptr->onResetDevice(); } }
-#define TRANSCOLOR  SETCOLOR_ARGB(0,255,0,255)  // transparent color (magenta)
+
 
 //-----------------------------------------------
 //                  Constants
@@ -56,12 +49,16 @@ const char BULLET_IMAGE[] = "pictures\\hatch_sheet.png";
 const char EBULLET_IMAGE[] = "pictures\\ehatch_sheet.png";
 const char POWERUP_IMAGE[] = "pictures\\balls.png";
 const char STARFIELD_IMAGE[] = "pictures\\starfield.png";
-const char SPEEDBOOST_IMAGE[] = "pictures\\head_sheet.png";
+const char HEAD_IMAGE[] = "pictures\\head_sheet.png";
 const char EXPLOSION_IMAGE[] = "pictures\\explode1.png";
 const char PLAYER_IMAGE[] = "pictures\\player.png";
 const char SPECIALS_IMAGE[] = "pictures\\MeatSmall.png";
 const char HEART_IMAGE[] = "pictures\\heart.png";
 const char SELECTION_IMAGE[] = "pictures\\selection.png";
+const char MISSLE_IMAGE[] = "pictures\\missile.png";
+const char EXPLOSION_ADVANCED_IMAGE[] = "pictures\\explosionAdvanced.png";
+const char SHIELD_IMAGE[] = "pictures\\shield.png";
+const char SPACE_IMAGE[] = "pictures\\space.png";
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
@@ -83,10 +80,20 @@ const UCHAR ARROW_UP = VK_UP;
 const UCHAR ARROW_DOWN = VK_DOWN;
 const UCHAR ROCKET_SPACE_KEY = VK_SPACE;
 
-// For Specials
+// Keys For Specials
 const UCHAR ONE_KEY = 0x31;
 const UCHAR TWO_KEY = 0x32;
 const UCHAR THREE_KEY = 0x33;
 const UCHAR FOUR_KEY = 0x34;
+
+// WAVE_BANK must be location of .xwb file.
+const char WAVE_BANK[] = "audio\\Win\\BlobWave.xwb";
+// SOUND_BANK must be location of .xsb file.
+const char SOUND_BANK[] = "audio\\Win\\BlobSound.xsb";
+
+// Audio Files
+const char SELECTION1[] = "selection1";
+const char GUNSHOT1[] = "gunshot1";
+const char EXPLOSION1[] = "explosion1";
 
 #endif

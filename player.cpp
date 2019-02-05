@@ -21,6 +21,7 @@ Player::Player() : Entity()
 	radius = playerNS::WIDTH / 2.0;
 	mass = playerNS::MASS;
 	collisionType = entityNS::CIRCLE;
+	shieldOn = false;
 }
 
 //=============================================================================
@@ -30,6 +31,16 @@ Player::Player() : Entity()
 bool Player::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
+	// shield texture
+	if (!shieldTexture.initialize(gamePtr->getGraphics(), SHIELD_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing shield texture"));
+
+	// shield
+	shield.initialize(gamePtr->getGraphics(), playerNS::SHIELD_WIDTH, playerNS::SHIELD_HEIGHT, playerNS::SHIELD_COLS, &shieldTexture);
+	shield.setFrames(playerNS::SHIELD_START_FRAME, playerNS::SHIELD_END_FRAME);
+	shield.setCurrentFrame(playerNS::SHIELD_START_FRAME);
+	shield.setFrameDelay(playerNS::SHIELD_ANIMATION_DELAY);
+	shield.setLoop(false);                  
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
@@ -39,6 +50,13 @@ bool Player::initialize(Game *gamePtr, int width, int height, int ncols,
 void Player::draw()
 {
 	Image::draw();              // draw ship
+	if (shieldOn == true)
+	{
+		shield.draw(graphicsNS::ALPHA50 & colorFilter);
+		shield.setX(spriteData.x - spriteData.width / 2 * spriteData.scale);
+		shield.setY(spriteData.y - spriteData.height / 2 * spriteData.scale);
+		shield.setScale(0.5);
+	}		
 }
 
 //=============================================================================
@@ -49,6 +67,11 @@ void Player::draw()
 void Player::update(float frameTime)
 {
 	Entity::update(frameTime);
+
+	if (shieldOn)
+	{
+		shield.update(frameTime);
+	}
 
 	/*
 	enum State{STATE_IDLE, STATE_ATTACK};
@@ -87,6 +110,7 @@ void Player::update(float frameTime)
 	}
 	*/
 	
+	///////////////////////////////////////////////////////////////////////////////////////////
 	// Sine Wave Dodge Roll (Ability 1)
 	if (dashOnCooldown == false)
 	{
@@ -103,7 +127,7 @@ void Player::update(float frameTime)
 		if (dashCooldownTimer < 0)
 		{
 			dashOnCooldown = false;
-			dashCooldownTimer = 5;
+			dashCooldownTimer = 6; //Change this value to adjust cooldown
 		}
 	}
 	
@@ -119,10 +143,51 @@ void Player::update(float frameTime)
 
 		else //i.e less than zero
 		{
-			dashInUseTimer = 0.5;
+			dashInUseTimer = 0.5; //change this value to adjust how long dash is active
 			dashActive = false;
 		}
 	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Reflective Shield (Ability 4)
+
+	if (shieldOnCooldown == false)
+	{
+		if (input->isKeyDown(FOUR_KEY))
+		{
+			shieldOn = true;
+			shieldOnCooldown = true;
+		}
+	}
+
+	else //dash is on cooldown
+	{
+		shieldCooldownTimer -= frameTime;
+		if (shieldCooldownTimer < 0)
+		{
+			shieldOnCooldown = false;
+			shieldCooldownTimer = 12; //Change this value to adjust cooldown
+		}
+	}
+
+	if (shieldOn == true)
+	{
+		shieldInUseTimer -= frameTime;
+
+		if (shieldInUseTimer > 0)
+		{
+			shieldOn = true;
+		}
+
+		else //i.e less than zero
+		{
+			shieldInUseTimer = 5; //change this value to adjust how long shield is active
+			shieldOn = false;
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////////////////////
 
 	// Bounce off walls
 	if (spriteData.x > GAME_WIDTH - playerNS::WIDTH * spriteData.scale)    // if hit right screen edge
@@ -137,7 +202,7 @@ void Player::update(float frameTime)
 		velocity.x = -velocity.x;                   // reverse X direction
 	}
 
-	else if (spriteData.y > GAME_HEIGHT - playerNS::HEIGHT * spriteData.scale)  // if hit bottom screen edge
+	if (spriteData.y > GAME_HEIGHT - playerNS::HEIGHT * spriteData.scale)  // if hit bottom screen edge
 	{
 		spriteData.y = GAME_HEIGHT - playerNS::HEIGHT * spriteData.scale;  // position at bottom screen edge
 		velocity.y = -velocity.y;                   // reverse Y direction
@@ -149,7 +214,7 @@ void Player::update(float frameTime)
 		velocity.y = -velocity.y;                   // reverse Y direction
 	}
 
-	if (dashActive == false)
+	if (dashActive == false) // Prevent player from affecting sine wave
 	{
 		if (input->isKeyDown(ROCKET_D_KEY))            // if move right
 		{

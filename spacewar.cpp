@@ -1,11 +1,4 @@
-﻿//  Module:             Gameplay Programming
-//  Assignment1:        Butter Chips in Space
-//  Student Name:       Tan Cheng Hian
-//  Student Number:     S10179071A
-//  Student Name:       Ernest Cheo
-//  Student Number:     S10177445D
-
-#include "spaceWar.h"
+﻿#include "spaceWar.h"
 
 //=============================================================================
 // Constructor
@@ -99,7 +92,22 @@ void Spacewar::initialize(HWND hwnd)
 	// player
 	if (!playerMain.initialize(this, playerNS::WIDTH, playerNS::HEIGHT, playerNS::TEXTURE_COLS, &playerTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player"));
+	playerMain.setX(GAME_WIDTH / 3);
 
+	// player menu
+	if (!startPlayer.initialize(this, playerNS::WIDTH, playerNS::HEIGHT, playerNS::TEXTURE_COLS, &playerTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing startplayer"));
+
+//=============================================================================
+// Missle
+//=============================================================================
+	// missle texture
+	if (!missleTexture.initialize(graphics, MISSLE_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing missle texture"));
+
+	// missle
+	if (!missleShot.initialize(this, missleNS::WIDTH, missleNS::HEIGHT, missleNS::TEXTURE_COLS, &missleTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing missle"));
 
 //=============================================================================
 // Bullet Stuff
@@ -119,9 +127,13 @@ void Spacewar::initialize(HWND hwnd)
 	if (!farbackTexture.initialize(graphics, FARBACK_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing farback texture"));
 
+	// space texture
+	if (!spaceTexture.initialize(graphics, SPACE_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing space texture"));
+
 	// farback image
-	if (!farback.initialize(graphics,0,0,0,&farbackTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing farback"));
+	if (!space.initialize(graphics,0,0,0,&spaceTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing space"));
 
 	// starfield texture
 	if (!starfieldTexture.initialize(graphics, STARFIELD_IMAGE))
@@ -134,12 +146,8 @@ void Spacewar::initialize(HWND hwnd)
 	// menu image
 	if (!menu.initialize(graphics, 0, 0, 0, &farbackTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing menu"));
-	
-//=============================================================================
-// BAKURETSU MAHOU
-//=============================================================================
-	if (!explosionTexture.initialize(graphics, EXPLOSION_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing explosion"));
+
+	PlaySound("C:\\Users\\ernes\\Documents\\GitHub\\ButterChipsInSpace\\audio\\menu.wav", NULL, SND_LOOP | SND_ASYNC);
 }
 	
 //=============================================================================
@@ -156,23 +164,18 @@ void Spacewar::update()
 			input->clearAll();
 		}
 
-		playerMain.setX(playerMain.getX() + frameTime * playerNS::SPEED);
-		playerMain.update(frameTime);
+		startPlayer.setX(startPlayer.getX() + frameTime * playerNS::SPEED);
+		startPlayer.update(frameTime);
 
-		if (playerMain.getX() > GAME_WIDTH - playerNS::WIDTH * playerMain.getScale() - 1)    // if hit right screen edge
+		if (startPlayer.getX() > GAME_WIDTH - playerNS::WIDTH * startPlayer.getScale() - 1)    // if hit right screen edge
 		{
-			playerMain.setX(0);    // position at right screen edge
+			startPlayer.setX(0);    // position at right screen edge
 		}
 	}
 	
 	if (menuOn == false)
 	{
-		/*
-		Player* it = &playerMain;
-		SAFE_DELETE(*it);
-		*/
-
-		for (vector<Bullet*>::iterator it = bulletList.begin();
+		for (std::vector<Bullet*>::iterator it = bulletList.begin();
 			it != bulletList.end();)
 		{
 			if ((*it)->bounceInUseTimer == 4)
@@ -211,6 +214,15 @@ void Spacewar::update()
 			}
 		}
 
+		if (missleShot.missleActive == false)
+		{
+			if (input->isKeyDown(THREE_KEY))
+			{
+				missleShot.shoot(&playerMain, frameTime);
+				missleShot.missleActive = true;
+			}
+		}
+
 		if (input->getMouseLButton() == true)
 		{
 			if (waitTimer <= 0.0f)
@@ -220,6 +232,7 @@ void Spacewar::update()
 				b->initialize(this, bulletNS::WIDTH, bulletNS::HEIGHT, bulletNS::TEXTURE_COLS, &bulletTexture);
 				bulletList.push_back(b);
 				b->shoot(&playerMain, frameTime);
+				audio->playCue(GUNSHOT1);
 			}
 		}
 
@@ -233,6 +246,7 @@ void Spacewar::update()
 		}
 
 		playerMain.update(frameTime);
+		missleShot.update(frameTime);
 	}	
 }
 
@@ -249,7 +263,6 @@ void Spacewar::collisions()
 {
 	if (menuOn == false)
 	{
-		VECTOR2 collisionVector;
 	}    
 }
 
@@ -269,16 +282,21 @@ void Spacewar::render()
 		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Click any button on the keyboard to begin the game!");
 		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
 
-		playerMain.draw();
+		startPlayer.draw();
 	}
 
 	if (menuOn == false)
-	{
-		farback.draw();							// add the farback to the scene
+	{	
+		space.draw();
 
 		starfield.draw();
 
 		playerMain.draw();
+
+		if (missleShot.missleActive == true)
+		{
+			missleShot.draw();
+		}
 
 		if (heartList.size() != 0)
 		{
@@ -307,11 +325,6 @@ void Spacewar::render()
 			}
 		}
 
-		/*
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Welcome to ブロブとトラブル");
-		dxFont.print(buffer, GAME_WIDTH/100, GAME_HEIGHT/1.05);
-		*/
-
 		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Click 1, 2, 3 or 4 to use Special Abilities!");
 		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
 
@@ -321,7 +334,8 @@ void Spacewar::render()
 		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", input->getMouseY());
 		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 4);
 
-		//Ability One Dash
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//Ability One: Sine Wave Dash
 		if (playerMain.dashOnCooldown == true)
 		{
 			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)playerMain.dashCooldownTimer);
@@ -334,13 +348,13 @@ void Spacewar::render()
 			dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
 		}
 
-		//Ability Two
+		//Ability Two: Bullet Bounce
 		for each(Bullet* bullet in bulletList)
 		{
 			if (bullet->bounceOnCooldown == true)
 			{
-				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)bullet->bounceCooldownTimer);
-				dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
+				//_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)bullet->bounceCooldownTimer);
+				//dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
 
 				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)bullet->bounceInUseTimer);
 				dxFont.print(buffer, playerMain.getCenterX() - 5, playerMain.getCenterY() + 20);
@@ -358,38 +372,61 @@ void Spacewar::render()
 			dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
 		}
 
-		//Ability Three
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
-		dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
+		//Ability Three: Falling Missle Shot
+		if (missleShot.missleOnCooldown == true)
+		{
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)missleShot.missleCooldownTimer);
+			dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
+		}
 
-		//Ability Four
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
-		dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
+		else
+		{
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+			dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
+		}
+
+		//Ability Four: Reflective Shield
+	
+		if (playerMain.shieldOnCooldown == true)
+		{
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)playerMain.shieldCooldownTimer);
+			dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
+		}
+
+		else
+		{
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+			dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
+		}
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		//change ability/specials selection
 		if (input->isKeyDown(ONE_KEY))
 		{
 			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
 			fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
+			audio->playCue(SELECTION1);
 		}
 
 		if (input->isKeyDown(TWO_KEY))
 		{
 			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
 			fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
-
+			audio->playCue(SELECTION1);
 		}
 
 		if (input->isKeyDown(THREE_KEY))
 		{
 			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
 			fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
+			audio->playCue(SELECTION1);
 		}
 
 		if (input->isKeyDown(FOUR_KEY))
 		{
 			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
 			fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
+			audio->playCue(SELECTION1);
 		}
 
 		for each(Bullet*  bullet in bulletList)
@@ -414,6 +451,8 @@ void Spacewar::releaseAll()
 	heartTexture.onLostDevice();
 	specialsTexture.onLostDevice();
 	selectionTexture.onLostDevice();
+	playerTexture.onLostDevice();
+	spaceTexture.onLostDevice();
     Game::releaseAll();
     return;
 }
@@ -432,6 +471,8 @@ void Spacewar::resetAll()
 	heartTexture.onResetDevice();
 	specialsTexture.onResetDevice();
 	selectionTexture.onResetDevice();
+	playerTexture.onResetDevice();
+	spaceTexture.onResetDevice();
     Game::resetAll();
     return;
 }
