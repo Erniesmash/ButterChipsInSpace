@@ -6,6 +6,11 @@
 #include <vector>
 #include "entity.h"
 #include "constants.h"
+#include "ebullet.h"
+#include "dfbbullet.h"
+#include "dfrbullet.h"
+#include "dfgbullet.h"
+#include "skull.h"
 #include "hb.h"
 using namespace std;
 
@@ -23,17 +28,41 @@ namespace bossNS
 	const int   BOSS_END_FRAME = 4;        // ship1 animation frames 0,1,2,3
 	const float BOSS_ANIMATION_DELAY = 0.12f;    // time between frames
 	const float BOSS_SHOT_TIMER = 1.0f;
-	const int	BOSS_HEALTH = 100;
+	const int	BOSS_HEALTH = 3000;
+
+	//phases
+	const float PHASE_ONE = 3000;
+	const float PHASE_TWO = 2500;
+	const float PHASE_THREE = 2000;
+	const float PHASE_FOUR = 1500;
+	const float PHASE_FIVE = 1000;
+	const float PHASE_SIX = 500;
 }
 
 // inherits from Entity class
 class Boss : public Entity
 {
 private:
-	TextureManager bossbTexture;
-
+	TextureManager ebTexture;
 	TextureManager hbTexture;
+
+	TextureManager dfbbTexture;
+	TextureManager dfrbTexture;
+	TextureManager dfgbTexture;
+	TextureManager skullTexture;
+
 	Hb hb;
+	EBullet eb;
+	DfbBullet dfbb;
+	DfrBullet dfrb;
+	DfgBullet dfgb;
+	Skull skull;
+
+	vector<EBullet*> ebList;
+	vector<DfbBullet*> dfbbList;
+	vector<DfrBullet*> dfrbList;
+	vector<DfgBullet*> dfgbList;
+	vector<Skull*> skullList;
 
 public:
 	// constructor
@@ -53,6 +82,36 @@ public:
 	bool dead;
 	bool imgChanged;
 	float health;
+
+	void phasei() 
+	{
+		/*float a = 0;
+		bool b;
+		if (a <= 0)
+		{
+			b = true;
+		}
+		else if (a > 45)
+		{
+			b = false;
+		}
+		if (b == true)
+		{
+			a++;
+		}
+		if (b == false)
+		{
+			a--;
+		}
+
+		for (int i = 1; i < d; i++)
+		{
+			DfbBullet* d = new DfbBullet;
+			d->initialize(sw, dfbbulletNS::WIDTH, dfbbulletNS::HEIGHT, dfbbulletNS::TEXTURE_COLS, &dfbbTexture);
+			d->appImpulse(spriteData.x, spriteData.y, 0 + c * i + a);
+			dfbbList.push_back(d);
+		}*/
+	}
 
 	Game* sw;
 };

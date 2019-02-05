@@ -55,7 +55,26 @@ public:
 	bool dead;
 	bool imgChanged;
 	float health;
+	float a;
 
 	Game* sw;
+
+	void checkBullet()
+	{
+		for (vector<DfbBullet*>::iterator it = dfbbList.begin();
+			it != dfbbList.end();)
+		{
+			if ((*it)->collided == true)
+			{
+				SAFE_DELETE(*it);
+				it = dfbbList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+	}
 };
 #endif

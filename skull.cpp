@@ -64,17 +64,7 @@ void Skull::update(float frameTime)
 {
 	Entity::update(frameTime);
 	spriteData.angle += frameTime * skullNS::ROTATION_RATE;  // rotate the Skull
-	spriteData.x += frameTime * velocity.x;         // move Skull along X 
-	spriteData.y += frameTime * velocity.y;         // move Skull along Y
 
-	//initialize
-	hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
-
-	hb.setY(spriteData.y - 2*hbNS::HEIGHT);
-	hb.setX(getCenterX() - hbNS::WIDTH / 2);
-	hb.setWidth((health / skullNS::SKULL_HEALTH) * hbNS::WIDTH);
-
-	hb.update(frameTime);
 
 	if (enteredChanged == true && entered == false)
 	{
@@ -88,40 +78,55 @@ void Skull::update(float frameTime)
 		spriteData.x = x - skullNS::ACTIVE_WIDTH / 2;
 		entered = true;
 	}
-	// Bounce off walls
-	if (spriteData.x > GAME_WIDTH - skullNS::WIDTH)    // if hit right screen edge
-	{
-		spriteData.x = GAME_WIDTH - skullNS::WIDTH;    // position at right screen edge
-		velocity.x = -velocity.x;                   // reverse X direction
-	}
-	else if (spriteData.x < 0)                    // else if hit left screen edge
-	{
-		spriteData.x = 0;                           // position at left screen edge
-		velocity.x = -velocity.x;                   // reverse X direction
-	}
-	if (spriteData.y > GAME_HEIGHT - skullNS::HEIGHT)  // if hit bottom screen edge
-	{
-		spriteData.y = GAME_HEIGHT - skullNS::HEIGHT;  // position at bottom screen edge
-		velocity.y = -velocity.y;                   // reverse Y direction
-	}
-	else if (spriteData.y < 0)                    // else if hit top screen edge
-	{
-		spriteData.y = 0;                           // position at top screen edge
-		velocity.y = -velocity.y;                   // reverse Y direction
-	}
 
-	if (input->isKeyDown(VK_SPACE))
+	if (active == true)
 	{
-		if (health >= 0)
+		spriteData.x -= frameTime * skullNS::SPEED;         // move Skull along X
+		//initialize hb
+		hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
+
+		hb.setY(spriteData.y - 2 * hbNS::HEIGHT);
+		hb.setX(getCenterX() - hbNS::WIDTH / 2);
+		hb.setWidth((health / skullNS::SKULL_HEALTH) * hbNS::WIDTH);
+
+		hb.update(frameTime);
+
+		// Bounce off walls
+		if (spriteData.x > GAME_WIDTH - skullNS::WIDTH)    // if hit right screen edge
 		{
-			health = health - 1;
+			spriteData.x = GAME_WIDTH - skullNS::WIDTH;    // position at right screen edge
+			velocity.x = -velocity.x;                   // reverse X direction
+		}
+		else if (spriteData.x < 0)                    // else if hit left screen edge
+		{
+			spriteData.x = 0;                           // position at left screen edge
+			velocity.x = -velocity.x;                   // reverse X direction
+		}
+		if (spriteData.y > GAME_HEIGHT - skullNS::HEIGHT)  // if hit bottom screen edge
+		{
+			spriteData.y = GAME_HEIGHT - skullNS::HEIGHT;  // position at bottom screen edge
+			velocity.y = -velocity.y;                   // reverse Y direction
+		}
+		else if (spriteData.y < 0)                    // else if hit top screen edge
+		{
+			spriteData.y = 0;                           // position at top screen edge
+			velocity.y = -velocity.y;                   // reverse Y direction
+		}
+
+		if (input->isKeyDown(VK_SPACE))
+		{
+			if (health >= 0)
+			{
+				health = health - 1;
+			}
+		}
+
+		if (health <= 0)
+		{
+			dead = true;
 		}
 	}
 
-	if (health <= 0)
-	{
-		dead = true;
-	}
 }
 
 void Skull::chase(Entity *target)

@@ -22,7 +22,7 @@ DfgBullet::DfgBullet() : Entity()
 	mass = dfgbulletNS::MASS;
 	collisionType = entityNS::CIRCLE;
 	collided = false;
-	invert = false;
+	bounce = false;
 }
 
 //=============================================================================
@@ -52,64 +52,74 @@ void DfgBullet::update(float frameTime)
 {
 	Entity::update(frameTime);
 	//spriteData.angle += frameTime * dfgbulletNS::ROTATION_RATE;  // rotate the ship
-
-	//for spray and 1 shot
-	/*
 	spriteData.x += frameTime * velocity.x; //* velocity.x;         // move ship along X
 	spriteData.y += frameTime * velocity.y;         // move ship along Y*/
 
-	//for wave
-	if (invert == true)
+	if (bounce == true)
 	{
-		spriteData.x -= frameTime * dfgbulletNS::SPEED;
-		spriteData.y = height - ((GAME_HEIGHT / 20)*sin(0.05*spriteData.x));
-	}
-	if (invert == false)
-	{
-		spriteData.x -= frameTime * dfgbulletNS::SPEED;
-		spriteData.y = height + ((GAME_HEIGHT / 20)*sin(0.05*spriteData.x));
+		if (spriteData.x > GAME_WIDTH - dfgbulletNS::WIDTH)    // if hit right screen edge
+		{
+			spriteData.x = GAME_WIDTH - dfgbulletNS::WIDTH;    // position at right screen edge
+			velocity.x = -velocity.x;                   // reverse X direction
+			bounce = false;
+		}
+
+		if (spriteData.y > GAME_HEIGHT - dfgbulletNS::HEIGHT)  // if hit bottom screen edge
+		{
+			spriteData.y = GAME_HEIGHT - dfgbulletNS::HEIGHT;  // position at bottom screen edge
+			velocity.y = -velocity.y;                   // reverse Y direction
+			bounce = false;
+		}
+		else if (spriteData.y < 0)                    // else if hit top screen edge
+		{
+			spriteData.y = 0;                           // position at top screen edge
+			velocity.y = -velocity.y;                   // reverse Y direction
+			bounce = false;
+		}
 	}
 
-	// destroy at walls
-	if (spriteData.x > GAME_WIDTH - dfgbulletNS::WIDTH)    // if hit right screen edge
+	if (bounce == false)
 	{
-		collided = true;
-	}
-	else if (spriteData.x < 0)                    // else if hit left screen edge
-	{
-		collided = true;
-	}
-	if (spriteData.y > GAME_HEIGHT - dfgbulletNS::HEIGHT)  // if hit bottom screen edge
-	{
-		collided = true;
-	}
-	else if (spriteData.y < 0)                    // else if hit top screen edge
-	{
-		collided = true;
+		// destroy at walls
+		if (spriteData.x > GAME_WIDTH - dfgbulletNS::WIDTH)    // if hit right screen edge
+		{
+			collided = true;
+		}
+		else if (spriteData.x < 0)                    // else if hit left screen edge
+		{
+			collided = true;
+		}
+		if (spriteData.y > GAME_HEIGHT - dfgbulletNS::HEIGHT)  // if hit bottom screen edge
+		{
+			collided = true;
+		}
+		else if (spriteData.y < 0)                    // else if hit top screen edge
+		{
+			collided = true;
+		}
 	}
 }
 
-void DfgBullet::getDir(Entity *to, Entity *from)
-{
-	spriteData.x = from->getCenterX() - spriteData.width / 2;
-	spriteData.y = from->getCenterY() - spriteData.height / 2;
-	VECTOR2 travel(to->getCenterX() - getCenterX(), to->getCenterY() - getCenterY());
-	Graphics::Vector2Normalize(&travel);
-	velocity = travel * dfgbulletNS::SPEED;
-}
-
-void DfgBullet::appImpulse(float xpos, float ypos, float ximp, float yimp)
+void DfgBullet::appImpulse(float xpos, float ypos, float angle, float speed)
 {
 	spriteData.x = xpos - spriteData.width / 2;
 	spriteData.y = ypos - spriteData.height / 2;
 
-	VECTOR2 travel(ximp - getCenterX(), yimp - getCenterY());
+	//D3DXMATRIX matrix;
+	//D3DXMatrixTranslation
+
+	VECTOR2 ref(0 - getCenterX(), 0);
+	//VECTOR2 travel = matrix * ref;
+	VECTOR2 travel(Graphics::Vector2Length(&ref)*cos((angle / 360)*(2 * PI)), Graphics::Vector2Length(&ref)*sin((angle / 360)*(2 * PI)));
 	Graphics::Vector2Normalize(&travel);
-	velocity = travel * dfgbulletNS::SPEED;
+	velocity = travel * speed;
 }
 
-void DfgBullet::wavy(Entity* from)
+void DfgBullet::getDir(float x, float y, float fromx, float fromy, float speed)
 {
-	spriteData.x = from->getCenterX();
-	height = from->getCenterY();
+	spriteData.x = fromx - spriteData.width / 2;
+	spriteData.y = fromy - spriteData.height / 2;
+	VECTOR2 travel(x - getCenterX(), y - getCenterY());
+	Graphics::Vector2Normalize(&travel);
+	velocity = travel * speed;
 }

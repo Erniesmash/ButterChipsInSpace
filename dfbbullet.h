@@ -9,8 +9,8 @@
 
 namespace dfbbulletNS
 {
-	const int WIDTH = 16;                   // image width
-	const int HEIGHT = 16;                  // image height
+	const int WIDTH = 10;                   // image width
+	const int HEIGHT = 10;                  // image height
 	const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
 	const int Y = GAME_HEIGHT / 2 - HEIGHT / 2;
 	const float SPEED = 300;                // 100 pixels per second
@@ -34,11 +34,10 @@ public:
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
 		TextureManager *textureM);
 	void update(float frameTime);
-	void getDir(Entity *to, Entity *from);
+
 	bool collided;
-	void appImpulse(float xpos, float ypos, float angle);
-	bool invert;
-	void wavy(Entity* from);
-	float height;
+	void getDir(float x, float y, float fromx, float fromy, float speed);
+	void appImpulse(float xpos, float ypos, float angle, float speed);
+	bool bounce;
 };
 #endif

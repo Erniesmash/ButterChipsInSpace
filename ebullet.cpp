@@ -7,9 +7,6 @@
 
 #include "ebullet.h"
 #include "eship.h"
-
-float nigga;
-
 //=============================================================================
 // default constructor
 //=============================================================================
@@ -60,11 +57,9 @@ void EBullet::update(float frameTime)
 {
 	Entity::update(frameTime);
 	//spriteData.angle += frameTime * ebulletNS::ROTATION_RATE;  // rotate the ship
-	spriteData.x += frameTime * velocity.x;
-	spriteData.y += frameTime * velocity.y;
 	
-	//spriteData.x += frameTime * ebulletNS::SPEED; //* velocity.x;         // move ship along X 
-	//spriteData.y = nigga + ((GAME_HEIGHT/20)*sin(0.05*spriteData.x)); //* velocity.y;         // move ship along Y
+	spriteData.x += frameTime * velocity.x; //* velocity.x;         // move ship along X 
+	spriteData.y += frameTime * velocity.y; //* velocity.y;         // move ship along Y
 
 
 	// destroy at walls
@@ -86,12 +81,27 @@ void EBullet::update(float frameTime)
 	}
 }
 
-void EBullet::getDir(Entity *to, Entity *from)
+void EBullet::getDir(float x, float y, float fromx, float fromy, float speed)
 {
-	/*spriteData.x = from->getCenterX() - spriteData.width / 2;
-	nigga = from->getCenterY() - spriteData.height / 2;*/
-	VECTOR2 travel(to->getCenterX() - getCenterX(), to->getCenterY() - getCenterY());
+	spriteData.x = fromx - spriteData.width / 2;
+	spriteData.y = fromy - spriteData.height / 2;
+	VECTOR2 travel(x - getCenterX(), y - getCenterY());
 	Graphics::Vector2Normalize(&travel);
-	velocity = travel * ebulletNS::SPEED;
+	velocity = travel * speed;
+}
+
+void EBullet::appImpulse(float xpos, float ypos, float angle, float speed)
+{
+	spriteData.x = xpos - spriteData.width / 2;
+	spriteData.y = ypos - spriteData.height / 2;
+
+	//D3DXMATRIX matrix;
+	//D3DXMatrixTranslation
+
+	VECTOR2 ref(0 - getCenterX(), 0);
+	//VECTOR2 travel = matrix * ref;
+	VECTOR2 travel(Graphics::Vector2Length(&ref)*cos((angle / 360)*(2 * PI)), Graphics::Vector2Length(&ref)*sin((angle / 360)*(2 * PI)));
+	Graphics::Vector2Normalize(&travel);
+	velocity = travel * speed;
 }
 

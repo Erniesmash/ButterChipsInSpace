@@ -7,6 +7,7 @@
 #include "entity.h"
 #include "constants.h"
 #include "hb.h"
+#include "ebullet.h"
 using namespace std;
 
 namespace skullNS
@@ -43,6 +44,8 @@ private:
 	TextureManager hbTexture;
 	Hb hb;
 
+	vector<EBullet*> ebList;
+
 public:
 	// constructor
 	Skull();
@@ -52,6 +55,8 @@ public:
 		TextureManager *textureM);
 	void update(float frameTime);
 	void chase(Entity *target);
+
+	bool exited;
 	bool dead;
 	bool imgChanged;
 	bool entered;
@@ -60,6 +65,12 @@ public:
 	int textcols;
 	float health;
 
+	Entity* player;
 	Game* sw;
+
+	void getPlayer(Entity* target)
+	{
+		player = target;
+	}
 };
 #endif

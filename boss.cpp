@@ -49,7 +49,9 @@ bool Boss::initialize(Game *gamePtr, int width, int height, int ncols,
 void Boss::draw()
 {
 	Image::draw();
-
+	for each (EBullet* eb in ebList) {
+		eb->draw();
+	}
 	hb.draw();
 	// draw Boss
 }
@@ -75,36 +77,34 @@ void Boss::update(float frameTime)
 	hb.setWidth((health / bossNS::BOSS_HEALTH) * hbNS::WIDTH);
 
 	hb.update(frameTime);
-	/*if (currentFrame == 11)
-	{
-		shot = false;
-	}
-	if (currentFrame == 10 && shot == false)
-	{
-		shoot();
-		shot = true;
-	}*/
 
-	// Bounce off walls
-	if (spriteData.x > GAME_WIDTH - bossNS::WIDTH)    // if hit right screen edge
+	if (health <= bossNS::PHASE_ONE)
 	{
-		spriteData.x = GAME_WIDTH - bossNS::WIDTH;    // position at right screen edge
-		velocity.x = -velocity.x;                   // reverse X direction
+
 	}
-	else if (spriteData.x < 0)                    // else if hit left screen edge
+	else if (health <= bossNS::PHASE_TWO)
 	{
-		spriteData.x = 0;                           // position at left screen edge
-		velocity.x = -velocity.x;                   // reverse X direction
+
 	}
-	if (spriteData.y > GAME_HEIGHT - bossNS::HEIGHT)  // if hit bottom screen edge
+	else if (health <= bossNS::PHASE_THREE)
 	{
-		spriteData.y = GAME_HEIGHT - bossNS::HEIGHT;  // position at bottom screen edge
-		velocity.y = -velocity.y;                   // reverse Y direction
+
 	}
-	else if (spriteData.y < 0)                    // else if hit top screen edge
+	else if (health <= bossNS::PHASE_FOUR)
 	{
-		spriteData.y = 0;                           // position at top screen edge
-		velocity.y = -velocity.y;                   // reverse Y direction
+
+	}
+	else if (health <= bossNS::PHASE_FIVE)
+	{
+
+	}
+	else if (health <= bossNS::PHASE_SIX)
+	{
+
+	}
+	else
+	{
+
 	}
 
 	if (input->isKeyDown(VK_SPACE))

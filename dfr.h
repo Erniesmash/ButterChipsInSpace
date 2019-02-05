@@ -46,9 +46,7 @@ public:
 		TextureManager *textureM);
 	void update(float frameTime);
 	float dir(float fromx, float fromy, float tox, float toy);
-	void wave();
 	void healthBar();
-	void chase(Entity *target);
 	float shotTimer;
 	vector<DfrBullet*> dfrbList;
 	void shoot();
@@ -58,5 +56,29 @@ public:
 	float health;
 
 	Game* sw;
+	Entity* player;
+
+	void getPlayer(Entity* target)
+	{
+		player = target;
+	}
+
+	void checkBullet()
+	{
+		for (vector<DfrBullet*>::iterator it = dfrbList.begin();
+			it != dfrbList.end();)
+		{
+			if ((*it)->collided == true)
+			{
+				SAFE_DELETE(*it);
+				it = dfrbList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+	}
 };
 #endif

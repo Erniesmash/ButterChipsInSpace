@@ -1,7 +1,10 @@
 #include "dfb.h"
 #include "spacewar.h"
 
-float a;
+bool b = true;
+float c;
+float d;
+float t = 0.05;
 //=============================================================================
 // default constructor
 //=============================================================================
@@ -27,7 +30,7 @@ Dfb::Dfb() : Entity()
 	shot = false;
 	dead = false;
 	imgChanged = false;
-
+	a = 0;
 }
 
 //=============================================================================
@@ -71,6 +74,7 @@ void Dfb::update(float frameTime)
 	spriteData.angle += frameTime * dfbNS::ROTATION_RATE;  // rotate the Dfb
 	spriteData.x += frameTime * velocity.x;         // move Dfb along X 
 	spriteData.y += frameTime * velocity.y;         // move Dfb along Y
+	t -= frameTime;
 
 	//initialize
 	dfbbTexture.initialize(graphics, DFBBULLET_IMAGE);
@@ -88,42 +92,13 @@ void Dfb::update(float frameTime)
 	}
 	if (currentFrame == 10 && shot == false)
 	{
-		//shoot();
+		shoot();
 		shot = true;
-	}
-	a++;
-	for (int i = 0; i < 2; i++)
-	{
-		DfbBullet* d = new DfbBullet;
-		d->initialize(sw, dfbbulletNS::WIDTH, dfbbulletNS::HEIGHT, dfbbulletNS::TEXTURE_COLS, &dfbbTexture);
-		d->appImpulse(spriteData.x, spriteData.y, -90 + 180*i + a);
-		dfbbList.push_back(d);
 	}
 
 	for each (DfbBullet* b in dfbbList)
 	{
 		b->update(frameTime);
-	}
-	// Bounce off walls
-	if (spriteData.x > GAME_WIDTH - dfbNS::WIDTH)    // if hit right screen edge
-	{
-		spriteData.x = GAME_WIDTH - dfbNS::WIDTH;    // position at right screen edge
-		velocity.x = -velocity.x;                   // reverse X direction
-	}
-	else if (spriteData.x < 0)                    // else if hit left screen edge
-	{
-		spriteData.x = 0;                           // position at left screen edge
-		velocity.x = -velocity.x;                   // reverse X direction
-	}
-	if (spriteData.y > GAME_HEIGHT - dfbNS::HEIGHT)  // if hit bottom screen edge
-	{
-		spriteData.y = GAME_HEIGHT - dfbNS::HEIGHT;  // position at bottom screen edge
-		velocity.y = -velocity.y;                   // reverse Y direction
-	}
-	else if (spriteData.y < 0)                    // else if hit top screen edge
-	{
-		spriteData.y = 0;                           // position at top screen edge
-		velocity.y = -velocity.y;                   // reverse Y direction
 	}
 
 	if (input->isKeyDown(VK_SPACE))
@@ -138,6 +113,8 @@ void Dfb::update(float frameTime)
 	{
 		dead = true;
 	}
+
+	checkBullet();
 }
 
 void Dfb::shoot()
@@ -146,7 +123,7 @@ void Dfb::shoot()
 	{
 		DfbBullet* d = new DfbBullet;
 		d->initialize(sw, dfbbulletNS::WIDTH, dfbbulletNS::HEIGHT, dfbbulletNS::TEXTURE_COLS, &dfbbTexture);
-		d->appImpulse(spriteData.x,spriteData.y,dfbNS::DFB_ANGLE + dfbNS::DFB_SPREAD_ANGLE*i);
+		d->appImpulse(getCenterX() - d->getWidth() / 2, getCenterY() - d->getHeight() / 2,dfbNS::DFB_ANGLE + dfbNS::DFB_SPREAD_ANGLE*i,dfbbulletNS::SPEED);
 		dfbbList.push_back(d);
 	}
 }

@@ -134,35 +134,9 @@ void Spacewar::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing boss"));
 
 	//spawn enemies on game start
-	Dfr* r = new Dfr;
-	r->initialize(this, dfrNS::WIDTH, dfrNS::HEIGHT, dfrNS::TEXTURE_COLS, &dfrTexture);
-	r->setX(GAME_WIDTH / 2);
-	r->setY(GAME_HEIGHT / 5);
-	dfrList.push_back(r);
-
-	Dfb* b = new Dfb;
-	b->initialize(this, dfbNS::WIDTH, dfbNS::HEIGHT, dfbNS::TEXTURE_COLS, &dfbTexture);
-	b->setX(GAME_WIDTH / 2);
-	b->setY(2*GAME_HEIGHT / 5);
-	dfbList.push_back(b);
-
-	Dfg* g = new Dfg;
-	g->initialize(this, dfgNS::WIDTH, dfgNS::HEIGHT, dfgNS::TEXTURE_COLS, &dfgTexture);
-	g->setX(GAME_WIDTH / 2);
-	g->setY(3*GAME_HEIGHT / 5);
-	dfgList.push_back(g);
-
-	Skull* skull = new Skull;
-	skull->initialize(this, skullNS::WIDTH, skullNS::HEIGHT, skull->textcols, &skullTexture);
-	skull->setX(GAME_WIDTH / 2);
-	skull->setY(4*GAME_HEIGHT / 5);
-	skullList.push_back(skull);
-
-	Boss* boss = new Boss;
-	boss->initialize(this, bossNS::WIDTH, bossNS::HEIGHT, bossNS::TEXTURE_COLS, &bossTexture);
-	boss->setX(GAME_WIDTH / 2);
-	boss->setY(5*GAME_HEIGHT / 5);
-	bossList.push_back(boss);
+	spawnBoss(GAME_WIDTH - bossNS::WIDTH*3, GAME_HEIGHT / 2);
+	spawnDfg(GAME_WIDTH / 3, 0 , 0, GAME_HEIGHT/2);
+	spawnDfg(GAME_WIDTH / 3, GAME_HEIGHT - dfgNS::HEIGHT, GAME_HEIGHT/2, GAME_HEIGHT);
 }
 
 //=============================================================================
@@ -174,6 +148,7 @@ void Spacewar::update()
 
 	for each (Dfr* r in dfrList)
 	{
+		r->getPlayer(&playerMain);
 		r->update(frameTime);
 
 		if (r->dead == true && r->imgChanged == false)
@@ -209,6 +184,7 @@ void Spacewar::update()
 	for each (Skull* skull in skullList)
 	{
 		skull->update(frameTime);
+		skull->getPlayer(&playerMain);
 
 		//skull appear
 		if (skull->getCurrentFrame() == skullNS::SKULL_END_FRAME)

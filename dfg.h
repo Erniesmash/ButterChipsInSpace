@@ -45,10 +45,7 @@ public:
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
 		TextureManager *textureM);
 	void update(float frameTime);
-	float dir(float fromx, float fromy, float tox, float toy);
-	void wave();
 	void healthBar();
-	void chase(Entity *target);
 	float shotTimer;
 	vector<DfgBullet*> dfgbList;
 	void shoot();
@@ -57,6 +54,27 @@ public:
 	bool imgChanged;
 	float health;
 
+	float startheight;
+	float endheight;
+
 	Game* sw;
+
+	void checkBullet()
+	{
+		for (vector<DfgBullet*>::iterator it = dfgbList.begin();
+			it != dfgbList.end();)
+		{
+			if ((*it)->collided == true)
+			{
+				SAFE_DELETE(*it);
+				it = dfgbList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+	}
 };
 #endif

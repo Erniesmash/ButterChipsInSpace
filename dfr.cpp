@@ -79,16 +79,16 @@ void Dfr::update(float frameTime)
 	hb.setWidth((health / dfrNS::DFR_HEALTH) * hbNS::WIDTH);
 
 	hb.update(frameTime);
-	/*if (currentFrame == 11)
+	if (currentFrame == 11)
 	{
 		shot = false;
 	}
 	if (currentFrame == 10 && shot == false)
 	{
-		shoot();
 		shot = true;
-	}*/
+	}
 
+	shoot();
 
 	for each (DfrBullet* b in dfrbList)
 	{
@@ -128,25 +128,16 @@ void Dfr::update(float frameTime)
 	{
 		dead = true;
 	}
-}
 
-void Dfr::chase(Entity *target)
-{
-	VECTOR2 travel(target->getCenterX() - getCenterX(), target->getCenterY() - getCenterY());
-	Graphics::Vector2Normalize(&travel);
-	velocity = travel * dfrNS::SPEED;
+	checkBullet();
 }
 
 void Dfr::shoot()
 {
-
-	for (int i = -3; i < 3; i++)
-	{
-		DfrBullet* d = new DfrBullet;
-		d->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
-		d->appImpulse(getX(), getY(), 0, getY() + (i));
-		dfrbList.push_back(d);
-	}
+	DfrBullet* d = new DfrBullet;
+	d->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
+	d->getDir(player->getCenterX(),player->getCenterY(), spriteData.x,spriteData.y, 1200);
+	dfrbList.push_back(d);
 }
 
 float Dfr::dir(float fromx, float fromy, float tox, float toy)
@@ -155,22 +146,4 @@ float Dfr::dir(float fromx, float fromy, float tox, float toy)
 	VECTOR2 to(tox, toy);
 	float angle = acos((Graphics::Vector2Dot(&from, &to) / Graphics::Vector2Length(&from)*Graphics::Vector2Length(&to)));
 	return 0;
-}
-
-void Dfr::wave()
-{
-	DfrBullet* a = new DfrBullet;
-	a->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
-	a->invert = true;
-	a->wavy(this);
-	dfrbList.push_back(a);
-
-	DfrBullet* b = new DfrBullet;
-	b->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
-	b->wavy(this);
-	dfrbList.push_back(b);
-}
-
-void Dfr::healthBar()
-{
 }
