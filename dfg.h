@@ -45,7 +45,6 @@ public:
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
 		TextureManager *textureM);
 	void update(float frameTime);
-	void healthBar();
 	float shotTimer;
 	vector<DfgBullet*> dfgbList;
 	void shoot();

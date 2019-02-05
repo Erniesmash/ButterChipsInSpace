@@ -62,22 +62,48 @@ void EBullet::update(float frameTime)
 	spriteData.y += frameTime * velocity.y; //* velocity.y;         // move ship along Y
 
 
-	// destroy at walls
-	if (spriteData.x > GAME_WIDTH - ebulletNS::WIDTH)    // if hit right screen edge
+	if (bounce == true)
 	{
-		collided = true;
+		if (spriteData.x > GAME_WIDTH - ebulletNS::WIDTH)    // if hit right screen edge
+		{
+			spriteData.x = GAME_WIDTH - ebulletNS::WIDTH;    // position at right screen edge
+			velocity.x = -velocity.x;                   // reverse X direction
+			bounce = false;
+		}
+
+		if (spriteData.y > GAME_HEIGHT - ebulletNS::HEIGHT)  // if hit bottom screen edge
+		{
+			spriteData.y = GAME_HEIGHT - ebulletNS::HEIGHT;  // position at bottom screen edge
+			velocity.y = -velocity.y;                   // reverse Y direction
+			bounce = false;
+		}
+		else if (spriteData.y < 0)                    // else if hit top screen edge
+		{
+			spriteData.y = 0;                           // position at top screen edge
+			velocity.y = -velocity.y;                   // reverse Y direction
+			bounce = false;
+		}
 	}
-	else if (spriteData.x < 0)                    // else if hit left screen edge
+
+	else if (bounce == false)
 	{
-		collided = true;
-	}
-	if (spriteData.y > GAME_HEIGHT - ebulletNS::HEIGHT)  // if hit bottom screen edge
-	{
-		collided = true;
-	}
-	else if (spriteData.y < 0)                    // else if hit top screen edge
-	{
-		collided = true;
+		// destroy at walls
+		if (spriteData.x > GAME_WIDTH + ebulletNS::WIDTH * ebulletNS::WIDTH)    // if hit right screen edge
+		{
+			collided = true;
+		}
+		else if (spriteData.x < -ebulletNS::WIDTH * ebulletNS::WIDTH)                    // else if hit left screen edge
+		{
+			collided = true;
+		}
+		if (spriteData.y > GAME_HEIGHT + ebulletNS::HEIGHT * ebulletNS::HEIGHT)  // if hit bottom screen edge
+		{
+			collided = true;
+		}
+		else if (spriteData.y < -ebulletNS::HEIGHT * ebulletNS::HEIGHT)                    // else if hit top screen edge
+		{
+			collided = true;
+		}
 	}
 }
 

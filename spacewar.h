@@ -59,6 +59,7 @@ private:
 	TextureManager dfgTexture;
 	TextureManager skullTexture;
 	TextureManager bossTexture;
+	TextureManager ebTexture;
 
 	//enemy health
 	TextureManager ehealthTexture;
@@ -99,6 +100,7 @@ private:
 	vector<Dfg*> dfgList;
 	vector<Skull*> skullList;
 	vector<Boss*> bossList;
+	vector<EBullet*> ebList;
 
 	float sbSpawnTime = 0.0f;
 	float waitTimer = 0.0f;

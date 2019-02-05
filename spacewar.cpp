@@ -132,11 +132,11 @@ void Spacewar::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing skull"));
 	if (!bossTexture.initialize(graphics, BOSS_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing boss"));
+	if (!ebTexture.initialize(graphics, EBULLET_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing eb"));
 
 	//spawn enemies on game start
 	spawnBoss(GAME_WIDTH - bossNS::WIDTH*3, GAME_HEIGHT / 2);
-	spawnDfg(GAME_WIDTH / 3, 0 , 0, GAME_HEIGHT/2);
-	spawnDfg(GAME_WIDTH / 3, GAME_HEIGHT - dfgNS::HEIGHT, GAME_HEIGHT/2, GAME_HEIGHT);
 }
 
 //=============================================================================
@@ -145,6 +145,7 @@ void Spacewar::initialize(HWND hwnd)
 void Spacewar::update()
 {
 	playerMain.update(frameTime);
+	time -= frameTime;
 
 	for each (Dfr* r in dfrList)
 	{
@@ -198,7 +199,18 @@ void Spacewar::update()
 			skull->setCurrentFrame(skullNS::ACTIVE_END_FRAME);
 			skullTexture.initialize(graphics, SKULL_IMAGE);
 			skull->active = true;
+		}
 
+		if (skull->exited == true)
+		{
+			for (int i = 1; i < 25; i++)
+			{
+				ebTexture.initialize(graphics, EBULLET_IMAGE);
+				EBullet* e = new EBullet;
+				e->initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebTexture);
+				e->appImpulse(skull->getCenterX(), skull->getCenterY(), 0 + 15 * i, 30);
+				ebList.push_back(e);
+			}
 		}
 	}
 
@@ -207,10 +219,22 @@ void Spacewar::update()
 		boss->update(frameTime);
 	}
 
+	for each  (EBullet* eb in ebList)
+	{
+		eb->update(frameTime);
+	}
+
+	if (time <= 0)
+	{
+		spawnSkull(GAME_WIDTH - bossNS::WIDTH * 3, rand() % (GAME_HEIGHT - skullNS::HEIGHT));
+		time = 1.0f;
+	}
+
 	// check to delete vector items
 	checkDfr();
 	checkDfb();
 	checkDfg();
+	checkSkull();
 }
 
 //=============================================================================
@@ -287,6 +311,12 @@ void Spacewar::render()
 	{
 		boss->draw();
 	}
+
+	for each (EBullet* eb in ebList)
+	{
+		eb->draw();
+	}
+
     graphics->spriteEnd();                  // end drawing sprites
 }
 
@@ -396,26 +426,26 @@ void Spacewar::checkDfg()
 
 void Spacewar::checkSkull()
 {
-	/*for (vector<Dfr*>::iterator it = dfrList.begin();
-		it != dfrList.end();)
+	for (vector<Skull*>::iterator it = skullList.begin();
+		it != skullList.end();)
 	{
-		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
+		if ((*it)->dead == true)
 		{
 			SAFE_DELETE(*it);
-			it = dfrList.erase(it);
+			it = skullList.erase(it);
 		}
 
-		else if (rocketMain.getActive() == false)
+		if ((*it)->exited == true)
 		{
 			SAFE_DELETE(*it);
-			it = dfrList.erase(it);
+			it = skullList.erase(it);
 		}
 
 		else
 		{
 			++it;
 		}
-	}*/
+	}
 }
 
 void Spacewar::checkBoss()

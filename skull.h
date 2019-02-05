@@ -40,11 +40,9 @@ class Skull : public Entity
 {
 private:
 	TextureManager skullbTexture;
-
+	TextureManager ebTexture;
 	TextureManager hbTexture;
 	Hb hb;
-
-	vector<EBullet*> ebList;
 
 public:
 	// constructor
@@ -54,7 +52,6 @@ public:
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
 		TextureManager *textureM);
 	void update(float frameTime);
-	void chase(Entity *target);
 
 	bool exited;
 	bool dead;
@@ -64,6 +61,8 @@ public:
 	bool active;
 	int textcols;
 	float health;
+
+	vector<EBullet*> ebList;
 
 	Entity* player;
 	Game* sw;

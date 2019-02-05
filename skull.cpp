@@ -27,6 +27,7 @@ Skull::Skull() : Entity()
 	imgChanged = false;
 	entered = false;
 	enteredChanged == false;
+	exited = false;
 	textcols = skullNS::TEXTURE_COLS;
 }
 
@@ -51,6 +52,7 @@ bool Skull::initialize(Game *gamePtr, int width, int height, int ncols,
 void Skull::draw()
 {
 	Image::draw();
+
 	hb.draw();
 	// draw Skull
 }
@@ -92,25 +94,9 @@ void Skull::update(float frameTime)
 		hb.update(frameTime);
 
 		// Bounce off walls
-		if (spriteData.x > GAME_WIDTH - skullNS::WIDTH)    // if hit right screen edge
+		if (spriteData.x < -spriteData.width*2)                    // else if hit left screen edge
 		{
-			spriteData.x = GAME_WIDTH - skullNS::WIDTH;    // position at right screen edge
-			velocity.x = -velocity.x;                   // reverse X direction
-		}
-		else if (spriteData.x < 0)                    // else if hit left screen edge
-		{
-			spriteData.x = 0;                           // position at left screen edge
-			velocity.x = -velocity.x;                   // reverse X direction
-		}
-		if (spriteData.y > GAME_HEIGHT - skullNS::HEIGHT)  // if hit bottom screen edge
-		{
-			spriteData.y = GAME_HEIGHT - skullNS::HEIGHT;  // position at bottom screen edge
-			velocity.y = -velocity.y;                   // reverse Y direction
-		}
-		else if (spriteData.y < 0)                    // else if hit top screen edge
-		{
-			spriteData.y = 0;                           // position at top screen edge
-			velocity.y = -velocity.y;                   // reverse Y direction
+			exited = true;
 		}
 
 		if (input->isKeyDown(VK_SPACE))
@@ -126,12 +112,4 @@ void Skull::update(float frameTime)
 			dead = true;
 		}
 	}
-
-}
-
-void Skull::chase(Entity *target)
-{
-	VECTOR2 travel(target->getCenterX() - getCenterX(), target->getCenterY() - getCenterY());
-	Graphics::Vector2Normalize(&travel);
-	velocity = travel * skullNS::SPEED;
 }
