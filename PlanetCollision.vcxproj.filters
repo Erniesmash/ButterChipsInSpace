@@ -63,6 +63,36 @@
     <ClCompile Include="audio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="skull.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="boss.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dfb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dfbbullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dfg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dfgbullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dfr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dfrbullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ebullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h">
@@ -114,6 +144,36 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="audio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="boss.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dfb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dfbbullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dfgbullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dfr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dfrbullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ebullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="skull.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

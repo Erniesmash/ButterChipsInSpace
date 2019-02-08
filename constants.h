@@ -46,7 +46,6 @@ const char ESHIP_IMAGE[] = "pictures\\eSpritesheet_40x30.png";
 const char ROCKET_IMAGE[] = "pictures\\Spritesheet_64x29.png";
 const char FARBACK_IMAGE[] = "pictures\\farback.jpg";
 const char BULLET_IMAGE[] = "pictures\\hatch_sheet.png";
-const char EBULLET_IMAGE[] = "pictures\\ehatch_sheet.png";
 const char POWERUP_IMAGE[] = "pictures\\balls.png";
 const char STARFIELD_IMAGE[] = "pictures\\starfield.png";
 const char HEAD_IMAGE[] = "pictures\\head_sheet.png";
@@ -60,6 +59,23 @@ const char EXPLOSION_ADVANCED_IMAGE[] = "pictures\\explosionAdvanced.png";
 const char SHIELD_IMAGE[] = "pictures\\shield.png";
 const char SPACE_IMAGE[] = "pictures\\space.png";
 
+const char DFR_IMAGE[] = "pictures\\dfr_atk.png";
+const char DFB_IMAGE[] = "pictures\\dfb_atk.png";
+const char DFG_IMAGE[] = "pictures\\dfg_atk.png";
+const char SKULL_IMAGE[] = "pictures\\h_skull.png";
+const char BOSS_IMAGE[] = "pictures\\boss_walk.png";
+
+const char DFRBULLET_IMAGE[] = "pictures\\dfrbullet.png";
+const char DFBBULLET_IMAGE[] = "pictures\\dfbbullet.png";
+const char DFGBULLET_IMAGE[] = "pictures\\dfgbullet.png";
+const char EBULLET_IMAGE[] = "pictures\\ehatch_sheet.png";
+
+const char HEALTHBAR_IMAGE[] = "pictures\\healthbar.png";
+const char DF_DEATH_IMAGE[] = "pictures\\df_death.png";
+const char SKULL_ENTRANCE_IMAGE[] = "pictures\\hskull_appear.png";
+const char SKULL_DEATH_IMAGE[] = "pictures\\hskull_death.png";
+const char BUFFER_IMAGE[] = "pictures\\buffer.png";
+const char BOSS_DEATH[] = "pictures\\boss_death.png";
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
 // it would be possible to save and restore key mappings from a data file.

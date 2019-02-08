@@ -99,16 +99,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="audio.cpp" />
+    <ClCompile Include="boss.cpp" />
     <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="dfb.cpp" />
+    <ClCompile Include="dfbbullet.cpp" />
+    <ClCompile Include="dfg.cpp" />
+    <ClCompile Include="dfgbullet.cpp" />
+    <ClCompile Include="dfr.cpp" />
+    <ClCompile Include="dfrbullet.cpp" />
+    <ClCompile Include="ebullet.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="graphics.cpp" />
+    <ClCompile Include="hb.cpp" />
     <ClCompile Include="heart.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="missle.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="selection.cpp" />
+    <ClCompile Include="skull.cpp" />
     <ClCompile Include="spacewar.cpp" />
     <ClCompile Include="specials.cpp" />
     <ClCompile Include="textDX.cpp" />
@@ -117,18 +127,28 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h" />
+    <ClInclude Include="boss.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="constants.h" />
+    <ClInclude Include="dfb.h" />
+    <ClInclude Include="dfbbullet.h" />
+    <ClInclude Include="dfg.h" />
+    <ClInclude Include="dfgbullet.h" />
+    <ClInclude Include="dfr.h" />
+    <ClInclude Include="dfrbullet.h" />
+    <ClInclude Include="ebullet.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameError.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="hb.h" />
     <ClInclude Include="heart.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="missle.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="selection.h" />
+    <ClInclude Include="skull.h" />
     <ClInclude Include="spacewar.h" />
     <ClInclude Include="specials.h" />
     <ClInclude Include="textDX.h" />

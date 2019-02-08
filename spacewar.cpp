@@ -147,6 +147,22 @@ void Spacewar::initialize(HWND hwnd)
 	if (!menu.initialize(graphics, 0, 0, 0, &farbackTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing menu"));
 
+//=============================================================================
+// Enemies
+//=============================================================================
+	if (!dfrTexture.initialize(graphics, DFR_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
+	if (!dfbTexture.initialize(graphics, DFB_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfb"));
+	if (!dfgTexture.initialize(graphics, DFG_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfg"));
+	if (!skullTexture.initialize(graphics, SKULL_ENTRANCE_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing skull"));
+	if (!bossTexture.initialize(graphics, BOSS_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing boss"));
+	if (!ebTexture.initialize(graphics, EBULLET_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing eb"));
+
 	PlaySound("C:\\Users\\ernes\\Documents\\GitHub\\ButterChipsInSpace\\audio\\menu.wav", NULL, SND_LOOP | SND_ASYNC);
 }
 	
@@ -248,6 +264,93 @@ void Spacewar::update()
 		playerMain.update(frameTime);
 		missleShot.update(frameTime);
 	}	
+//=============================================================================
+// update enemies per frame 
+//=============================================================================
+	for each (Dfr* r in dfrList)
+	{
+		r->getPlayer(&playerMain);
+		r->update(frameTime);
+
+		if (r->dead == true && r->imgChanged == false)
+		{
+			dfrTexture.initialize(graphics, DF_DEATH_IMAGE);
+			r->setCurrentFrame(dfrNS::DFR_START_FRAME);
+			r->imgChanged = true;
+		}
+	}
+
+	for each (Dfb* b in dfbList)
+	{
+		b->update(frameTime);
+		if (b->dead == true && b->imgChanged == false)
+		{
+			dfbTexture.initialize(graphics, DF_DEATH_IMAGE);
+			b->setCurrentFrame(dfbNS::DFB_START_FRAME);
+			b->imgChanged = true;
+		}
+	}
+
+	for each (Dfg* g in dfgList)
+	{
+		g->update(frameTime);
+		if (g->dead == true && g->imgChanged == false)
+		{
+			dfgTexture.initialize(graphics, DF_DEATH_IMAGE);
+			g->setCurrentFrame(dfgNS::DFG_START_FRAME);
+			g->imgChanged = true;
+		}
+	}
+
+	for each (Skull* skull in skullList)
+	{
+		skull->update(frameTime);
+		skull->getPlayer(&playerMain);
+
+		//skull appear
+		if (skull->getCurrentFrame() == skullNS::SKULL_END_FRAME)
+		{
+			skull->setCurrentFrame(skullNS::ACTIVE_END_FRAME);
+			skull->enteredChanged = true;
+		}
+
+		if (skull->entered == true && skull->enteredChanged == true && skull->active == false)
+		{
+			skull->setCurrentFrame(skullNS::ACTIVE_END_FRAME);
+			skullTexture.initialize(graphics, SKULL_IMAGE);
+			skull->active = true;
+		}
+
+		if (skull->exited == true)
+		{
+			for (int i = 1; i < 25; i++)
+			{
+				ebTexture.initialize(graphics, EBULLET_IMAGE);
+				EBullet* e = new EBullet;
+				e->initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebTexture);
+				e->appImpulse(skull->getCenterX(), skull->getCenterY(), 0 + 15 * i, 30);
+				ebList.push_back(e);
+			}
+		}
+	}
+
+	for each (Boss* boss in bossList)
+	{
+		boss->update(frameTime);
+	}
+
+	for each  (EBullet* eb in ebList)
+	{
+		eb->update(frameTime);
+	}
+
+//=============================================================================
+// check to delete vector objects 
+//=============================================================================
+	checkDfr();
+	checkDfb();
+	checkDfg();
+	checkSkull();
 }
 
 //=============================================================================
@@ -434,6 +537,38 @@ void Spacewar::render()
 			bullet->draw();
 		}
 	}
+//=============================================================================
+// draw enemies
+//=============================================================================
+	for each (Dfr* d in dfrList)
+	{
+		d->draw();
+	}
+	for each (Dfb* b in dfbList)
+	{
+		b->draw();
+	}
+
+	for each (Dfg* g in dfgList)
+	{
+		g->draw();
+	}
+
+	for each (Skull* skull in skullList)
+	{
+		skull->draw();
+	}
+
+	for each (Boss* boss in bossList)
+	{
+		boss->draw();
+	}
+
+	for each (EBullet* eb in ebList)
+	{
+		eb->draw();
+	}
+
     graphics->spriteEnd();                  // end drawing sprites
 }
 
@@ -475,4 +610,103 @@ void Spacewar::resetAll()
 	spaceTexture.onResetDevice();
     Game::resetAll();
     return;
+}
+
+//=============================================================================
+// delete from vector methods
+//=============================================================================
+void Spacewar::checkDfr()
+{
+	for (vector<Dfr*>::iterator it = dfrList.begin();
+		it != dfrList.end();)
+	{
+		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
+		{
+			SAFE_DELETE(*it);
+			it = dfrList.erase(it);
+		}
+
+		else
+		{
+			++it;
+		}
+	}
+}
+
+void Spacewar::checkDfb()
+{
+	for (vector<Dfb*>::iterator it = dfbList.begin();
+		it != dfbList.end();)
+	{
+		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
+		{
+			SAFE_DELETE(*it);
+			it = dfbList.erase(it);
+		}
+
+		else
+		{
+			++it;
+		}
+	}
+}
+
+void Spacewar::checkDfg()
+{
+	for (vector<Dfg*>::iterator it = dfgList.begin();
+		it != dfgList.end();)
+	{
+		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
+		{
+			SAFE_DELETE(*it);
+			it = dfgList.erase(it);
+		}
+
+		else
+		{
+			++it;
+		}
+	}
+}
+
+void Spacewar::checkSkull()
+{
+	for (vector<Skull*>::iterator it = skullList.begin();
+		it != skullList.end();)
+	{
+		if ((*it)->dead == true)
+		{
+			SAFE_DELETE(*it);
+			it = skullList.erase(it);
+		}
+
+		if ((*it)->exited == true)
+		{
+			SAFE_DELETE(*it);
+			it = skullList.erase(it);
+		}
+
+		else
+		{
+			++it;
+		}
+	}
+}
+
+void Spacewar::checkBoss()
+{
+	/*for (vector<Dfr*>::iterator it = dfrList.begin();
+		it != dfrList.end();)
+	{
+		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
+		{
+			SAFE_DELETE(*it);
+			it = dfrList.erase(it);
+		}
+
+		else
+		{
+			++it;
+		}
+	}*/
 }

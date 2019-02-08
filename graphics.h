@@ -68,8 +68,8 @@ namespace graphicsNS
 // SpriteData: The properties required by Graphics::drawSprite to draw a sprite
 struct SpriteData
 {
-    int         width;      // width of sprite in pixels
-    int         height;     // height of sprite in pixels
+    float         width;      // width of sprite in pixels
+    float         height;     // height of sprite in pixels
     float       x;          // screen location (top left corner of sprite)
     float       y;
     float       scale;      // <1 smaller, >1 bigger
