@@ -56,33 +56,6 @@ void Spacewar::initialize(HWND hwnd)
 	if (!playerMain.initialize(this, playerNS::WIDTH, playerNS::HEIGHT, playerNS::TEXTURE_COLS, &playerTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing player"));
 
-
-//=============================================================================
-// Rocket
-//=============================================================================
-	// rocket texture
-	if (!rocketTexture.initialize(graphics, ROCKET_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing rocket texture"));
-
-	// rocket
-	if (!rocketMain.initialize(this, rocketNS::WIDTH, rocketNS::HEIGHT, rocketNS::TEXTURE_COLS, &rocketTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing rocket"));
-	rocketMain.setFrames(rocketNS::ROCKET_START_FRAME, rocketNS::ROCKET_END_FRAME);
-	rocketMain.setCurrentFrame(rocketNS::ROCKET_START_FRAME);
-	rocketMain.setX(GAME_WIDTH / 2.3);
-	rocketMain.setY(GAME_HEIGHT / 1.15);
-
-//=============================================================================
-// Powerups
-//=============================================================================
-	// powerup texture
-	if (!powerupTexture.initialize(graphics, POWERUP_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing powerup texture"));
-
-	// speed boost texture
-	if (!sbTexture.initialize(graphics, SPEEDBOOST_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing powerup texture"));
-
 //=============================================================================
 // Misc Background Stuff
 //=============================================================================
@@ -105,13 +78,6 @@ void Spacewar::initialize(HWND hwnd)
 	// starfield image
 	if (!starfield.initialize(graphics, 0, 0, 0, &starfieldTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing starfield"));
-
-//=============================================================================
-// Enemy Ship 
-//=============================================================================
-	// enemy ship texture
-	if (!eShipTexture.initialize(graphics, ESHIP_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing enemy ship texture"));
 	
 //=============================================================================
 // BAKURETSU MAHOU
@@ -250,7 +216,7 @@ void Spacewar::collisions()
 {
     VECTOR2 collisionVector;
 
-	for each (EShip* e in eshipList)
+	/*for each (EShip* e in eshipList)
 	{
 		if (e->collidesWith(rocketMain, collisionVector))
 		{
@@ -272,7 +238,7 @@ void Spacewar::collisions()
 				b->collided = true;
 			}
 		}
-	}
+	}*/
 }
 
 //=============================================================================
@@ -329,9 +295,7 @@ void Spacewar::releaseAll()
     gameTextures.onLostDevice();
 	farbackTexture.onLostDevice();
 	starfieldTexture.onLostDevice();
-	rocketTexture.onLostDevice();
 	bulletTexture.onLostDevice();
-	eShipTexture.onLostDevice();
     Game::releaseAll();
     return;
 }
@@ -343,11 +307,9 @@ void Spacewar::releaseAll()
 void Spacewar::resetAll()
 {
     gameTextures.onResetDevice();
-	rocketTexture.onResetDevice();
 	farbackTexture.onResetDevice();
 	starfieldTexture.onResetDevice();
 	bulletTexture.onResetDevice();
-	eShipTexture.onResetDevice();
     Game::resetAll();
     return;
 }
@@ -358,12 +320,6 @@ void Spacewar::checkDfr()
 		it != dfrList.end();)
 	{
 		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
-		{
-			SAFE_DELETE(*it);
-			it = dfrList.erase(it);
-		}
-
-		else if (rocketMain.getActive() == false)
 		{
 			SAFE_DELETE(*it);
 			it = dfrList.erase(it);
@@ -387,12 +343,6 @@ void Spacewar::checkDfb()
 			it = dfbList.erase(it);
 		}
 
-		else if (rocketMain.getActive() == false)
-		{
-			SAFE_DELETE(*it);
-			it = dfbList.erase(it);
-		}
-
 		else
 		{
 			++it;
@@ -406,12 +356,6 @@ void Spacewar::checkDfg()
 		it != dfgList.end();)
 	{
 		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
-		{
-			SAFE_DELETE(*it);
-			it = dfgList.erase(it);
-		}
-
-		else if (rocketMain.getActive() == false)
 		{
 			SAFE_DELETE(*it);
 			it = dfgList.erase(it);
@@ -454,12 +398,6 @@ void Spacewar::checkBoss()
 		it != dfrList.end();)
 	{
 		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
-		{
-			SAFE_DELETE(*it);
-			it = dfrList.erase(it);
-		}
-
-		else if (rocketMain.getActive() == false)
 		{
 			SAFE_DELETE(*it);
 			it = dfrList.erase(it);

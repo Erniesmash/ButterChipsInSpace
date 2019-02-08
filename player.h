@@ -4,10 +4,6 @@
 
 #include "entity.h"
 #include "constants.h"
-#include "HealthComponent.h"
-#include "MovementComponent.h"
-#include "AttackComponent.h"
-
 
 namespace playerNS
 {
@@ -28,9 +24,6 @@ namespace playerNS
 class Player : public Entity
 {
 private:
-	HealthComponent *healthcomponent;
-	//MovementComponent *movecomponent;
-	AttackComponent *attackcomponent;
 
 public:
 	// constructor

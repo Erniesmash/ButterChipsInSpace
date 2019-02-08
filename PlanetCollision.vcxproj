@@ -106,26 +106,20 @@
     <ClCompile Include="dfr.cpp" />
     <ClCompile Include="ebullet.cpp" />
     <ClCompile Include="entity.cpp" />
-    <ClCompile Include="eship.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="hb.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
-    <ClCompile Include="planet.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="powerup.cpp" />
-    <ClCompile Include="rocket.cpp" />
     <ClCompile Include="skull.cpp" />
     <ClCompile Include="spacewar.cpp" />
-    <ClCompile Include="speedboost.cpp" />
     <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="boss.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="constants.h" />
@@ -137,23 +131,16 @@
     <ClInclude Include="dfr.h" />
     <ClInclude Include="ebullet.h" />
     <ClInclude Include="entity.h" />
-    <ClInclude Include="eship.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameError.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="hb.h" />
-    <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
-    <ClInclude Include="MovementComponent.h" />
-    <ClInclude Include="planet.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="powerup.h" />
-    <ClInclude Include="rocket.h" />
     <ClInclude Include="skull.h" />
     <ClInclude Include="spacewar.h" />
-    <ClInclude Include="speedboost.h" />
     <ClInclude Include="textDX.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>

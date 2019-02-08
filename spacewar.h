@@ -12,13 +12,9 @@
 #include "game.h"
 #include "textureManager.h"
 #include "image.h"
-#include "rocket.h"
 #include "bullet.h"
-#include "eship.h"
 #include "ebullet.h"
 #include <vector>
-#include "powerup.h"
-#include "speedboost.h"
 #include "explosion.h"
 #include "player.h"
 
@@ -42,14 +38,10 @@ private:
     // game items
 	TextDX dxFont;
     TextureManager gameTextures;    // game texture
-	TextureManager rocketTexture;	// rocket texture
 	TextureManager farbackTexture;	// farback texture
 	TextureManager bulletTexture;	// bullet texture
-	TextureManager eShipTexture;	// enemy ship texture
 	TextureManager ebulletTexture;	// enemy bullet texure
 	TextureManager starfieldTexture;
-	TextureManager powerupTexture;
-	TextureManager sbTexture;
 	TextureManager explosionTexture;
 	TextureManager playerTexture;
 
@@ -67,13 +59,7 @@ private:
 	Image	farback;
 	Image	starfield;
 
-	SpeedBoost sb;
-	//Powerup increaseBulletSpeed;
-	Powerup waveShot;
-
 	Player playerMain;
-	Rocket	rocketMain;
-	EShip	eShip;			// enemy ship
 
 	Explosion explosion;
 
@@ -81,11 +67,7 @@ private:
 	Hb hb;
 
 	std::vector<Bullet*> bulletList;
-	vector<EShip*> eshipList;		// list of enemy ships
-	vector<SpeedBoost*> sbList;
 	vector<Explosion*> explosionList;
-	vector<Powerup*> bulletSpeedPowerupList;
-	vector<Powerup*> WaveBulletPowerupList;
 
 	//enemies
 	Dfr dfr;
