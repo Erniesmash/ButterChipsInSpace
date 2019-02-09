@@ -22,6 +22,8 @@ DfrBullet::DfrBullet() : Entity()
 	mass = dfrbulletNS::MASS;
 	collisionType = entityNS::CIRCLE;
 	collided = false;
+	bounce = false;
+	targeted = false;
 }
 
 //=============================================================================
@@ -57,22 +59,48 @@ void DfrBullet::update(float frameTime)
 	spriteData.x += frameTime * velocity.x;         // move ship along X 
 	spriteData.y += frameTime * velocity.y;         // move ship along Y*/
 
-	// destroy at walls
-	if (spriteData.x > GAME_WIDTH - dfrbulletNS::WIDTH)    // if hit right screen edge
+	if (bounce == true)
 	{
-		collided = true;
+		if (spriteData.x > GAME_WIDTH - dfrbulletNS::WIDTH)    // if hit right screen edge
+		{
+			spriteData.x = GAME_WIDTH - dfrbulletNS::WIDTH;    // position at right screen edge
+			velocity.x = -velocity.x;                   // reverse X direction
+			bounce = false;
+		}
+
+		if (spriteData.y > GAME_HEIGHT - dfrbulletNS::HEIGHT)  // if hit bottom screen edge
+		{
+			spriteData.y = GAME_HEIGHT - dfrbulletNS::HEIGHT;  // position at bottom screen edge
+			velocity.y = -velocity.y;                   // reverse Y direction
+			bounce = false;
+		}
+		else if (spriteData.y < 0)                    // else if hit top screen edge
+		{
+			spriteData.y = 0;                           // position at top screen edge
+			velocity.y = -velocity.y;                   // reverse Y direction
+			bounce = false;
+		}
 	}
-	else if (spriteData.x < 0)                    // else if hit left screen edge
+
+	if (bounce == false)
 	{
-		collided = true;
-	}
-	if (spriteData.y > GAME_HEIGHT - dfrbulletNS::HEIGHT)  // if hit bottom screen edge
-	{
-		collided = true;
-	}
-	else if (spriteData.y < 0)                    // else if hit top screen edge
-	{
-		collided = true;
+		// destroy at walls
+		if (spriteData.x > GAME_WIDTH + dfrbulletNS::WIDTH * dfrbulletNS::WIDTH)    // if hit right screen edge
+		{
+			collided = true;
+		}
+		else if (spriteData.x < -dfrbulletNS::WIDTH * dfrbulletNS::WIDTH)                    // else if hit left screen edge
+		{
+			collided = true;
+		}
+		if (spriteData.y > GAME_HEIGHT + dfrbulletNS::HEIGHT * dfrbulletNS::HEIGHT)  // if hit bottom screen edge
+		{
+			collided = true;
+		}
+		else if (spriteData.y < -dfrbulletNS::HEIGHT * dfrbulletNS::HEIGHT)                    // else if hit top screen edge
+		{
+			collided = true;
+		}
 	}
 }
 

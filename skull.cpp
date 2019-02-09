@@ -65,24 +65,7 @@ void Skull::draw()
 void Skull::update(float frameTime)
 {
 	Entity::update(frameTime);
-	spriteData.angle += frameTime * skullNS::ROTATION_RATE;  // rotate the Skull
 
-
-	if (enteredChanged == true && entered == false)
-	{
-		float x = getCenterX();
-		spriteData.width = skullNS::ACTIVE_WIDTH;
-		spriteData.height = skullNS::ACTIVE_HEIGHT;
-		textcols = skullNS::ACTIVE_TEXTURE_COLS;
-		startFrame = skullNS::ACTIVE_START_FRAME;
-		endFrame = skullNS::ACTIVE_END_FRAME;
-		currentFrame == skullNS::ACTIVE_START_FRAME;
-		spriteData.x = x - skullNS::ACTIVE_WIDTH / 2;
-		entered = true;
-	}
-
-	if (active == true)
-	{
 		spriteData.x -= frameTime * skullNS::SPEED;         // move Skull along X
 		//initialize hb
 		hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
@@ -93,7 +76,6 @@ void Skull::update(float frameTime)
 
 		hb.update(frameTime);
 
-		// Bounce off walls
 		if (spriteData.x < -spriteData.width*2)                    // else if hit left screen edge
 		{
 			exited = true;
@@ -111,5 +93,4 @@ void Skull::update(float frameTime)
 		{
 			dead = true;
 		}
-	}
 }

@@ -81,26 +81,26 @@ void DfgBullet::update(float frameTime)
 	if (bounce == false)
 	{
 		// destroy at walls
-		if (spriteData.x > GAME_WIDTH - dfgbulletNS::WIDTH)    // if hit right screen edge
+		if (spriteData.x > GAME_WIDTH + dfgbulletNS::WIDTH * 2)    // if hit right screen edge
 		{
 			collided = true;
 		}
-		else if (spriteData.x < 0)                    // else if hit left screen edge
+		else if (spriteData.x < -dfgbulletNS::WIDTH * 2)                    // else if hit left screen edge
 		{
 			collided = true;
 		}
-		if (spriteData.y > GAME_HEIGHT - dfgbulletNS::HEIGHT)  // if hit bottom screen edge
+		if (spriteData.y > GAME_HEIGHT + dfgbulletNS::HEIGHT * 2)  // if hit bottom screen edge
 		{
 			collided = true;
 		}
-		else if (spriteData.y < 0)                    // else if hit top screen edge
+		else if (spriteData.y < -dfgbulletNS::HEIGHT * 2)                    // else if hit top screen edge
 		{
 			collided = true;
 		}
 	}
 }
 
-void DfgBullet::appImpulse(float xpos, float ypos, float angle, float speed)
+void DfgBullet::appImpulse(float xpos, float ypos, double angle, float speed)
 {
 	spriteData.x = xpos - spriteData.width / 2;
 	spriteData.y = ypos - spriteData.height / 2;
@@ -108,7 +108,7 @@ void DfgBullet::appImpulse(float xpos, float ypos, float angle, float speed)
 	//D3DXMATRIX matrix;
 	//D3DXMatrixTranslation
 
-	VECTOR2 ref(0 - getCenterX(), 0);
+	VECTOR2 ref(GAME_WIDTH - getCenterX(), 0);
 	//VECTOR2 travel = matrix * ref;
 	VECTOR2 travel(Graphics::Vector2Length(&ref)*cos((angle / 360)*(2 * PI)), Graphics::Vector2Length(&ref)*sin((angle / 360)*(2 * PI)));
 	Graphics::Vector2Normalize(&travel);

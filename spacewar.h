@@ -132,20 +132,124 @@ public:
     void releaseAll();
     void resetAll();
 
+	// check enemy vector
+	bool checkEnemies()
+	{
+		if (dfrList.size() <= 0
+			&& dfbList.size() <= 0
+			&& dfgList.size() <= 0
+			&& bossList.size() <= 0)
+			return true;
+		else
+			return false;
+	}
 	// kill enemy
-	void checkDfr();
-	void checkDfb();
-	void checkDfg();
-	void checkSkull();
-	void checkBoss();
+	void delEnemies()
+	{
+		for (vector<Dfr*>::iterator it = dfrList.begin();
+			it != dfrList.end();)
+		{
+			if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
+			{
+				SAFE_DELETE(*it);
+				it = dfrList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+
+		for (vector<Dfb*>::iterator it = dfbList.begin();
+			it != dfbList.end();)
+		{
+			if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
+			{
+				SAFE_DELETE(*it);
+				it = dfbList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+
+		for (vector<Dfg*>::iterator it = dfgList.begin();
+			it != dfgList.end();)
+		{
+			if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
+			{
+				SAFE_DELETE(*it);
+				it = dfgList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+
+		for (vector<Skull*>::iterator it = skullList.begin();
+			it != skullList.end();)
+		{
+			if ((*it)->dead == true)
+			{
+				SAFE_DELETE(*it);
+				it = skullList.erase(it);
+			}
+
+			if ((*it)->exited == true)
+			{
+				SAFE_DELETE(*it);
+				it = skullList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+
+		for (vector<Boss*>::iterator it = bossList.begin();
+			it != bossList.end();)
+		{
+			if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 5)
+			{
+				SAFE_DELETE(*it);
+				it = bossList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+
+		for (vector<EBullet*>::iterator it = ebList.begin();
+			it != ebList.end();)
+		{
+			if ((*it)->collided == true)
+			{
+				SAFE_DELETE(*it);
+				it = ebList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+	}
 
 	// spawn enemy
 	void spawnDfr(float x, float y)
 	{
 		Dfr* r = new Dfr;
 		r->initialize(this, dfrNS::WIDTH, dfrNS::HEIGHT, dfrNS::TEXTURE_COLS, &dfrTexture);
-		r->setX(GAME_WIDTH / 2);
-		r->setY(GAME_HEIGHT / 5);
+		r->setX(x);
+		r->setY(y);
 		dfrList.push_back(r);
 	}
 
@@ -158,14 +262,12 @@ public:
 		dfbList.push_back(b);
 	}
 
-	void spawnDfg(float x, float y, float start, float end)
+	void spawnDfg(float x, float y)
 	{
 		Dfg* g = new Dfg;
 		g->initialize(this, dfgNS::WIDTH, dfgNS::HEIGHT, dfgNS::TEXTURE_COLS, &dfgTexture);
 		g->setX(x);
 		g->setY(y);
-		g->startheight = start;
-		g->endheight = end;
 		dfgList.push_back(g);
 	}
 

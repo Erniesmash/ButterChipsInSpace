@@ -25,9 +25,9 @@ namespace dfbNS
 	const float DFB_ANIMATION_DELAY = 0.12f;    // time between frames
 	const float DFB_SHOT_TIMER = 1.0f;
 	const int	DFB_HEALTH = 100;
-	const float DFB_SPREAD_ANGLE = 15;
+	const float DFB_SPREAD_ANGLE = 5;
 	const float DFB_ANGLE = 135;
-	const int BULLET_COUNT = 5;
+	const int BULLET_COUNT = 15;
 }
 
 // inherits from Entity class

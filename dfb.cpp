@@ -1,9 +1,6 @@
 #include "dfb.h"
 #include "spacewar.h"
 
-bool b = true;
-float c;
-float d;
 float t = 0.05;
 //=============================================================================
 // default constructor
@@ -41,8 +38,8 @@ bool Dfb::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
 	sw = gamePtr;
-	//dfbbTexture.initialize(graphics, DFBBULLET_IMAGE);
-	//hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
+	dfbbTexture.initialize(gamePtr->getGraphics(), DFBBULLET_IMAGE);
+	hbTexture.initialize(gamePtr->getGraphics(), HEALTHBAR_IMAGE);
 	hb.initialize(sw, hbNS::WIDTH, hbNS::HEIGHT, hbNS::TEXTURE_COLS, &hbTexture);
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 
@@ -75,10 +72,6 @@ void Dfb::update(float frameTime)
 	spriteData.x += frameTime * velocity.x;         // move Dfb along X 
 	spriteData.y += frameTime * velocity.y;         // move Dfb along Y
 	t -= frameTime;
-
-	//initialize
-	dfbbTexture.initialize(graphics, DFBBULLET_IMAGE);
-	hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
 
 	hb.setY(spriteData.y - hbNS::HEIGHT);
 	hb.setX(getCenterX() - hbNS::WIDTH / 2);
