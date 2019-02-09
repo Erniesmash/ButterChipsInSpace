@@ -163,7 +163,54 @@ void Spacewar::initialize(HWND hwnd)
 	if (!ebTexture.initialize(graphics, EBULLET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing eb"));
 
-	PlaySound("C:\\Users\\ernes\\Documents\\GitHub\\ButterChipsInSpace\\audio\\menu.wav", NULL, SND_LOOP | SND_ASYNC);
+//=============================================================================
+// Misc
+//=============================================================================
+	// characterPortrait texture
+	if (!characterPortraitTexture.initialize(graphics, HAPPY_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing characterPortraitTexture"));
+
+	// characterPortrait image
+	if (!characterPortrait.initialize(graphics, 0, 0, 0, &characterPortraitTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing characterPortrait"));
+
+	// forest1 texture
+	if (!forest1Texture.initialize(graphics, FOREST1_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest1 Texture"));
+
+	// forest1 image
+	if (!forest1.initialize(graphics, 0, 0, 0, &forest1Texture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest1"));
+
+	// forest2 texture
+	if (!forest2Texture.initialize(graphics, FOREST2_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest2 Texture"));
+
+	// forest2 image
+	if (!forest2.initialize(graphics, 0, 0, 0, &forest2Texture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest2"));
+
+	// textbox texture
+	if (!textBoxTexture.initialize(graphics, TEXTBOX_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Textbox Texture"));
+
+	// textbox image
+	if (!textBox.initialize(graphics, 0, 0, 0, &textBoxTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Textbox"));
+	textBox.setX(GAME_WIDTH / 2 - textBox.getWidth() / 2 * textBox.getScale());
+	textBox.setY(GAME_HEIGHT / 1.2 - textBox.getHeight() / 2 * textBox.getScale());
+
+	// button texture
+	if (!buttonTexture.initialize(graphics, BUTTON_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Button Texture"));
+
+	// button
+	if (!button.initialize(this, buttonNS::WIDTH, buttonNS::HEIGHT, buttonNS::TEXTURE_COLS, &buttonTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button"));
+	button.setX(GAME_WIDTH / 1.55 - button.getWidth() / 2 * button.getScale());
+	button.setY(GAME_HEIGHT / 1.15 - button.getHeight() / 2 * button.getScale());
+
+	//PlaySound("C:\\Users\\ernes\\Documents\\GitHub\\ButterChipsInSpace\\audio\\menu.wav", NULL, SND_LOOP | SND_ASYNC);
 }
 	
 //=============================================================================
@@ -364,8 +411,37 @@ void Spacewar::ai()
 //=============================================================================
 void Spacewar::collisions()
 {
+	VECTOR2 collisionVector;
+	
+
 	if (menuOn == false)
 	{
+		for (std::vector<Bullet*>::iterator it = bulletList.begin();
+			it != bulletList.end();)
+		{
+			if ((*it)->collidesWith(button, collisionVector))
+			{
+				SAFE_DELETE(*it);
+				it = bulletList.erase(it);
+				playerMain.dialogueChoice++;
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+
+		/*
+		for each(Bullet*  bullet in bulletList)
+		{
+			if (bullet->collidesWith(button, collisionVector))
+			{
+				
+				playerMain.dialogueChoice++;
+			}
+		}
+		*/
 	}    
 }
 
@@ -382,7 +458,7 @@ void Spacewar::render()
 		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Blob and Trouble!");
 		fontMenu.print(buffer, GAME_WIDTH / 3.35, GAME_HEIGHT / 2.5);
 
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Click any button on the keyboard to begin the game!");
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Click any button on the keyboard to begin your adventure!");
 		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
 
 		startPlayer.draw();
@@ -390,11 +466,20 @@ void Spacewar::render()
 
 	if (menuOn == false)
 	{	
-		space.draw();
+		//space.draw();
+		//starfield.draw();
+		//characterPortrait.draw();
 
-		starfield.draw();
-
+		forest1.draw();
 		playerMain.draw();
+
+		if (playerMain.dialogueEnd == false)
+		{		
+			textBox.draw();
+			button.draw();
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, playerMain.playerDialogue);
+			dxFont.print(buffer, GAME_WIDTH / 1.86 - textBox.getWidth() / 2 * textBox.getScale(), GAME_HEIGHT / 1.16 - textBox.getHeight() / 2 * textBox.getScale());
+		}
 
 		if (missleShot.missleActive == true)
 		{

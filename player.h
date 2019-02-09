@@ -4,6 +4,7 @@
 
 #include "entity.h"
 #include "constants.h"
+#include <string>
 
 
 namespace playerNS
@@ -54,5 +55,9 @@ public:
 	float shieldCooldownTimer = 0;
 	float shieldInUseTimer = 3;
 	bool shieldOnCooldown = false;
+
+	int dialogueChoice;
+	const char * playerDialogue;
+	bool dialogueEnd;
 };
 #endif

@@ -22,6 +22,8 @@ Player::Player() : Entity()
 	mass = playerNS::MASS;
 	collisionType = entityNS::CIRCLE;
 	shieldOn = false;
+	dialogueChoice = 1;
+	dialogueEnd = false;
 }
 
 //=============================================================================
@@ -71,6 +73,36 @@ void Player::update(float frameTime)
 	if (shieldOn)
 	{
 		shield.update(frameTime);
+	}
+
+	if (dialogueChoice == 1)
+	{
+		playerDialogue = "I have to defeat him before...";
+	}
+
+	if (dialogueChoice == 2)
+	{
+		playerDialogue = "...it is too late!";
+	}
+
+	if (dialogueChoice == 3)
+	{
+		playerDialogue = "The world is at stake!";
+	}
+
+	if (dialogueChoice == 4)
+	{
+		playerDialogue = "I must protect...";
+	}
+
+	if (dialogueChoice == 5)
+	{
+		playerDialogue = "...the things I love!";
+	}
+
+	if (dialogueChoice == 6)
+	{
+		dialogueEnd = true;
 	}
 
 	/*

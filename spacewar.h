@@ -23,6 +23,7 @@
 #include "dfg.h"
 #include "skull.h"
 #include "boss.h"
+#include "button.h"
 //these two headers are already included in the <Windows.h> header
 #pragma comment(lib, "Winmm.lib")
 
@@ -85,6 +86,17 @@ private:
 	Image	farback;
 	Image	starfield;
 	Image space;
+
+	Image characterPortrait;
+	TextureManager characterPortraitTexture;
+	Image forest1;
+	TextureManager forest1Texture;
+	Image forest2;
+	TextureManager forest2Texture;
+	Image textBox;
+	TextureManager textBoxTexture;
+	Button button;
+	TextureManager buttonTexture;
 
 	Image menu;
 	bool menuOn;

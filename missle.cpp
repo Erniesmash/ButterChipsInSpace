@@ -63,8 +63,8 @@ void Missle::draw()
 	{
 		explosion.setVisible(true);
 		explosion.draw();
-		explosion.setX(spriteData.x - spriteData.width / 2 * spriteData.scale);
-		explosion.setY(spriteData.y - spriteData.height / 2 * spriteData.scale);
+		explosion.setX(spriteData.x - explosion.getWidth() / 2 * explosion.getScale());
+		explosion.setY(spriteData.y - explosion.getHeight() / 2 * explosion.getScale());
 	}
 		
 	else

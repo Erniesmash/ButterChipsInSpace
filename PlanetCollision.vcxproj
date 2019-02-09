@@ -101,6 +101,7 @@
     <ClCompile Include="audio.cpp" />
     <ClCompile Include="boss.cpp" />
     <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="button.cpp" />
     <ClCompile Include="dfb.cpp" />
     <ClCompile Include="dfbbullet.cpp" />
     <ClCompile Include="dfg.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="audio.h" />
     <ClInclude Include="boss.h" />
     <ClInclude Include="bullet.h" />
+    <ClInclude Include="button.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="dfb.h" />
     <ClInclude Include="dfbbullet.h" />
