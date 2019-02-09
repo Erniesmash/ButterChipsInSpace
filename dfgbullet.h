@@ -37,6 +37,6 @@ public:
 	bool collided;
 	bool bounce;
 	void getDir(float x, float y, float fromx, float fromy, float speed);
-	void appImpulse(float xpos, float ypos, float angle, float speed);
+	void appImpulse(float xpos, float ypos, double angle, float speed);
 };
 #endif

@@ -163,6 +163,8 @@ void Spacewar::initialize(HWND hwnd)
 	if (!ebTexture.initialize(graphics, EBULLET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing eb"));
 
+	spawnBoss(GAME_WIDTH - bossNS::WIDTH * 3, (GAME_HEIGHT / 2) - (bossNS::HEIGHT/2));
+
 	PlaySound("C:\\Users\\ernes\\Documents\\GitHub\\ButterChipsInSpace\\audio\\menu.wav", NULL, SND_LOOP | SND_ASYNC);
 }
 	
@@ -305,7 +307,6 @@ void Spacewar::update()
 	for each (Skull* skull in skullList)
 	{
 		skull->update(frameTime);
-		skull->getPlayer(&playerMain);
 
 		//skull appear
 		if (skull->getCurrentFrame() == skullNS::SKULL_END_FRAME)
@@ -336,6 +337,7 @@ void Spacewar::update()
 
 	for each (Boss* boss in bossList)
 	{
+		boss->getPlayer(&playerMain);
 		boss->update(frameTime);
 	}
 

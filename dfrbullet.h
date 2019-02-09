@@ -38,5 +38,7 @@ public:
 	bool collided;
 	void appImpulse(float xpos, float ypos, float angle, float speed);
 	bool bounce;
+
+	bool targeted;
 };
 #endif

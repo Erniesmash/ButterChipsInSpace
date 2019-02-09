@@ -18,7 +18,7 @@ namespace skullNS
 	const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
 	const int Y = GAME_HEIGHT / 2 - HEIGHT / 2;
 	const float ROTATION_RATE = (float)0; // radians per second
-	const float SPEED = 100;                // 100 pixels per second
+	const float SPEED = 600;                // 100 pixels per second
 	const float MASS = 300.0f;              // mass
 	const int   TEXTURE_COLS = 8;           // texture has 14 columns
 	const int   SKULL_START_FRAME = 0;      // ship1 starts at frame 0

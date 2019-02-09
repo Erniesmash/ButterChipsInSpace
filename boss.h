@@ -52,11 +52,6 @@ private:
 	TextureManager skullTexture;
 
 	Hb hb;
-	EBullet eb;
-	DfbBullet dfbb;
-	DfrBullet dfrb;
-	DfgBullet dfgb;
-	Skull skull;
 
 	vector<EBullet*> ebList;
 	vector<DfbBullet*> dfbbList;
@@ -72,47 +67,84 @@ public:
 	virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
 		TextureManager *textureM);
 	void update(float frameTime);
-	float dir(float fromx, float fromy, float tox, float toy);
-	void wave();
-	void healthBar();
-	void chase(Entity *target);
 	float shotTimer;
-	void shoot();
+	//void shoot();
 	bool shot;
 	bool dead;
 	bool imgChanged;
 	float health;
-
-	void phasei() 
-	{
-		/*float a = 0;
-		bool b;
-		if (a <= 0)
-		{
-			b = true;
-		}
-		else if (a > 45)
-		{
-			b = false;
-		}
-		if (b == true)
-		{
-			a++;
-		}
-		if (b == false)
-		{
-			a--;
-		}
-
-		for (int i = 1; i < d; i++)
-		{
-			DfbBullet* d = new DfbBullet;
-			d->initialize(sw, dfbbulletNS::WIDTH, dfbbulletNS::HEIGHT, dfbbulletNS::TEXTURE_COLS, &dfbbTexture);
-			d->appImpulse(spriteData.x, spriteData.y, 0 + c * i + a);
-			dfbbList.push_back(d);
-		}*/
-	}
+	float timer;
+	float pTime;
 
 	Game* sw;
+	Entity* player;
+
+	void getPlayer(Entity* target)
+	{
+		player = target;
+	}
+
+	void checkBullet()
+	{
+		for (vector<DfrBullet*>::iterator it = dfrbList.begin();
+			it != dfrbList.end();)
+		{
+			if ((*it)->collided == true)
+			{
+				SAFE_DELETE(*it);
+				it = dfrbList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+
+		for (vector<DfbBullet*>::iterator it = dfbbList.begin();
+			it != dfbbList.end();)
+		{
+			if ((*it)->collided == true)
+			{
+				SAFE_DELETE(*it);
+				it = dfbbList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+
+		for (vector<DfgBullet*>::iterator it = dfgbList.begin();
+			it != dfgbList.end();)
+		{
+			if ((*it)->collided == true)
+			{
+				SAFE_DELETE(*it);
+				it = dfgbList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+
+		for (vector<EBullet*>::iterator it = ebList.begin();
+			it != ebList.end();)
+		{
+			if ((*it)->collided == true)
+			{
+				SAFE_DELETE(*it);
+				it = ebList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+	}
 };
 #endif

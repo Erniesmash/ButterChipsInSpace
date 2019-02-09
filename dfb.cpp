@@ -1,9 +1,6 @@
 #include "dfb.h"
 #include "spacewar.h"
 
-bool b = true;
-float c;
-float d;
 float t = 0.05;
 //=============================================================================
 // default constructor
