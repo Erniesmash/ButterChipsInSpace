@@ -112,14 +112,6 @@ void Dfr::update(float frameTime)
 		velocity.y = -velocity.y;                   // reverse Y direction
 	}
 
-	if (input->isKeyDown(VK_SPACE))
-	{
-		if (health >= 0)
-		{
-			health = health - 1;
-		}
-	}
-
 	if (health <= 0)
 	{
 		dead = true;

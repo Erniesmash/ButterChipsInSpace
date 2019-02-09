@@ -20,10 +20,11 @@ Player::Player() : Entity()
 	currentFrame = startFrame;
 	radius = playerNS::WIDTH / 2.0;
 	mass = playerNS::MASS;
-	collisionType = entityNS::CIRCLE;
+	collisionType = entityNS::BOX;
 	shieldOn = false;
 	dialogueChoice = 1;
 	dialogueEnd = false;
+	health = 6;
 }
 
 //=============================================================================
@@ -51,7 +52,16 @@ bool Player::initialize(Game *gamePtr, int width, int height, int ncols,
 //=============================================================================
 void Player::draw()
 {
-	Image::draw();              // draw ship
+	if (health > 0)
+	{
+		Image::draw();		
+	}    
+
+	else
+	{
+		active = false;
+	}
+
 	if (shieldOn == true)
 	{
 		shield.draw(graphicsNS::ALPHA50 & colorFilter);
@@ -159,7 +169,7 @@ void Player::update(float frameTime)
 		if (dashCooldownTimer < 0)
 		{
 			dashOnCooldown = false;
-			dashCooldownTimer = 6; //Change this value to adjust cooldown
+			dashCooldownTimer = 3; //Change this value to adjust cooldown
 		}
 	}
 	
@@ -175,7 +185,7 @@ void Player::update(float frameTime)
 
 		else //i.e less than zero
 		{
-			dashInUseTimer = 0.5; //change this value to adjust how long dash is active
+			dashInUseTimer = 0.5; //change this value to adjust how long dash is active, dont forget inital timer too
 			dashActive = false;
 		}
 	}

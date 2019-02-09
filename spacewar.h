@@ -76,8 +76,6 @@ private:
 	TextureManager ebTexture;
 	TextureManager ebulletTexture;
 
-	// Adjust Starting Number of Lives here
-	float numberOfLives = 6;
 	float numberOfSpecials = 4;
 
 	TextureManager specialsTexture;
@@ -115,6 +113,9 @@ private:
 
 	std::vector<Bullet*> bulletList;
 	float waitTimer;
+
+	bool gameOver;
+	bool gameWin;
 
 public:
     // Constructor

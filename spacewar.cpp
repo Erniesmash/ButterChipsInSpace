@@ -1,7 +1,7 @@
 ﻿#include "spaceWar.h"
 
 // lvl variables
-bool gameStart = false;
+bool gameStart = true;
 bool changed;
 int progress;
 bool lvl;
@@ -15,6 +15,8 @@ float lvlTime = 30;
 Spacewar::Spacewar()
 {
 	menuOn = true;
+	gameOver = false;
+	gameWin = false;
 }
 
 //=============================================================================
@@ -52,11 +54,11 @@ void Spacewar::initialize(HWND hwnd)
 	if (!heartTexture.initialize(graphics, HEART_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing heart texture"));
 
-	for (int x = 0; x < numberOfLives; x++)
+	for (int x = 0; x < playerMain.health; x++)
 	{
 		Heart *heart = new Heart();
 		heart->initialize(this, heartNS::WIDTH, heartNS::HEIGHT, heartNS::TEXTURE_COLS, &heartTexture);
-		heart->setX(GAME_WIDTH / 24 * (numberOfLives - (x - 17.5)));
+		heart->setX(GAME_WIDTH / 24 * (playerMain.health - (x - 17.5)));
 		heart->setY(GAME_HEIGHT / 100);
 		heartList.push_back(heart);
 	}
@@ -588,7 +590,7 @@ void Spacewar::collisions()
 	VECTOR2 collisionVector;
 	
 
-	if (menuOn == false)
+	if (menuOn == false && gameWin == false && gameOver == false)
 	{
 		for (std::vector<Bullet*>::iterator it = bulletList.begin();
 			it != bulletList.end();)
@@ -606,6 +608,146 @@ void Spacewar::collisions()
 			}
 		}
 
+		for each(Dfr* dfr in dfrList)
+		{
+			for (std::vector<Bullet*>::iterator it = bulletList.begin();
+				it != bulletList.end();)
+			{
+				if ((*it)->collidesWith(*dfr, collisionVector))
+				{
+					SAFE_DELETE(*it);
+					it = bulletList.erase(it);
+					if (dfr->health >= 0)
+					{
+						dfr->health = dfr->health - 50;
+					}
+				}
+
+				else
+				{
+					++it;
+				}
+			}
+		}	
+		
+		for each(Dfr* dfr in dfrList)
+		{
+			for (std::vector<DfrBullet*>::iterator it = dfr->dfrbList.begin();
+				it != dfr->dfrbList.end();)
+			{
+				if ((*it)->collidesWith(playerMain, collisionVector))
+				{
+					playerMain.health = playerMain.health - 1;
+					if (heartList.size() != 0)
+					{
+						heartList.erase(heartList.end() - 1);
+					}
+
+					SAFE_DELETE(*it);
+					it = dfr->dfrbList.erase(it);
+					//playerMain.
+				}
+
+				else
+				{
+					++it;
+				}
+			}
+		}	
+
+		for each(Dfg* dfg in dfgList)
+		{
+			for (std::vector<Bullet*>::iterator it = bulletList.begin();
+				it != bulletList.end();)
+			{
+				if ((*it)->collidesWith(*dfg, collisionVector))
+				{
+					SAFE_DELETE(*it);
+					it = bulletList.erase(it);
+					if (dfg->health >= 0)
+					{
+						dfg->health = dfg->health - 50;
+					}
+				}
+
+				else
+				{
+					++it;
+				}
+			}
+		}
+
+		for each(Dfg* dfg in dfgList)
+		{
+			for (std::vector<DfgBullet*>::iterator it = dfg->dfgbList.begin();
+				it != dfg->dfgbList.end();)
+			{
+				if ((*it)->collidesWith(playerMain, collisionVector))
+				{
+					playerMain.health = playerMain.health - 1;
+					if (heartList.size() != 0)
+					{
+						heartList.erase(heartList.end() - 1);
+					}
+
+					SAFE_DELETE(*it);
+					it = dfg->dfgbList.erase(it);
+					//playerMain.
+				}
+
+				else
+				{
+					++it;
+				}
+			}
+		}
+
+		for each(Dfb* dfb in dfbList)
+		{
+			for (std::vector<Bullet*>::iterator it = bulletList.begin();
+				it != bulletList.end();)
+			{
+				if ((*it)->collidesWith(*dfb, collisionVector))
+				{
+					SAFE_DELETE(*it);
+					it = bulletList.erase(it);
+					if (dfb->health >= 0)
+					{
+						dfb->health = dfb->health - 50;
+					}
+				}
+
+				else
+				{
+					++it;
+				}
+			}
+		}
+
+		for each(Dfb* dfb in dfbList)
+		{
+			for (std::vector<DfbBullet*>::iterator it = dfb->dfbbList.begin();
+				it != dfb->dfbbList.end();)
+			{
+				if ((*it)->collidesWith(playerMain, collisionVector))
+				{
+					playerMain.health = playerMain.health - 1;
+					if (heartList.size() != 0)
+					{
+						heartList.erase(heartList.end() - 1);
+					}
+
+					SAFE_DELETE(*it);
+					it = dfb->dfbbList.erase(it);
+					//playerMain.
+				}
+
+				else
+				{
+					++it;
+				}
+			}
+		}
 		/*
 		for each(Bullet*  bullet in bulletList)
 		{
@@ -638,7 +780,14 @@ void Spacewar::render()
 		startPlayer.draw();
 	}
 
-	if (menuOn == false)
+	if (gameOver == true)
+	{
+		menu.draw();
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Game Over!");
+		fontMenu.print(buffer, GAME_WIDTH / 2.7, GAME_HEIGHT / 2.5);
+	}
+
+	if (menuOn == false && gameWin == false && gameOver == false)
 	{	
 		//space.draw();
 		//starfield.draw();
@@ -655,6 +804,11 @@ void Spacewar::render()
 			dxFont.print(buffer, GAME_WIDTH / 1.86 - textBox.getWidth() / 2 * textBox.getScale(), GAME_HEIGHT / 1.16 - textBox.getHeight() / 2 * textBox.getScale());
 		}
 
+		if (playerMain.dialogueEnd == true)
+		{
+			gameStart = false;
+		}
+
 		if (missleShot.missleActive == true)
 		{
 			missleShot.draw();
@@ -669,6 +823,11 @@ void Spacewar::render()
 					h->draw();
 				}
 			}
+		}
+
+		if (heartList.size() <= 0)
+		{
+			gameOver = true;
 		}
 
 		for each (Selection* s in selectionList)

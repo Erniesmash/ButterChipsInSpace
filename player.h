@@ -59,5 +59,7 @@ public:
 	int dialogueChoice;
 	const char * playerDialogue;
 	bool dialogueEnd;
+
+	int health;
 };
 #endif
