@@ -36,8 +36,9 @@ bool Dfr::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
 	sw = gamePtr;
-	//dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
-	//hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
+	//initialize
+	dfrbTexture.initialize(gamePtr->getGraphics(), DFRBULLET_IMAGE);
+	hbTexture.initialize(gamePtr->getGraphics(), HEALTHBAR_IMAGE);
 	hb.initialize(sw, hbNS::WIDTH, hbNS::HEIGHT, hbNS::TEXTURE_COLS, &hbTexture);
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 
@@ -70,10 +71,6 @@ void Dfr::update(float frameTime)
 	spriteData.x += frameTime * velocity.x;         // move Dfr along X 
 	spriteData.y += frameTime * velocity.y;         // move Dfr along Y
 
-	//initialize
-	dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
-	hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
-
 	hb.setY(spriteData.y - hbNS::HEIGHT);
 	hb.setX(getCenterX() - hbNS::WIDTH / 2);
 	hb.setWidth((health / dfrNS::DFR_HEALTH) * hbNS::WIDTH);
@@ -85,10 +82,9 @@ void Dfr::update(float frameTime)
 	}
 	if (currentFrame == 10 && shot == false)
 	{
+		shoot();
 		shot = true;
 	}
-
-	shoot();
 
 	for each (DfrBullet* b in dfrbList)
 	{
@@ -136,7 +132,7 @@ void Dfr::shoot()
 {
 	DfrBullet* d = new DfrBullet;
 	d->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfrbTexture);
-	d->getDir(player->getCenterX(),player->getCenterY(), spriteData.x,spriteData.y, 1200);
+	d->getDir(player->getCenterX(),player->getCenterY(), spriteData.x,getCenterY(), 600);
 	dfrbList.push_back(d);
 }
 

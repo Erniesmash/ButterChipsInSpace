@@ -1,6 +1,12 @@
 #include "dfg.h"
 #include "spacewar.h"
 
+float dfgbulletNum = 5;
+float dfgstartAngle = 175;
+float dfgangleBetween = 1;
+float dfgincrement = 0;
+float dfgoffset = -2;
+bool m;
 //=============================================================================
 // default constructor
 //=============================================================================
@@ -38,8 +44,9 @@ bool Dfg::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
 	sw = gamePtr;
-	//dfgbTexture.initialize(graphics, DFGBULLET_IMAGE);
-	//hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
+	//initialize
+	dfgbTexture.initialize(gamePtr->getGraphics(), DFGBULLET_IMAGE);
+	hbTexture.initialize(gamePtr->getGraphics(), HEALTHBAR_IMAGE);
 	hb.initialize(sw, hbNS::WIDTH, hbNS::HEIGHT, hbNS::TEXTURE_COLS, &hbTexture);
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 
@@ -68,11 +75,6 @@ void Dfg::update(float frameTime)
 {
 	shotTimer -= frameTime;
 	Entity::update(frameTime);
-	spriteData.y += frameTime * velocity.y;         // move Dfg along Y
-
-	//initialize
-	dfgbTexture.initialize(graphics, DFGBULLET_IMAGE);
-	hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
 
 	hb.setY(spriteData.y - hbNS::HEIGHT);
 	hb.setX(getCenterX() - hbNS::WIDTH / 2);
@@ -80,29 +82,43 @@ void Dfg::update(float frameTime)
 
 	hb.update(frameTime);
 
-	shoot();
 
 	if (currentFrame == 10 && shot == false)
 	{
-		shotTimer = dfgNS::DFG_SHOT_TIMER;
+		currentFrame = 10;
 		shot = true;
-		shotTimer -= frameTime;
 	}
 
 	for each (DfgBullet* b in dfgbList)
 	{
 		b->update(frameTime);
 	}
-	// Bounce off walls
 
-	if (spriteData.y > endheight - dfgNS::HEIGHT)  // if hit bottom screen edge
+	if (dfgincrement <= 0)
 	{
-		velocity.y = -velocity.y;                   // reverse Y direction
+		m = true;
 	}
-	else if (spriteData.y < startheight)                  // else if hit top screen edge
+	else if (dfgincrement >= 10)
 	{
-		velocity.y = -velocity.y;                   // reverse Y direction
+		m = false;
 	}
+
+	if (m == true)
+	{
+		dfgincrement++;
+	}
+	else if (m == false)
+	{
+		dfgincrement--;
+	}
+	for (int i = dfgoffset; i < dfgbulletNum + dfgoffset; i++)
+	{
+		DfgBullet* d = new DfgBullet;
+		d->initialize(sw, dfrbulletNS::WIDTH, dfrbulletNS::HEIGHT, dfrbulletNS::TEXTURE_COLS, &dfgbTexture);
+		d->appImpulse(spriteData.x, getCenterY(), dfgstartAngle + dfgangleBetween * i + dfgincrement, 300);
+		dfgbList.push_back(d);
+	}
+
 
 	if (input->isKeyDown(VK_SPACE))
 	{

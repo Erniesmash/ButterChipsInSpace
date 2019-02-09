@@ -1,5 +1,14 @@
 ﻿#include "spaceWar.h"
 
+// lvl variables
+bool gameStart = false;
+bool changed;
+int progress;
+bool lvl;
+
+float spawnTimer = 0;
+float lvlTime = 30;
+
 //=============================================================================
 // Constructor
 //=============================================================================
@@ -156,14 +165,12 @@ void Spacewar::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfb"));
 	if (!dfgTexture.initialize(graphics, DFG_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfg"));
-	if (!skullTexture.initialize(graphics, SKULL_ENTRANCE_IMAGE))
+	if (!skullTexture.initialize(graphics, SKULL_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing skull"));
 	if (!bossTexture.initialize(graphics, BOSS_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing boss"));
 	if (!ebTexture.initialize(graphics, EBULLET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing eb"));
-
-	spawnBoss(GAME_WIDTH - bossNS::WIDTH * 3, (GAME_HEIGHT / 2) - (bossNS::HEIGHT/2));
 
 	PlaySound("C:\\Users\\ernes\\Documents\\GitHub\\ButterChipsInSpace\\audio\\menu.wav", NULL, SND_LOOP | SND_ASYNC);
 }
@@ -174,6 +181,7 @@ void Spacewar::initialize(HWND hwnd)
 void Spacewar::update()
 {
 	waitTimer -= frameTime;
+	spawnTimer -= frameTime;
 	if (menuOn == true)
 	{
 		if (input->anyKeyPressed())
@@ -308,25 +316,10 @@ void Spacewar::update()
 	{
 		skull->update(frameTime);
 
-		//skull appear
-		if (skull->getCurrentFrame() == skullNS::SKULL_END_FRAME)
-		{
-			skull->setCurrentFrame(skullNS::ACTIVE_END_FRAME);
-			skull->enteredChanged = true;
-		}
-
-		if (skull->entered == true && skull->enteredChanged == true && skull->active == false)
-		{
-			skull->setCurrentFrame(skullNS::ACTIVE_END_FRAME);
-			skullTexture.initialize(graphics, SKULL_IMAGE);
-			skull->active = true;
-		}
-
 		if (skull->exited == true)
 		{
 			for (int i = 1; i < 25; i++)
 			{
-				ebTexture.initialize(graphics, EBULLET_IMAGE);
 				EBullet* e = new EBullet;
 				e->initialize(this, ebulletNS::WIDTH, ebulletNS::HEIGHT, ebulletNS::TEXTURE_COLS, &ebTexture);
 				e->appImpulse(skull->getCenterX(), skull->getCenterY(), 0 + 15 * i, 30);
@@ -339,6 +332,15 @@ void Spacewar::update()
 	{
 		boss->getPlayer(&playerMain);
 		boss->update(frameTime);
+
+		if (boss->dead == true && boss->imgChanged == false)
+		{
+			bossTexture.initialize(graphics, BOSS_DEATH);
+			boss->setHeight(34);
+			boss->setWidth(32);
+			boss->setCurrentFrame(bossNS::BOSS_START_FRAME);
+			boss->imgChanged = true;
+		}
 	}
 
 	for each  (EBullet* eb in ebList)
@@ -346,13 +348,183 @@ void Spacewar::update()
 		eb->update(frameTime);
 	}
 
+
+//=============================================================================
+// Game Levels 
+//=============================================================================
+	if (menuOn == false && gameStart == false)
+	{
+		progress = 1;
+		gameStart = true;
+	}
+
+	// lvl 1
+	if (progress == 1)
+	{
+		if (lvl == false && changed == false)
+		{
+			if (!dfrTexture.initialize(graphics, DFR_IMAGE))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
+			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 2, GAME_HEIGHT / 4);
+			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 2, GAME_HEIGHT / 2);
+			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 2, 3 * GAME_HEIGHT / 4);
+			lvl = true;
+		}
+
+		if (checkEnemies() == true)
+		{
+			progress = 2;
+			lvl = false;
+		}
+	}
+
+	// lvl 2
+	else if (progress == 2)
+	{
+		if (lvl == false && changed == false)
+		{
+			if (!dfbTexture.initialize(graphics, DFB_IMAGE))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfb"));
+			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 2, GAME_HEIGHT / 3);
+			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 2, 2 * GAME_HEIGHT / 3);
+			lvl = true;
+		}
+
+		if (checkEnemies() == true)
+		{
+			progress = 3;
+			lvl = false;
+		}
+	}
+
+	//lvl 3
+	else if (progress == 3)
+	{
+		if (lvl == false && changed == false)
+		{
+			if (!dfrTexture.initialize(graphics, DFR_IMAGE))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
+			if (!dfbTexture.initialize(graphics, DFB_IMAGE))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfb"));
+
+			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 4, GAME_HEIGHT / 4);
+			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 2, GAME_HEIGHT / 2);
+			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 4, 3 * GAME_HEIGHT / 4);
+			lvl = true;
+		}
+
+		if (checkEnemies() == true)
+		{
+			progress = 4;
+			lvl = false;
+		}
+	}
+
+	// lvl 4
+	else if (progress == 4)
+	{
+		if (lvl == false && changed == false)
+		{
+			if (!dfrTexture.initialize(graphics, DFR_IMAGE))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfr"));
+			if (!dfbTexture.initialize(graphics, DFB_IMAGE))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfb"));
+			if (!dfgTexture.initialize(graphics, DFG_IMAGE))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfg"));
+
+			spawnDfg(GAME_WIDTH - dfrNS::WIDTH * 2, GAME_HEIGHT / 5);
+			spawnDfg(GAME_WIDTH - dfrNS::WIDTH * 2, 4 * GAME_HEIGHT / 5);
+
+			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 4, 2 * GAME_HEIGHT / 5);
+			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 4, 3 * GAME_HEIGHT / 5);
+
+			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 6, GAME_HEIGHT / 2);
+
+			lvl = true;
+		}
+
+		if (checkEnemies() == true)
+		{
+			progress = 5;
+			lvl = false;
+		}
+	}
+
+	// lvl 5
+	else if (progress == 5)
+	{
+		if (lvl == false && changed == false)
+		{
+			if (!dfgTexture.initialize(graphics, DFG_IMAGE))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfg"));
+
+			spawnDfg(GAME_WIDTH - dfrNS::WIDTH * 2, GAME_HEIGHT / 5);
+			spawnDfg(GAME_WIDTH - dfrNS::WIDTH * 2, 4 * GAME_HEIGHT / 5);
+			lvl = true;
+		}
+
+		if (spawnTimer <= 0)
+		{
+			spawnSkull(GAME_WIDTH, rand() % GAME_HEIGHT);
+			spawnTimer = 0.5;
+		}
+
+		if (checkEnemies() == true)
+		{
+			progress = 6;
+			lvl = false;
+		}
+	}
+
+	// lvl 6
+	else if (progress == 6)
+	{
+		if (lvl == false && changed == false)
+		{
+			if (!dfbTexture.initialize(graphics, DFB_IMAGE))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfb"));
+			if (!dfgTexture.initialize(graphics, DFG_IMAGE))
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfg"));
+
+			spawnDfg(GAME_WIDTH - dfrNS::WIDTH * 2, GAME_HEIGHT / 5);
+			spawnDfg(GAME_WIDTH - dfrNS::WIDTH * 2, 4 * GAME_HEIGHT / 5);
+
+			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 6, GAME_HEIGHT / 2);
+
+			lvl = true;
+		}
+
+		if (spawnTimer <= 0)
+		{
+			spawnSkull(GAME_WIDTH, rand() % GAME_HEIGHT);
+			spawnTimer = 0.5;
+		}
+
+		if (checkEnemies() == true)
+		{
+			progress = 7;
+			lvl = false;
+		}
+	}
+
+	else if (progress == 7)
+	{
+		if (lvl == false && changed == false)
+		{
+			spawnBoss(GAME_WIDTH - bossNS::WIDTH * 4, GAME_HEIGHT / 2);
+			lvl = true;
+		}
+
+		if (checkEnemies() == true)
+		{
+			progress = 8;
+			lvl = false;
+		}
+	}
 //=============================================================================
 // check to delete vector objects 
 //=============================================================================
-	checkDfr();
-	checkDfb();
-	checkDfg();
-	checkSkull();
+	delEnemies();
 }
 
 //=============================================================================
@@ -612,103 +784,4 @@ void Spacewar::resetAll()
 	spaceTexture.onResetDevice();
     Game::resetAll();
     return;
-}
-
-//=============================================================================
-// delete from vector methods
-//=============================================================================
-void Spacewar::checkDfr()
-{
-	for (vector<Dfr*>::iterator it = dfrList.begin();
-		it != dfrList.end();)
-	{
-		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
-		{
-			SAFE_DELETE(*it);
-			it = dfrList.erase(it);
-		}
-
-		else
-		{
-			++it;
-		}
-	}
-}
-
-void Spacewar::checkDfb()
-{
-	for (vector<Dfb*>::iterator it = dfbList.begin();
-		it != dfbList.end();)
-	{
-		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
-		{
-			SAFE_DELETE(*it);
-			it = dfbList.erase(it);
-		}
-
-		else
-		{
-			++it;
-		}
-	}
-}
-
-void Spacewar::checkDfg()
-{
-	for (vector<Dfg*>::iterator it = dfgList.begin();
-		it != dfgList.end();)
-	{
-		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
-		{
-			SAFE_DELETE(*it);
-			it = dfgList.erase(it);
-		}
-
-		else
-		{
-			++it;
-		}
-	}
-}
-
-void Spacewar::checkSkull()
-{
-	for (vector<Skull*>::iterator it = skullList.begin();
-		it != skullList.end();)
-	{
-		if ((*it)->dead == true)
-		{
-			SAFE_DELETE(*it);
-			it = skullList.erase(it);
-		}
-
-		if ((*it)->exited == true)
-		{
-			SAFE_DELETE(*it);
-			it = skullList.erase(it);
-		}
-
-		else
-		{
-			++it;
-		}
-	}
-}
-
-void Spacewar::checkBoss()
-{
-	/*for (vector<Dfr*>::iterator it = dfrList.begin();
-		it != dfrList.end();)
-	{
-		if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
-		{
-			SAFE_DELETE(*it);
-			it = dfrList.erase(it);
-		}
-
-		else
-		{
-			++it;
-		}
-	}*/
 }

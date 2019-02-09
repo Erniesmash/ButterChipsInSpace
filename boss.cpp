@@ -59,8 +59,14 @@ bool Boss::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
 	sw = gamePtr;
-	//bossbTexture.initialize(graphics, BOSSBULLET_IMAGE);
-	//hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
+	//initialize
+	ebTexture.initialize(gamePtr->getGraphics(), EBULLET_IMAGE);
+	dfrbTexture.initialize(gamePtr->getGraphics(), DFRBULLET_IMAGE);
+	dfbbTexture.initialize(gamePtr->getGraphics(), DFBBULLET_IMAGE);
+	dfgbTexture.initialize(gamePtr->getGraphics(), DFGBULLET_IMAGE);
+
+	hbTexture.initialize(gamePtr->getGraphics(), HEALTHBAR_IMAGE);
+
 	hb.initialize(sw, hbNS::WIDTH, hbNS::HEIGHT, hbNS::TEXTURE_COLS, &hbTexture);
 	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 
@@ -100,14 +106,6 @@ void Boss::update(float frameTime)
 	spriteData.angle += frameTime * bossNS::ROTATION_RATE;  // rotate the Boss
 	spriteData.x += frameTime * velocity.x;         // move Boss along X 
 	spriteData.y += frameTime * velocity.y;         // move Boss along Y
-
-	//initialize
-	ebTexture.initialize(graphics, EBULLET_IMAGE);
-	dfrbTexture.initialize(graphics, DFRBULLET_IMAGE);
-	dfbbTexture.initialize(graphics, DFBBULLET_IMAGE);
-	dfgbTexture.initialize(graphics, DFGBULLET_IMAGE);
-	
-	hbTexture.initialize(graphics, HEALTHBAR_IMAGE);
 
 	hb.setY(spriteData.y - hbNS::HEIGHT);
 	hb.setX(getCenterX() - hbNS::WIDTH / 2);
@@ -355,7 +353,7 @@ void Boss::update(float frameTime)
 	}
 
 	//phase 6
-	else if (health <= bossNS::PHASE_SIX)
+	else if (health <= bossNS::PHASE_SIX && health > 0)
 	{
 		if (phase6 == false && set == false)
 		{
@@ -393,18 +391,19 @@ void Boss::update(float frameTime)
 			timer = bulletfreq;
 		}
 	}
-	else
+	else if (health <= 0)
 	{
+		health = 0;
+		endFrame = 5;
 		dead = true;
 	}
 
 	if (input->isKeyDown(VK_SPACE))
 	{
-		if (health >= 0)
-		{
-			health = health - 1;
-		}
+		health -= 1;
 	}
+
+
 
 	checkBullet();
 }

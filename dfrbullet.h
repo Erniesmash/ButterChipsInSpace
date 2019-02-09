@@ -13,7 +13,7 @@ namespace dfrbulletNS
 	const int HEIGHT = 10;                  // image height
 	const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
 	const int Y = GAME_HEIGHT / 2 - HEIGHT / 2;
-	const float SPEED = 300;                // 100 pixels per second
+	const float SPEED = 600;                // 100 pixels per second
 	const float MASS = 300.0f;              // mass
 	const int   TEXTURE_COLS = 1;           // texture has 8 columns
 	const int   DFRBULLET_START_FRAME = 0;      // ship1 starts at frame 0
