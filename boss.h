@@ -1,3 +1,10 @@
+//  Module:             Gameplay Programming
+//  Assignment2:        Blob and Trouble
+//  Student Name:       Tan Cheng Hian
+//  Student Number:     S10179071A
+//  Student Name:       Ernest Cheo
+//  Student Number:     S10177445D
+
 #pragma once
 #ifndef _BOSS_H                 // Prevent multiple definitions if this 
 #define _BOSS_H                 // file is included in more than one place

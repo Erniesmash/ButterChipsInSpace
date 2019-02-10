@@ -1,4 +1,11 @@
-﻿#include "spaceWar.h"
+﻿//  Module:             Gameplay Programming
+//  Assignment2:        Blob and Trouble
+//  Student Name:       Tan Cheng Hian
+//  Student Number:     S10179071A
+//  Student Name:       Ernest Cheo
+//  Student Number:     S10177445D
+
+#include "spaceWar.h"
 
 // lvl variables
 bool gameStart = false;

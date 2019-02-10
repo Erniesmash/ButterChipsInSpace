@@ -1,5 +1,5 @@
 //  Module:             Gameplay Programming
-//  Assignment1:        Butter Chips in Space
+//  Assignment2:        Blob and Trouble
 //  Student Name:       Tan Cheng Hian
 //  Student Number:     S10179071A
 //  Student Name:       Ernest Cheo

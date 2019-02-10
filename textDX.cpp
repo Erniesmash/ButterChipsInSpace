@@ -1,8 +1,9 @@
-// Programming 2D Games
-// Copyright (c) 2011 by: 
-// Charles Kelly
-// textDX.cpp v1.0
-// DirectX font
+//  Module:             Gameplay Programming
+//  Assignment2:        Blob and Trouble
+//  Student Name:       Tan Cheng Hian
+//  Student Number:     S10179071A
+//  Student Name:       Ernest Cheo
+//  Student Number:     S10177445D
 
 #include "textDX.h"
 
