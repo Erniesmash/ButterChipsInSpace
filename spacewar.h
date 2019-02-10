@@ -25,6 +25,7 @@
 #include "boss.h"
 #include "explosion.h"
 #include "button.h"
+#include "explosion.h"
 //these two headers are already included in the <Windows.h> header
 #pragma comment(lib, "Winmm.lib")
 

@@ -970,6 +970,11 @@ void Spacewar::render()
 		e->draw();
 	}
 
+	for each (Explosion* e in eList)
+	{
+		e->draw();
+	}
+
     graphics->spriteEnd();                  // end drawing sprites
 }
 
