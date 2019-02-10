@@ -1124,11 +1124,7 @@ void Spacewar::render()
 			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", progress);
 			dxFont.print(buffer, GAME_WIDTH / 2, GAME_HEIGHT / 100);
 
-<<<<<<< HEAD
 			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "of 7"); // 7 Total Waves
-=======
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "of 7");
->>>>>>> 224992712eedf1459fcc7108f699e41f15216e3d
 			dxFont.print(buffer, GAME_WIDTH / 1.93, GAME_HEIGHT / 100);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
