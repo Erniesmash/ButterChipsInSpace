@@ -76,9 +76,9 @@ void Skull::update(float frameTime)
 
 		hb.update(frameTime);
 
-		if (spriteData.x < -spriteData.width*2)                    // else if hit left screen edge
+		if (spriteData.x <= -spriteData.width*2)                    // else if hit left screen edge
 		{
-			exited = true;
+			dead = true;
 		}
 
 		if (input->isKeyDown(VK_SPACE))

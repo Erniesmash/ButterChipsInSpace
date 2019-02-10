@@ -96,10 +96,7 @@ void Dfb::update(float frameTime)
 
 	if (input->isKeyDown(VK_SPACE))
 	{
-		if (health >= 0)
-		{
-			health = health - 1;
-		}
+		health -= 10;
 	}
 
 	if (health <= 0)

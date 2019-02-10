@@ -401,10 +401,8 @@ void Boss::update(float frameTime)
 
 	if (input->isKeyDown(VK_SPACE))
 	{
-		health -= 1;
+		health -= 50;
 	}
-
-
 
 	checkBullet();
 }

@@ -24,7 +24,7 @@ namespace dfgNS
 	const int   DFG_END_FRAME = 13;        // ship1 animation frames 0,1,2,3
 	const float DFG_ANIMATION_DELAY = 0.12f;    // time between frames
 	const float DFG_SHOT_TIMER = 1.0f;
-	const int	DFG_HEALTH = 100;
+	const int	DFG_HEALTH = 1875;
 }
 
 // inherits from Entity class
