@@ -354,7 +354,7 @@ void Spacewar::update()
 	{
 		skull->update(frameTime);
 
-		if (skull->exited == true)
+		if (skull->dead == true && skull->getX()<0)
 		{
 			for (int i = 1; i < 25; i++)
 			{

@@ -224,11 +224,11 @@ public:
 				it = skullList.erase(it);
 			}
 
-			if ((*it)->exited == true)
+			/*if ((*it)->exited == true && (*it)->dead == false)
 			{
 				SAFE_DELETE(*it);
 				it = skullList.erase(it);
-			}
+			}*/
 
 			else
 			{
