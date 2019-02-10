@@ -118,6 +118,7 @@ private:
 
 	bool gameOver;
 	bool gameWin;
+	bool cheatCodeInvincible;
 
 public:
     // Constructor

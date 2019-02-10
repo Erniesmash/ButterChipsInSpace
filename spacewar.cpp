@@ -17,6 +17,7 @@ Spacewar::Spacewar()
 	menuOn = true;
 	gameOver = false;
 	gameWin = false;
+	cheatCodeInvincible = false;
 }
 
 //=============================================================================
@@ -231,6 +232,11 @@ void Spacewar::initialize(HWND hwnd)
 //=============================================================================
 void Spacewar::update()
 {
+	if (input->isKeyDown(ROCKET_Q_KEY) && input->isKeyDown(ROCKET_E_KEY))
+	{
+		cheatCodeInvincible = true;
+	}
+
 	waitTimer -= frameTime;
 	spawnTimer -= frameTime;
 	if (menuOn == true)
@@ -621,7 +627,7 @@ void Spacewar::collisions()
 			{
 				if (d->collidesWith(playerMain, collisionVector))
 				{
-					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false && cheatCodeInvincible == false)
 					{
 						playerMain.health = playerMain.health - 1;
 						if (heartList.size() != 0)
@@ -667,7 +673,7 @@ void Spacewar::collisions()
 			{
 				if (d->collidesWith(playerMain, collisionVector))
 				{
-					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false && cheatCodeInvincible == false)
 					{
 						playerMain.health = playerMain.health - 1;
 						if (heartList.size() != 0)
@@ -713,7 +719,7 @@ void Spacewar::collisions()
 			{
 				if (d->collidesWith(playerMain, collisionVector))
 				{
-					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false && cheatCodeInvincible == false)
 					{
 						playerMain.health = playerMain.health - 1;
 						if (heartList.size() != 0)
@@ -731,7 +737,7 @@ void Spacewar::collisions()
 		{
 			if (eb->collidesWith(playerMain, collisionVector))
 			{
-				if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+				if (playerMain.getShieldOn() == false && playerMain.dashActive == false && cheatCodeInvincible == false)
 				{
 					playerMain.health = playerMain.health - 1;
 					if (heartList.size() != 0)
@@ -748,7 +754,7 @@ void Spacewar::collisions()
 		{
 			if (s->collidesWith(playerMain, collisionVector))
 			{
-				if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+				if (playerMain.getShieldOn() == false && playerMain.dashActive == false && cheatCodeInvincible == false)
 				{
 					playerMain.health = playerMain.health - 1;
 					if (heartList.size() != 0)
@@ -767,7 +773,7 @@ void Spacewar::collisions()
 			{
 				if (d->collidesWith(playerMain, collisionVector))
 				{
-					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false && cheatCodeInvincible == false)
 					{
 						playerMain.health = playerMain.health - 1;
 						if (heartList.size() != 0)
@@ -783,7 +789,7 @@ void Spacewar::collisions()
 			{
 				if (d->collidesWith(playerMain, collisionVector))
 				{
-					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false && cheatCodeInvincible == false)
 					{
 						playerMain.health = playerMain.health - 1;
 						if (heartList.size() != 0)
@@ -799,7 +805,7 @@ void Spacewar::collisions()
 			{
 				if (d->collidesWith(playerMain, collisionVector))
 				{
-					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false && cheatCodeInvincible == false)
 					{
 						playerMain.health = playerMain.health - 1;
 						if (heartList.size() != 0)
@@ -815,7 +821,7 @@ void Spacewar::collisions()
 			{
 				if (e->collidesWith(playerMain, collisionVector))
 				{
-					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false && cheatCodeInvincible == false)
 					{
 						playerMain.health = playerMain.health - 1;
 						if (heartList.size() != 0)
@@ -864,8 +870,11 @@ void Spacewar::render()
 	if (gameOver == true)
 	{
 		menu.draw();
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Game Over!");
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Game Over :(");
 		fontMenu.print(buffer, GAME_WIDTH / 2.7, GAME_HEIGHT / 2.5);
+
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Maybe try not to suck so much next time!");
+		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
 	}
 
 	if (menuOn == false && gameWin == false && gameOver == false)
@@ -936,6 +945,15 @@ void Spacewar::render()
 
 		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", input->getMouseY());
 		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 4);
+
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Wave");
+		dxFont.print(buffer, GAME_WIDTH / 2.2, GAME_HEIGHT / 100);
+
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", progress);
+		dxFont.print(buffer, GAME_WIDTH / 2, GAME_HEIGHT / 100);
+
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "of 6");
+		dxFont.print(buffer, GAME_WIDTH / 1.93, GAME_HEIGHT / 100);
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Ability One: Sine Wave Dash
@@ -1040,39 +1058,42 @@ void Spacewar::render()
 //=============================================================================
 // draw enemies
 //=============================================================================
-	for each (Dfr* d in dfrList)
+	if (gameOver == false && gameWin == false)
 	{
-		d->draw();
-	}
-	for each (Dfb* b in dfbList)
-	{
-		b->draw();
-	}
+		for each (Dfr* d in dfrList)
+		{
+			d->draw();
+		}
+		for each (Dfb* b in dfbList)
+		{
+			b->draw();
+		}
 
-	for each (Dfg* g in dfgList)
-	{
-		g->draw();
-	}
+		for each (Dfg* g in dfgList)
+		{
+			g->draw();
+		}
 
-	for each (Skull* skull in skullList)
-	{
-		skull->draw();
-	}
+		for each (Skull* skull in skullList)
+		{
+			skull->draw();
+		}
 
-	for each (Boss* boss in bossList)
-	{
-		boss->draw();
-	}
+		for each (Boss* boss in bossList)
+		{
+			boss->draw();
+		}
 
-	for each (EBullet* eb in ebList)
-	{
-		eb->draw();
+		for each (EBullet* eb in ebList)
+		{
+			eb->draw();
+		}
+		for each (Explosion* e in eList)
+		{
+			e->draw();
+		}
 	}
-	for each (Explosion* e in eList)
-	{
-		e->draw();
-	}
-
+	
     graphics->spriteEnd();                  // end drawing sprites
 }
 
