@@ -978,7 +978,6 @@ void Spacewar::render()
 	{
 		eb->draw();
 	}
-
 	for each (Explosion* e in eList)
 	{
 		e->draw();

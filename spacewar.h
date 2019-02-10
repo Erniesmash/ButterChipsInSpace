@@ -23,8 +23,8 @@
 #include "dfg.h"
 #include "skull.h"
 #include "boss.h"
-#include "button.h"
 #include "explosion.h"
+#include "button.h"
 //these two headers are already included in the <Windows.h> header
 #pragma comment(lib, "Winmm.lib")
 
