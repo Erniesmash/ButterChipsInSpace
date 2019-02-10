@@ -589,6 +589,11 @@ void Spacewar::collisions()
 
 		for each(Dfr* dfr in dfrList)
 		{
+			if (dfr->collidesWith(missleShot, collisionVector))
+			{
+				dfr->health = dfr->health - 100;
+			}
+
 			for (std::vector<Bullet*>::iterator it = bulletList.begin();
 				it != bulletList.end();)
 			{
@@ -639,6 +644,10 @@ void Spacewar::collisions()
 
 		for each(Dfg* dfg in dfgList)
 		{
+			if (dfg->collidesWith(missleShot, collisionVector))
+			{
+				dfg->health = dfg->health - 100;
+			}
 			for (std::vector<Bullet*>::iterator it = bulletList.begin();
 				it != bulletList.end();)
 			{
@@ -690,6 +699,10 @@ void Spacewar::collisions()
 
 		for each(Dfb* dfb in dfbList)
 		{
+			if (dfb->collidesWith(missleShot, collisionVector))
+			{
+				dfb->health = dfb->health - 100;
+			}
 			for (std::vector<Bullet*>::iterator it = bulletList.begin();
 				it != bulletList.end();)
 			{
@@ -728,7 +741,6 @@ void Spacewar::collisions()
 					
 					SAFE_DELETE(*it);
 					it = dfb->dfbbList.erase(it);
-					//playerMain.
 				}
 
 				else
@@ -738,7 +750,7 @@ void Spacewar::collisions()
 			}
 		}
 
-
+		
 
 		/*
 		for each(Bullet*  bullet in bulletList)
