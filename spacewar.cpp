@@ -764,6 +764,29 @@ void Spacewar::collisions()
 				}
 				s->dead = true;
 			}
+
+			if (s->collidesWith(missleShot, collisionVector))
+			{
+				s->health = s->health - 100;
+			}
+			for (std::vector<Bullet*>::iterator it = bulletList.begin();
+				it != bulletList.end();)
+			{
+				if ((*it)->collidesWith(*s, collisionVector))
+				{
+					SAFE_DELETE(*it);
+					it = bulletList.erase(it);
+					if (s->health >= 0)
+					{
+						s->health = s->health - 50;
+					}
+				}
+
+				else
+				{
+					++it;
+				}
+			}
 		}
 
 		//boss bullets on player collision
@@ -830,6 +853,29 @@ void Spacewar::collisions()
 						}
 					}
 					e->collided = true;
+				}
+			}
+
+			if (b->collidesWith(missleShot, collisionVector))
+			{
+				b->health = b->health - 100;
+			}
+			for (std::vector<Bullet*>::iterator it = bulletList.begin();
+				it != bulletList.end();)
+			{
+				if ((*it)->collidesWith(*b, collisionVector))
+				{
+					SAFE_DELETE(*it);
+					it = bulletList.erase(it);
+					if (b->health >= 0)
+					{
+						b->health = b->health - 50;
+					}
+				}
+
+				else
+				{
+					++it;
 				}
 			}
 		}
