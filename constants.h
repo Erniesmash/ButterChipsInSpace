@@ -76,6 +76,7 @@ const char SKULL_ENTRANCE_IMAGE[] = "pictures\\hskull_appear.png";
 const char SKULL_DEATH_IMAGE[] = "pictures\\hskull_death.png";
 const char BUFFER_IMAGE[] = "pictures\\buffer.png";
 const char BOSS_DEATH[] = "pictures\\boss_death.png";
+const char EXPLOSION[] = "pictures\\explosionAdvanced.png";
 
 const char FOREST1_IMAGE[] = "pictures\\forest1.png";
 const char FOREST2_IMAGE[] = "pictures\\forest2.png";
