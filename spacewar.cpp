@@ -614,31 +614,23 @@ void Spacewar::collisions()
 			}
 		}	
 		
+		// dfrb on player collision
 		for each(Dfr* dfr in dfrList)
 		{
-			for (std::vector<DfrBullet*>::iterator it = dfr->dfrbList.begin();
-				it != dfr->dfrbList.end();)
-			{			
-					if ((*it)->collidesWith(playerMain, collisionVector))
+			for each (DfrBullet* d in dfr->dfrbList)
+			{
+				if (d->collidesWith(playerMain, collisionVector))
+				{
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
 					{
-						if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+						playerMain.health = playerMain.health - 1;
+						if (heartList.size() != 0)
 						{
-							playerMain.health = playerMain.health - 1;
-							if (heartList.size() != 0)
-							{
-								heartList.erase(heartList.end() - 1);
-							}
+							heartList.erase(heartList.end() - 1);
 						}
-
-						SAFE_DELETE(*it);
-						it = dfr->dfrbList.erase(it);
 					}
-
-					else
-					{
-						++it;
-					}
-				
+					d->collided = true;
+				}
 			}
 		}	
 
@@ -668,12 +660,12 @@ void Spacewar::collisions()
 			}
 		}
 
+		// dfgb on player collision
 		for each(Dfg* dfg in dfgList)
 		{
-			for (std::vector<DfgBullet*>::iterator it = dfg->dfgbList.begin();
-				it != dfg->dfgbList.end();)
+			for each (DfgBullet* d in dfg->dfgbList)
 			{
-				if ((*it)->collidesWith(playerMain, collisionVector))
+				if (d->collidesWith(playerMain, collisionVector))
 				{
 					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
 					{
@@ -683,16 +675,7 @@ void Spacewar::collisions()
 							heartList.erase(heartList.end() - 1);
 						}
 					}
-					
-
-					SAFE_DELETE(*it);
-					it = dfg->dfgbList.erase(it);
-					//playerMain.
-				}
-
-				else
-				{
-					++it;
+					d->collided = true;
 				}
 			}
 		}
@@ -723,12 +706,12 @@ void Spacewar::collisions()
 			}
 		}
 
+		//dfbb on player collision
 		for each(Dfb* dfb in dfbList)
 		{
-			for (std::vector<DfbBullet*>::iterator it = dfb->dfbbList.begin();
-				it != dfb->dfbbList.end();)
+			for each (DfbBullet* d in dfb->dfbbList)
 			{
-				if ((*it)->collidesWith(playerMain, collisionVector))
+				if (d->collidesWith(playerMain, collisionVector))
 				{
 					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
 					{
@@ -738,18 +721,26 @@ void Spacewar::collisions()
 							heartList.erase(heartList.end() - 1);
 						}
 					}
-					
-					SAFE_DELETE(*it);
-					it = dfb->dfbbList.erase(it);
-				}
-
-				else
-				{
-					++it;
+					d->collided = true;
 				}
 			}
 		}
 
+		for each (EBullet* eb in ebList)
+		{
+			if (eb->collidesWith(playerMain, collisionVector))
+			{
+				if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+				{
+					playerMain.health = playerMain.health - 1;
+					if (heartList.size() != 0)
+					{
+						heartList.erase(heartList.end() - 1);
+					}
+				}
+				eb->collided = true;
+			}
+		}
 		
 
 		/*
