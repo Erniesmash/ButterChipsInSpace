@@ -424,6 +424,11 @@ void Spacewar::update()
 			lvl = true;
 		}
 
+		for each (Dfb* d in dfbList)
+		{
+			d->health = 500;
+		}
+
 		if (checkEnemies() == true)
 		{
 			progress = 3;
@@ -444,6 +449,11 @@ void Spacewar::update()
 			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 4, GAME_HEIGHT / 4);
 			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 2, GAME_HEIGHT / 2);
 			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 4, 3 * GAME_HEIGHT / 4);
+
+			for each (Dfb* d in dfbList)
+			{
+				d->health = 500;
+			}
 			lvl = true;
 		}
 
@@ -473,6 +483,16 @@ void Spacewar::update()
 			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 4, 3 * GAME_HEIGHT / 5);
 
 			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 6, GAME_HEIGHT / 2);
+
+			for each (Dfb* d in dfbList)
+			{
+				d->health = 500;
+			}
+
+			for each (Dfg* d in dfgList)
+			{
+				d->health = 800;
+			}
 
 			lvl = true;
 		}
@@ -551,8 +571,6 @@ void Spacewar::update()
 
 		if (checkEnemies() == true)
 		{
-			progress = 8;
-			lvl = false;
 		}
 	}
 //=============================================================================
@@ -995,7 +1013,7 @@ void Spacewar::render()
 			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", progress);
 			dxFont.print(buffer, GAME_WIDTH / 2, GAME_HEIGHT / 100);
 
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "of 6");
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "of 7");
 			dxFont.print(buffer, GAME_WIDTH / 1.93, GAME_HEIGHT / 100);
 
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
