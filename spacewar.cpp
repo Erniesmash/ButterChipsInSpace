@@ -623,13 +623,11 @@ void Spacewar::update()
 
 		if (checkEnemies() == true)
 		{
+			gameWin = true;
+			lvl = false;
 		}
 	}
 
-	else if (progress == 8)
-	{
-		gameWin = true;
-	}
 //=============================================================================
 // check to delete vector objects 
 //=============================================================================
@@ -1008,10 +1006,10 @@ void Spacewar::render()
 	{
 		menu.draw();
 		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "You have saved the UNIVERSE");
-		fontMenu.print(buffer, GAME_WIDTH / 2.7, GAME_HEIGHT / 2.5);
+		fontMenu.print(buffer, GAME_WIDTH / 6.2, GAME_HEIGHT / 2.5);
 
 		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Through your valiant efforts, the universe is saved!");
-		dxFont.print(buffer, GAME_WIDTH / 2.7, GAME_HEIGHT / 2);
+		dxFont.print(buffer, GAME_WIDTH / 4, GAME_HEIGHT / 2);
 
 		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Thanks for playing our game! -Cheng Hian, Ernest");
 		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
