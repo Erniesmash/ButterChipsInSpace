@@ -28,15 +28,15 @@ namespace bossNS
 	const int   BOSS_END_FRAME = 4;        // ship1 animation frames 0,1,2,3
 	const float BOSS_ANIMATION_DELAY = 0.12f;    // time between frames
 	const float BOSS_SHOT_TIMER = 1.0f;
-	const int	BOSS_HEALTH = 3000;
+	const int	BOSS_HEALTH = 22500;
 
 	//phases
-	const float PHASE_ONE = 3000;
-	const float PHASE_TWO = 2500;
-	const float PHASE_THREE = 2000;
-	const float PHASE_FOUR = 1500;
-	const float PHASE_FIVE = 1000;
-	const float PHASE_SIX = 500;
+	const float PHASE_ONE = 22500;
+	const float PHASE_TWO = 18750;
+	const float PHASE_THREE = 15000;
+	const float PHASE_FOUR = 11250;
+	const float PHASE_FIVE = 7500;
+	const float PHASE_SIX = 3750;
 }
 
 // inherits from Entity class
