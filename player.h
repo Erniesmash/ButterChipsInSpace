@@ -33,9 +33,10 @@ namespace playerNS
 class Player : public Entity
 {
 private:
-	Image   shield;
+	
 	TextureManager shieldTexture;
 	bool    shieldOn;
+	Image   shield;
 
 public:
 	// constructor

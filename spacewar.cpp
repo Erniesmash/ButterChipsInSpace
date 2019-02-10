@@ -613,24 +613,27 @@ void Spacewar::collisions()
 		{
 			for (std::vector<DfrBullet*>::iterator it = dfr->dfrbList.begin();
 				it != dfr->dfrbList.end();)
-			{
-				if ((*it)->collidesWith(playerMain, collisionVector))
-				{
-					playerMain.health = playerMain.health - 1;
-					if (heartList.size() != 0)
+			{			
+					if ((*it)->collidesWith(playerMain, collisionVector))
 					{
-						heartList.erase(heartList.end() - 1);
+						if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+						{
+							playerMain.health = playerMain.health - 1;
+							if (heartList.size() != 0)
+							{
+								heartList.erase(heartList.end() - 1);
+							}
+						}
+
+						SAFE_DELETE(*it);
+						it = dfr->dfrbList.erase(it);
 					}
 
-					SAFE_DELETE(*it);
-					it = dfr->dfrbList.erase(it);
-					//playerMain.
-				}
-
-				else
-				{
-					++it;
-				}
+					else
+					{
+						++it;
+					}
+				
 			}
 		}	
 
@@ -663,11 +666,15 @@ void Spacewar::collisions()
 			{
 				if ((*it)->collidesWith(playerMain, collisionVector))
 				{
-					playerMain.health = playerMain.health - 1;
-					if (heartList.size() != 0)
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
 					{
-						heartList.erase(heartList.end() - 1);
+						playerMain.health = playerMain.health - 1;
+						if (heartList.size() != 0)
+						{
+							heartList.erase(heartList.end() - 1);
+						}
 					}
+					
 
 					SAFE_DELETE(*it);
 					it = dfg->dfgbList.erase(it);
@@ -710,12 +717,15 @@ void Spacewar::collisions()
 			{
 				if ((*it)->collidesWith(playerMain, collisionVector))
 				{
-					playerMain.health = playerMain.health - 1;
-					if (heartList.size() != 0)
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
 					{
-						heartList.erase(heartList.end() - 1);
+						playerMain.health = playerMain.health - 1;
+						if (heartList.size() != 0)
+						{
+							heartList.erase(heartList.end() - 1);
+						}
 					}
-
+					
 					SAFE_DELETE(*it);
 					it = dfb->dfbbList.erase(it);
 					//playerMain.
@@ -727,6 +737,9 @@ void Spacewar::collisions()
 				}
 			}
 		}
+
+
+
 		/*
 		for each(Bullet*  bullet in bulletList)
 		{
