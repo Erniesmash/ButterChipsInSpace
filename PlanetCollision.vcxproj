@@ -109,7 +109,6 @@
     <ClCompile Include="dfr.cpp" />
     <ClCompile Include="dfrbullet.cpp" />
     <ClCompile Include="ebullet.cpp" />
-    <ClCompile Include="explosion.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="game.cpp" />
@@ -141,7 +140,6 @@
     <ClInclude Include="dfr.h" />
     <ClInclude Include="dfrbullet.h" />
     <ClInclude Include="ebullet.h" />
-    <ClInclude Include="explosion.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="game.h" />

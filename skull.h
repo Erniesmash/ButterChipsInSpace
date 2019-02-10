@@ -25,7 +25,7 @@ namespace skullNS
 	const int   SKULL_END_FRAME = 1;        // ship1 animation frames 0,1,2,3
 	const float SKULL_ANIMATION_DELAY = 0.12f;    // time between frames
 	const float SKULL_SHOT_TIMER = 0.10f;
-	const int	SKULL_HEALTH = 50;
+	const int	SKULL_HEALTH = 100;
 }
 
 // inherits from Entity class

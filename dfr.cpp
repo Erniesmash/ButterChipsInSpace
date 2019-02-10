@@ -90,6 +90,27 @@ void Dfr::update(float frameTime)
 	{
 		b->update(frameTime);
 	}
+													// Bounce off walls
+	if (spriteData.x > GAME_WIDTH - dfrNS::WIDTH)    // if hit right screen edge
+	{
+		spriteData.x = GAME_WIDTH - dfrNS::WIDTH;    // position at right screen edge
+		velocity.x = -velocity.x;                   // reverse X direction
+	}
+	else if (spriteData.x < 0)                    // else if hit left screen edge
+	{
+		spriteData.x = 0;                           // position at left screen edge
+		velocity.x = -velocity.x;                   // reverse X direction
+	}
+	if (spriteData.y > GAME_HEIGHT - dfrNS::HEIGHT)  // if hit bottom screen edge
+	{
+		spriteData.y = GAME_HEIGHT - dfrNS::HEIGHT;  // position at bottom screen edge
+		velocity.y = -velocity.y;                   // reverse Y direction
+	}
+	else if (spriteData.y < 0)                    // else if hit top screen edge
+	{
+		spriteData.y = 0;                           // position at top screen edge
+		velocity.y = -velocity.y;                   // reverse Y direction
+	}
 
 	if (health <= 0)
 	{
