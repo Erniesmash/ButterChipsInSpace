@@ -53,12 +53,6 @@ private:
 
 	Hb hb;
 
-	vector<EBullet*> ebList;
-	vector<DfbBullet*> dfbbList;
-	vector<DfrBullet*> dfrbList;
-	vector<DfgBullet*> dfgbList;
-	vector<Skull*> skullList;
-
 public:
 	// constructor
 	Boss();
@@ -75,6 +69,12 @@ public:
 	float health;
 	float timer;
 	float pTime;
+
+	vector<EBullet*> ebList;
+	vector<DfbBullet*> dfbbList;
+	vector<DfrBullet*> dfrbList;
+	vector<DfgBullet*> dfgbList;
+	vector<Skull*> skullList;
 
 	Game* sw;
 	Entity* player;

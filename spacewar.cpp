@@ -726,6 +726,7 @@ void Spacewar::collisions()
 			}
 		}
 
+		//eb on player collision
 		for each (EBullet* eb in ebList)
 		{
 			if (eb->collidesWith(playerMain, collisionVector))
@@ -739,6 +740,91 @@ void Spacewar::collisions()
 					}
 				}
 				eb->collided = true;
+			}
+		}
+
+		//skull on player collision
+		for each (Skull* s in skullList)
+		{
+			if (s->collidesWith(playerMain, collisionVector))
+			{
+				if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+				{
+					playerMain.health = playerMain.health - 1;
+					if (heartList.size() != 0)
+					{
+						heartList.erase(heartList.end() - 1);
+					}
+				}
+				s->dead = true;
+			}
+		}
+
+		//boss bullets on player collision
+		for each (Boss* b in bossList)
+		{
+			for each (DfbBullet* d in b->dfbbList)
+			{
+				if (d->collidesWith(playerMain, collisionVector))
+				{
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+					{
+						playerMain.health = playerMain.health - 1;
+						if (heartList.size() != 0)
+						{
+							heartList.erase(heartList.end() - 1);
+						}
+					}
+					d->collided = true;
+				}
+			}
+
+			for each (DfrBullet* d in b->dfrbList)
+			{
+				if (d->collidesWith(playerMain, collisionVector))
+				{
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+					{
+						playerMain.health = playerMain.health - 1;
+						if (heartList.size() != 0)
+						{
+							heartList.erase(heartList.end() - 1);
+						}
+					}
+					d->collided = true;
+				}
+			}
+
+			for each (DfgBullet* d in b->dfgbList)
+			{
+				if (d->collidesWith(playerMain, collisionVector))
+				{
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+					{
+						playerMain.health = playerMain.health - 1;
+						if (heartList.size() != 0)
+						{
+							heartList.erase(heartList.end() - 1);
+						}
+					}
+					d->collided = true;
+				}
+			}
+
+			for each (EBullet* e in b->ebList)
+			{
+				if (e->collidesWith(playerMain, collisionVector))
+				{
+					if (playerMain.getShieldOn() == false && playerMain.dashActive == false)
+					{
+						playerMain.health = playerMain.health - 1;
+						if (heartList.size() != 0)
+						{
+							heartList.erase(heartList.end() - 1);
+						}
+					}
+					e->collided = true;
+				}
 			}
 		}
 		
