@@ -173,6 +173,8 @@ void Spacewar::initialize(HWND hwnd)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing boss"));
 	if (!ebTexture.initialize(graphics, EBULLET_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing eb"));
+	if (!eTexture.initialize(graphics, EXPLOSION))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing e"));
 
 //=============================================================================
 // Misc
@@ -330,35 +332,16 @@ void Spacewar::update()
 	{
 		r->getPlayer(&playerMain);
 		r->update(frameTime);
-
-		if (r->dead == true && r->imgChanged == false)
-		{
-			dfrTexture.initialize(graphics, DF_DEATH_IMAGE);
-			r->setCurrentFrame(dfrNS::DFR_START_FRAME);
-			r->imgChanged = true;
-		}
 	}
 
 	for each (Dfb* b in dfbList)
 	{
 		b->update(frameTime);
-		if (b->dead == true && b->imgChanged == false)
-		{
-			dfbTexture.initialize(graphics, DF_DEATH_IMAGE);
-			b->setCurrentFrame(dfbNS::DFB_START_FRAME);
-			b->imgChanged = true;
-		}
 	}
 
 	for each (Dfg* g in dfgList)
 	{
 		g->update(frameTime);
-		if (g->dead == true && g->imgChanged == false)
-		{
-			dfgTexture.initialize(graphics, DF_DEATH_IMAGE);
-			g->setCurrentFrame(dfgNS::DFG_START_FRAME);
-			g->imgChanged = true;
-		}
 	}
 
 	for each (Skull* skull in skullList)
@@ -381,20 +364,16 @@ void Spacewar::update()
 	{
 		boss->getPlayer(&playerMain);
 		boss->update(frameTime);
-
-		if (boss->dead == true && boss->imgChanged == false)
-		{
-			bossTexture.initialize(graphics, BOSS_DEATH);
-			boss->setHeight(34);
-			boss->setWidth(32);
-			boss->setCurrentFrame(bossNS::BOSS_START_FRAME);
-			boss->imgChanged = true;
-		}
 	}
 
 	for each  (EBullet* eb in ebList)
 	{
 		eb->update(frameTime);
+	}
+
+	for each (Explosion* e in eList)
+	{
+		e->update(frameTime);
 	}
 
 
@@ -985,6 +964,11 @@ void Spacewar::render()
 	for each (EBullet* eb in ebList)
 	{
 		eb->draw();
+	}
+
+	for each (Explosion* e in eList)
+	{
+		e->draw();
 	}
 
     graphics->spriteEnd();                  // end drawing sprites

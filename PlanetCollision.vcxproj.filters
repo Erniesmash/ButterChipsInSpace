@@ -93,7 +93,11 @@
     <ClCompile Include="hb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="button.cpp">
+=======
+    <ClCompile Include="explosion.cpp">
+>>>>>>> fawndoo
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,7 +183,11 @@
     <ClInclude Include="skull.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="button.h">
+=======
+    <ClInclude Include="explosion.h">
+>>>>>>> fawndoo
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

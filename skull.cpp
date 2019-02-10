@@ -81,14 +81,6 @@ void Skull::update(float frameTime)
 			exited = true;
 		}
 
-		if (input->isKeyDown(VK_SPACE))
-		{
-			if (health >= 0)
-			{
-				health = health - 1;
-			}
-		}
-
 		if (health <= 0)
 		{
 			dead = true;

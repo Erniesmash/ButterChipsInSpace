@@ -23,7 +23,11 @@
 #include "dfg.h"
 #include "skull.h"
 #include "boss.h"
+<<<<<<< HEAD
 #include "button.h"
+=======
+#include "explosion.h"
+>>>>>>> fawndoo
 //these two headers are already included in the <Windows.h> header
 #pragma comment(lib, "Winmm.lib")
 
@@ -74,7 +78,7 @@ private:
 	TextureManager skullTexture;
 	TextureManager bossTexture;
 	TextureManager ebTexture;
-	TextureManager ebulletTexture;
+	TextureManager eTexture;
 
 	float numberOfSpecials = 4;
 
@@ -110,6 +114,7 @@ private:
 	vector<Skull*> skullList;
 	vector<Boss*> bossList;
 	vector<EBullet*> ebList;
+	vector<Explosion*> eList;
 
 	std::vector<Bullet*> bulletList;
 	float waitTimer;
@@ -150,8 +155,13 @@ public:
 		for (vector<Dfr*>::iterator it = dfrList.begin();
 			it != dfrList.end();)
 		{
-			if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
+			if ((*it)->dead == true)
 			{
+				Explosion* e = new Explosion;
+				e->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &eTexture);
+				e->setX((*it)->getCenterX() - e->getWidth() / 2);
+				e->setY((*it)->getCenterY() - e->getHeight() / 2);
+				eList.push_back(e);
 				SAFE_DELETE(*it);
 				it = dfrList.erase(it);
 			}
@@ -165,8 +175,13 @@ public:
 		for (vector<Dfb*>::iterator it = dfbList.begin();
 			it != dfbList.end();)
 		{
-			if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
+			if ((*it)->dead == true)
 			{
+				Explosion* e = new Explosion;
+				e->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &eTexture);
+				e->setX((*it)->getCenterX() - e->getWidth() / 2);
+				e->setY((*it)->getCenterY() - e->getHeight() / 2);
+				eList.push_back(e);
 				SAFE_DELETE(*it);
 				it = dfbList.erase(it);
 			}
@@ -180,8 +195,13 @@ public:
 		for (vector<Dfg*>::iterator it = dfgList.begin();
 			it != dfgList.end();)
 		{
-			if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 6)
+			if ((*it)->dead == true)
 			{
+				Explosion* e = new Explosion;
+				e->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &eTexture);
+				e->setX((*it)->getCenterX() - e->getWidth() / 2);
+				e->setY((*it)->getCenterY() - e->getHeight() / 2);
+				eList.push_back(e);
 				SAFE_DELETE(*it);
 				it = dfgList.erase(it);
 			}
@@ -197,6 +217,11 @@ public:
 		{
 			if ((*it)->dead == true)
 			{
+				Explosion* e = new Explosion;
+				e->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &eTexture);
+				e->setX((*it)->getCenterX() - e->getWidth() / 2);
+				e->setY((*it)->getCenterY() - e->getHeight() / 2);
+				eList.push_back(e);
 				SAFE_DELETE(*it);
 				it = skullList.erase(it);
 			}
@@ -216,8 +241,13 @@ public:
 		for (vector<Boss*>::iterator it = bossList.begin();
 			it != bossList.end();)
 		{
-			if ((*it)->dead == true && (*it)->imgChanged == true && (*it)->getCurrentFrame() == 5)
+			if ((*it)->dead == true)
 			{
+				Explosion* e = new Explosion;
+				e->initialize(this, explosionNS::WIDTH, explosionNS::HEIGHT, explosionNS::TEXTURE_COLS, &eTexture);
+				e->setX((*it)->getCenterX() - e->getWidth() / 2);
+				e->setY((*it)->getCenterY() - e->getHeight() / 2);
+				eList.push_back(e);
 				SAFE_DELETE(*it);
 				it = bossList.erase(it);
 			}
@@ -235,6 +265,21 @@ public:
 			{
 				SAFE_DELETE(*it);
 				it = ebList.erase(it);
+			}
+
+			else
+			{
+				++it;
+			}
+		}
+
+		for (vector<Explosion*>::iterator it = eList.begin();
+			it != eList.end();)
+		{
+			if ((*it)->exploded == true)
+			{
+				SAFE_DELETE(*it);
+				it = eList.erase(it);
 			}
 
 			else
