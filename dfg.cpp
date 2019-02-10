@@ -131,6 +131,7 @@ void Dfg::update(float frameTime)
 	if (health <= 0)
 	{
 		dead = true;
+		audio->playCue(EXPLOSION1);
 	}
 
 	checkBullet();

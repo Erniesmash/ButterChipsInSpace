@@ -18,6 +18,7 @@ Spacewar::Spacewar()
 	gameOver = false;
 	gameWin = false;
 	cheatCodeInvincible = false;
+	musicOn = false;
 }
 
 //=============================================================================
@@ -204,6 +205,46 @@ void Spacewar::initialize(HWND hwnd)
 	if (!forest2.initialize(graphics, 0, 0, 0, &forest2Texture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest2"));
 
+	// forest3 texture
+	if (!forest3Texture.initialize(graphics, FOREST3_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest3 Texture"));
+
+	// forest3 image
+	if (!forest3.initialize(graphics, 0, 0, 0, &forest3Texture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest3"));
+
+	// forest4 texture
+	if (!forest4Texture.initialize(graphics, FOREST4_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest4 Texture"));
+
+	// forest4 image
+	if (!forest4.initialize(graphics, 0, 0, 0, &forest4Texture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest4"));
+
+	// forest5 texture
+	if (!forest5Texture.initialize(graphics, FOREST5_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest5 Texture"));
+
+	// forest5 image
+	if (!forest5.initialize(graphics, 0, 0, 0, &forest5Texture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest5"));
+
+	// forest6 texture
+	if (!forest6Texture.initialize(graphics, FOREST6_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest6 Texture"));
+
+	// forest6 image
+	if (!forest6.initialize(graphics, 0, 0, 0, &forest6Texture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest6"));
+
+	// forest7 texture
+	if (!forest7Texture.initialize(graphics, FOREST7_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest7 Texture"));
+
+	// forest7 image
+	if (!forest7.initialize(graphics, 0, 0, 0, &forest7Texture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing forest7"));
+
 	// textbox texture
 	if (!textBoxTexture.initialize(graphics, TEXTBOX_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing Textbox Texture"));
@@ -222,9 +263,7 @@ void Spacewar::initialize(HWND hwnd)
 	if (!button.initialize(this, buttonNS::WIDTH, buttonNS::HEIGHT, buttonNS::TEXTURE_COLS, &buttonTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button"));
 	button.setX(GAME_WIDTH / 1.55 - button.getWidth() / 2 * button.getScale());
-	button.setY(GAME_HEIGHT / 1.15 - button.getHeight() / 2 * button.getScale());
-
-	PlaySound("C:\\Users\\ernes\\Documents\\GitHub\\ButterChipsInSpace\\audio\\menu.wav", NULL, SND_LOOP | SND_ASYNC);
+	button.setY(GAME_HEIGHT / 1.15 - button.getHeight() / 2 * button.getScale());	
 }
 	
 //=============================================================================
@@ -232,6 +271,21 @@ void Spacewar::initialize(HWND hwnd)
 //=============================================================================
 void Spacewar::update()
 {
+	if (musicOn == true)
+	{
+		PlaySound("C:\\Users\\ernes\\Documents\\GitHub\\ButterChipsInSpace\\audio\\menu.wav", NULL, SND_LOOP | SND_ASYNC);
+	}
+
+	if (input->isKeyDown(ARROW_LEFT))
+	{
+		musicOn = false;
+	}
+
+	if (input->isKeyDown(ARROW_RIGHT))
+	{
+		musicOn = true;
+	}
+
 	if (input->isKeyDown(ROCKET_Q_KEY) && input->isKeyDown(ROCKET_E_KEY))
 	{
 		cheatCodeInvincible = true;
@@ -554,6 +608,11 @@ void Spacewar::update()
 			progress = 8;
 			lvl = false;
 		}
+	}
+
+	else if (progress == 8)
+	{
+		gameWin = true;
 	}
 //=============================================================================
 // check to delete vector objects 
@@ -910,16 +969,35 @@ void Spacewar::render()
 		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Click any button on the keyboard to begin your adventure!");
 		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
 
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "<- to ON music -> to OFF music");
+		dxFont.print(buffer, GAME_WIDTH / 1.4, GAME_HEIGHT / 1.05);
+
 		startPlayer.draw();
 	}
 
-	if (gameOver == true)
+	if (gameOver == true) // Player just Lost
 	{
 		menu.draw();
 		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Game Over :(");
 		fontMenu.print(buffer, GAME_WIDTH / 2.7, GAME_HEIGHT / 2.5);
 
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "And so his fate is sealed...");
+		dxFont.print(buffer, GAME_WIDTH / 2.7, GAME_HEIGHT / 2);
+
 		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Maybe try not to suck so much next time!");
+		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
+	}
+
+	if (gameWin == true)
+	{
+		menu.draw();
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "You have saved the UNIVERSE");
+		fontMenu.print(buffer, GAME_WIDTH / 2.7, GAME_HEIGHT / 2.5);
+
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Through your valiant efforts, the universe is saved!");
+		dxFont.print(buffer, GAME_WIDTH / 2.7, GAME_HEIGHT / 2);
+
+		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Thanks for playing our game! -Cheng Hian, Ernest");
 		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
 	}
 
@@ -929,7 +1007,42 @@ void Spacewar::render()
 		//starfield.draw();
 		//characterPortrait.draw();
 
-		forest1.draw();
+		// SWAP BACKGROUNDS BASED ON LEVEL
+		if (progress == 1)
+		{
+			forest2.draw();
+		}
+
+		else if (progress == 2)
+		{
+			forest1.draw();
+		}
+
+		else if (progress == 3)
+		{
+			forest3.draw();
+		}
+
+		else if (progress == 4)
+		{
+			forest4.draw();
+		}
+
+		else if (progress == 5)
+		{
+			forest5.draw();
+		}
+
+		else if (progress == 6)
+		{
+			forest6.draw();
+		}
+
+		else if (progress == 7)
+		{
+			space.draw();
+		}
+
 		playerMain.draw();
 
 		if (playerMain.dialogueEnd == false)
@@ -995,10 +1108,10 @@ void Spacewar::render()
 			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", progress);
 			dxFont.print(buffer, GAME_WIDTH / 2, GAME_HEIGHT / 100);
 
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "of 6");
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "of 7"); // 7 Total Waves
 			dxFont.print(buffer, GAME_WIDTH / 1.93, GAME_HEIGHT / 100);
 
-			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//Ability One: Sine Wave Dash
 			if (playerMain.dashOnCooldown == true)
 			{
@@ -1017,9 +1130,6 @@ void Spacewar::render()
 			{
 				if (bullet->bounceOnCooldown == true)
 				{
-					//_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)bullet->bounceCooldownTimer);
-					//dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
-
 					_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)bullet->bounceInUseTimer);
 					dxFont.print(buffer, playerMain.getCenterX() - 5, playerMain.getCenterY() + 20);
 				}

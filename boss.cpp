@@ -396,6 +396,7 @@ void Boss::update(float frameTime)
 		health = 0;
 		endFrame = 5;
 		dead = true;
+		audio->playCue(EXPLOSION1);
 	}
 
 	if (input->isKeyDown(VK_SPACE))

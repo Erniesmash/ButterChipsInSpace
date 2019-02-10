@@ -80,6 +80,11 @@ const char EXPLOSION[] = "pictures\\explosionAdvanced.png";
 
 const char FOREST1_IMAGE[] = "pictures\\forest1.png";
 const char FOREST2_IMAGE[] = "pictures\\forest2.png";
+const char FOREST3_IMAGE[] = "pictures\\forest3.png";
+const char FOREST4_IMAGE[] = "pictures\\forest4.png";
+const char FOREST5_IMAGE[] = "pictures\\forest5.png";
+const char FOREST6_IMAGE[] = "pictures\\forest6.png";
+const char FOREST7_IMAGE[] = "pictures\\forest7.png";
 const char HAPPY_IMAGE[] = "pictures\\happy.png";
 const char TEXTBOX_IMAGE[] = "pictures\\textBox.png";
 const char BUTTON_IMAGE[] = "pictures\\button.png";

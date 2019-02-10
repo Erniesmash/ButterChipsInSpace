@@ -88,10 +88,22 @@ private:
 
 	Image characterPortrait;
 	TextureManager characterPortraitTexture;
+
 	Image forest1;
 	TextureManager forest1Texture;
 	Image forest2;
 	TextureManager forest2Texture;
+	Image forest3;
+	TextureManager forest3Texture;
+	Image forest4;
+	TextureManager forest4Texture;
+	Image forest5;
+	TextureManager forest5Texture;
+	Image forest6;
+	TextureManager forest6Texture;
+	Image forest7;
+	TextureManager forest7Texture;
+
 	Image textBox;
 	TextureManager textBoxTexture;
 	Button button;
@@ -119,6 +131,7 @@ private:
 	bool gameOver;
 	bool gameWin;
 	bool cheatCodeInvincible;
+	bool musicOn;
 
 public:
     // Constructor
