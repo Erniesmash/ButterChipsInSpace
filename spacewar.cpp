@@ -421,14 +421,12 @@ void Spacewar::update()
 				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfb"));
 			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 2, GAME_HEIGHT / 3);
 			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 2, 2 * GAME_HEIGHT / 3);
+			for each (Dfb* d in dfbList)
+			{
+				d->health = 500;
+			}
 			lvl = true;
 		}
-
-		for each (Dfb* d in dfbList)
-		{
-			d->health = 500;
-		}
-
 		if (checkEnemies() == true)
 		{
 			progress = 3;
