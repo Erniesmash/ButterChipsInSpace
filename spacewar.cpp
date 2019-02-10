@@ -224,7 +224,7 @@ void Spacewar::initialize(HWND hwnd)
 	button.setX(GAME_WIDTH / 1.55 - button.getWidth() / 2 * button.getScale());
 	button.setY(GAME_HEIGHT / 1.15 - button.getHeight() / 2 * button.getScale());
 
-	//PlaySound("C:\\Users\\ernes\\Documents\\GitHub\\ButterChipsInSpace\\audio\\menu.wav", NULL, SND_LOOP | SND_ASYNC);
+	PlaySound("C:\\Users\\ernes\\Documents\\GitHub\\ButterChipsInSpace\\audio\\menu.wav", NULL, SND_LOOP | SND_ASYNC);
 }
 	
 //=============================================================================
@@ -402,7 +402,6 @@ void Spacewar::update()
 			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 2, GAME_HEIGHT / 4);
 			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 2, GAME_HEIGHT / 2);
 			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 2, 3 * GAME_HEIGHT / 4);
-
 			lvl = true;
 		}
 
@@ -422,10 +421,6 @@ void Spacewar::update()
 				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing dfb"));
 			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 2, GAME_HEIGHT / 3);
 			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 2, 2 * GAME_HEIGHT / 3);
-			for each (Dfb* d in dfbList)
-			{
-				d->health = 500;
-			}
 			lvl = true;
 		}
 
@@ -449,10 +444,6 @@ void Spacewar::update()
 			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 4, GAME_HEIGHT / 4);
 			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 2, GAME_HEIGHT / 2);
 			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 4, 3 * GAME_HEIGHT / 4);
-			for each (Dfb* d in dfbList)
-			{
-				d->health = 500;
-			}
 			lvl = true;
 		}
 
@@ -482,16 +473,6 @@ void Spacewar::update()
 			spawnDfr(GAME_WIDTH - dfrNS::WIDTH * 4, 3 * GAME_HEIGHT / 5);
 
 			spawnDfb(GAME_WIDTH - dfbNS::WIDTH * 6, GAME_HEIGHT / 2);
-
-			for each (Dfb* d in dfbList)
-			{
-				d->health = 500;
-			}
-
-			for each (Dfg* d in dfgList)
-			{
-				d->health = 800;
-			}
 
 			lvl = true;
 		}
@@ -570,6 +551,8 @@ void Spacewar::update()
 
 		if (checkEnemies() == true)
 		{
+			progress = 8;
+			lvl = false;
 		}
 	}
 //=============================================================================
@@ -968,14 +951,146 @@ void Spacewar::render()
 			missleShot.draw();
 		}
 
-		if (heartList.size() != 0)
+		if (playerMain.dialogueEnd == true)
 		{
-			for each (Heart* h in heartList)
+			if (heartList.size() != 0)
 			{
-				if (h->getActive() == true)
+				for each (Heart* h in heartList)
 				{
-					h->draw();
+					if (h->getActive() == true)
+					{
+						h->draw();
+					}
 				}
+			}
+
+			for each (Selection* s in selectionList)
+			{
+				if (s->getActive() == true)
+				{
+					s->draw();
+				}
+			}
+
+			for each (Specials* s in specialList)
+			{
+				if (s->getActive() == true)
+				{
+					s->draw();
+				}
+			}
+
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Click 1, 2, 3 or 4 to use Special Abilities!");
+			dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
+
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", input->getMouseX());
+			dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 3);
+
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", input->getMouseY());
+			dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 4);
+
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Wave");
+			dxFont.print(buffer, GAME_WIDTH / 2.2, GAME_HEIGHT / 100);
+
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", progress);
+			dxFont.print(buffer, GAME_WIDTH / 2, GAME_HEIGHT / 100);
+
+			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "of 6");
+			dxFont.print(buffer, GAME_WIDTH / 1.93, GAME_HEIGHT / 100);
+
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//Ability One: Sine Wave Dash
+			if (playerMain.dashOnCooldown == true)
+			{
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)playerMain.dashCooldownTimer);
+				dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
+			}
+
+			else
+			{
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+				dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
+			}
+
+			//Ability Two: Bullet Bounce
+			for each(Bullet* bullet in bulletList)
+			{
+				if (bullet->bounceOnCooldown == true)
+				{
+					//_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)bullet->bounceCooldownTimer);
+					//dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
+
+					_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)bullet->bounceInUseTimer);
+					dxFont.print(buffer, playerMain.getCenterX() - 5, playerMain.getCenterY() + 20);
+				}
+
+				else
+				{
+					_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+					dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
+				}
+			}
+			if (bulletList.size() <= 0)
+			{
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+				dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
+			}
+
+			//Ability Three: Falling Missle Shot
+			if (missleShot.missleOnCooldown == true)
+			{
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)missleShot.missleCooldownTimer);
+				dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
+			}
+
+			else
+			{
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+				dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
+			}
+
+			//Ability Four: Reflective Shield
+
+			if (playerMain.shieldOnCooldown == true)
+			{
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)playerMain.shieldCooldownTimer);
+				dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
+			}
+
+			else
+			{
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
+				dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
+			}
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+			//change ability/specials selection
+			if (input->isKeyDown(ONE_KEY))
+			{
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
+				fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
+				audio->playCue(SELECTION1);
+			}
+
+			if (input->isKeyDown(TWO_KEY))
+			{
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
+				fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
+				audio->playCue(SELECTION1);
+			}
+
+			if (input->isKeyDown(THREE_KEY))
+			{
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
+				fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
+				audio->playCue(SELECTION1);
+			}
+
+			if (input->isKeyDown(FOUR_KEY))
+			{
+				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
+				fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
+				audio->playCue(SELECTION1);
 			}
 		}
 
@@ -984,134 +1099,6 @@ void Spacewar::render()
 			gameOver = true;
 		}
 
-		for each (Selection* s in selectionList)
-		{
-			if (s->getActive() == true)
-			{
-				s->draw();
-			}
-		}
-
-		for each (Specials* s in specialList)
-		{
-			if (s->getActive() == true)
-			{
-				s->draw();
-			}
-		}
-
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Click 1, 2, 3 or 4 to use Special Abilities!");
-		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 1.05);
-
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", input->getMouseX());
-		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 3);
-
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", input->getMouseY());
-		dxFont.print(buffer, GAME_WIDTH / 100, GAME_HEIGHT / 4);
-
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "Wave");
-		dxFont.print(buffer, GAME_WIDTH / 2.2, GAME_HEIGHT / 100);
-
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", progress);
-		dxFont.print(buffer, GAME_WIDTH / 2, GAME_HEIGHT / 100);
-
-		_snprintf_s(buffer, spacewarNS::BUF_SIZE, "of 7");
-		dxFont.print(buffer, GAME_WIDTH / 1.93, GAME_HEIGHT / 100);
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//Ability One: Sine Wave Dash
-		if (playerMain.dashOnCooldown == true)
-		{
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)playerMain.dashCooldownTimer);
-			dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
-		}
-
-		else
-		{
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
-			dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
-		}
-
-		//Ability Two: Bullet Bounce
-		for each(Bullet* bullet in bulletList)
-		{
-			if (bullet->bounceOnCooldown == true)
-			{
-				//_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)bullet->bounceCooldownTimer);
-				//dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
-
-				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)bullet->bounceInUseTimer);
-				dxFont.print(buffer, playerMain.getCenterX() - 5, playerMain.getCenterY() + 20);
-			}
-
-			else
-			{
-				_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
-				dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
-			}
-		}
-		if (bulletList.size() <= 0)
-		{
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
-			dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
-		}
-
-		//Ability Three: Falling Missle Shot
-		if (missleShot.missleOnCooldown == true)
-		{
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)missleShot.missleCooldownTimer);
-			dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
-		}
-
-		else
-		{
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
-			dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
-		}
-
-		//Ability Four: Reflective Shield
-	
-		if (playerMain.shieldOnCooldown == true)
-		{
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "%d", (int)playerMain.shieldCooldownTimer);
-			dxFont.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
-		}
-
-		else
-		{
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "READY");
-			dxFontGreen.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
-		}
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		//change ability/specials selection
-		if (input->isKeyDown(ONE_KEY))
-		{
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
-			fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (3 + 0.8)), GAME_HEIGHT / 10);
-			audio->playCue(SELECTION1);
-		}
-
-		if (input->isKeyDown(TWO_KEY))
-		{
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
-			fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (2 + 0.8)), GAME_HEIGHT / 10);
-			audio->playCue(SELECTION1);
-		}
-
-		if (input->isKeyDown(THREE_KEY))
-		{
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
-			fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (1 + 0.8)), GAME_HEIGHT / 10);
-			audio->playCue(SELECTION1);
-		}
-
-		if (input->isKeyDown(FOUR_KEY))
-		{
-			_snprintf_s(buffer, spacewarNS::BUF_SIZE, "^");
-			fontBig.print(buffer, GAME_WIDTH / 15 * (numberOfSpecials - (0 + 0.8)), GAME_HEIGHT / 10);
-			audio->playCue(SELECTION1);
-		}
 
 		for each(Bullet*  bullet in bulletList)
 		{
